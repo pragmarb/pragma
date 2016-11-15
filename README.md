@@ -77,7 +77,7 @@ $ gem install pragma
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/alessandro1997/pragma.
+Bug reports and pull requests are welcome on GitHub at https://github.com/pragmarb/pragma.
 
 ## License
 
