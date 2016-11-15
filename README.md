@@ -1,5 +1,9 @@
 # Pragma
 
+[![Build Status](https://img.shields.io/travis/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/pragmarb/pragma)
+[![Dependency Status](https://img.shields.io/gemnasium/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://gemnasium.com/github.com/pragmarb/pragma)
+[![Code Climate](https://img.shields.io/codeclimate/github/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://codeclimate.com/github/pragmarb/pragma)
+
 Welcome to Pragma, a pragmatic (duh!), opinionated architecture for building JSON APIs with Ruby!
 
 You can think of this as a meta-gem that pulls in the following pieces:
