@@ -1,8 +1,49 @@
 # Pragma
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pragma`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to Pragma, a pragmatic (duh!), opinionated architecture for building JSON APIs with Ruby!
 
-TODO: Delete this and the text above, and describe your gem
+Looking for a Rails integration? Check out [pragma-rails](https://github.com/pragmarb/pragma-rails)!
+
+## Philosophy
+
+Pragma was created with a very specific goal in mind: to make the development of JSON APIs a matter
+of hours, not days. In other words, Pragma is for JSON APIs what Rails is for web applications.
+
+In order to achieve that goal, some ground rules were needed. Here they are.
+
+1. **Pragma is opinionated.** With Pragma, you don't get to make a lot of choices and that's
+   _exactly_ why people are using it: they want to focus on the business logic of their API rather
+   than the useless details. We understand this approach will not work in some cases and that's
+   alright. If you need more personalization, only use a subset of Pragma (see item 2) or something
+   else.
+2. **Pragma is modular.** Pragma is built as a set of gems (currently 4), plus some standalone
+   tools. You can pick one or more modules and use them in your application as you see fit. Even
+   though they are completely independent from each other, they nicely integrate and work best when
+   used together, creating an ecosystem that will dramatically speed up your design and development
+   process.
+3. **Pragma is not desigend to be Rails-free.** This does not mean that Pragma _is not_ Rails free.
+   Our Rails integration is decoupled from the rest of the ecosystem and all of the gems, in their
+   current state, _can_ be used without Rails. However, this is just a byproduct of the project's
+   design: independence from Rails is not a goal of the Pragma ecosystem, so don't count on it too
+   much.
+
+## Why not Trailblazer?
+
+[Trailblazer](https://github.com/trailblazer/trailblazer) and all of its companion projects are
+awesome. They are so awesome that Pragma is built on top of them: even though we're not using
+the Trailblazer gem itself yet, many of the Pragma gems are simply extensions of their Trailblazer
+counterparts:
+
+- decorators are [ROAR representers](https://github.com/apotonick/roar);
+- contracts are [Reform forms](https://github.com/apotonick/reform).
+
+Trailblazer and Pragma have different (but similar) places in the Ruby world: Trailblazer is an
+architecture for building all kinds of web applications in an intelligent, rational way, while
+Pragma is an architecture for building JSON APIs. We have shamelessly taken all of the flexibility
+and awesomeness from the Trailblazer project and restricted it to a narrow field of work, providing
+tools, helpers and integrations that could never be part of Trailblazer due to their specificity.
+
+Thank you, guys!
 
 ## Installation
 
@@ -14,28 +55,54 @@ gem 'pragma'
 
 And then execute:
 
-    $ bundle
+```console
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install pragma
+```console
+$ gem install pragma
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+You can think of this as a meta-gem that pulls in the following pieces:
+
+- [Pragma::Operation](https://github.com/pragmarb/pragma-operation);
+- [Pragma::Policy](https://github.com/pragmarb/pragma-policy);
+- [Pragma::Decorator](https://github.com/pragmarb/pragma-decorator);
+- [Pragma::Contract](https://github.com/pragmarb/pragma-contract).
+
+Additionally, it also provides default CRUD operations that leverage all of the Pragma components
+and will make creating new resources in your API a breeze:
+
+- **Panther::Operations::Index**: pulls the records accessible by the current user, decorates
+  them and presents them.
+- **Panther::Operations::Show**: pulls a record from the database, ensures the current user can
+  access it, decorates it and presents it.
+- **Panther::Operations::Create**: builds a new record, ensures the current user can create it,
+  validates it, persists it and presents it.
+- **Panther::Operations::Update**: pulls a record from the database, ensures the current user can
+  update it, validates it, saves it and presents it.
+- **Panther::Operations::Destroy**: pulls a record from the database, ensures the current user can
+  destroy it and destroys it.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run
+the tests. You can also run `bin/console` for an interactive prompt that will allow you to
+experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new
+version, update the version number in `version.rb`, and then run `bundle exec rake release`, which
+will create a git tag for the version, push git commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pragma.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/alessandro1997/pragma.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
