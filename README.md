@@ -2,6 +2,16 @@
 
 Welcome to Pragma, a pragmatic (duh!), opinionated architecture for building JSON APIs with Ruby!
 
+You can think of this as a meta-gem that pulls in the following pieces:
+
+- [Pragma::Operation](https://github.com/pragmarb/pragma-operation);
+- [Pragma::Policy](https://github.com/pragmarb/pragma-policy);
+- [Pragma::Decorator](https://github.com/pragmarb/pragma-decorator);
+- [Pragma::Contract](https://github.com/pragmarb/pragma-contract).
+
+Additionally, it also provides default CRUD operations that leverage all of the Pragma components
+and will make creating new resources in your API a breeze:
+
 Looking for a Rails integration? Check out [pragma-rails](https://github.com/pragmarb/pragma-rails)!
 
 ## Philosophy
@@ -64,40 +74,6 @@ Or install it yourself as:
 ```console
 $ gem install pragma
 ```
-
-## Usage
-
-You can think of this as a meta-gem that pulls in the following pieces:
-
-- [Pragma::Operation](https://github.com/pragmarb/pragma-operation);
-- [Pragma::Policy](https://github.com/pragmarb/pragma-policy);
-- [Pragma::Decorator](https://github.com/pragmarb/pragma-decorator);
-- [Pragma::Contract](https://github.com/pragmarb/pragma-contract).
-
-Additionally, it also provides default CRUD operations that leverage all of the Pragma components
-and will make creating new resources in your API a breeze:
-
-- **Panther::Operations::Index**: pulls the records accessible by the current user, decorates
-  them and presents them.
-- **Panther::Operations::Show**: pulls a record from the database, ensures the current user can
-  access it, decorates it and presents it.
-- **Panther::Operations::Create**: builds a new record, ensures the current user can create it,
-  validates it, persists it and presents it.
-- **Panther::Operations::Update**: pulls a record from the database, ensures the current user can
-  update it, validates it, saves it and presents it.
-- **Panther::Operations::Destroy**: pulls a record from the database, ensures the current user can
-  destroy it and destroys it.
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run
-the tests. You can also run `bin/console` for an interactive prompt that will allow you to
-experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new
-version, update the version number in `version.rb`, and then run `bundle exec rake release`, which
-will create a git tag for the version, push git commits and tags, and push the `.gem` file to
-[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
