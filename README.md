@@ -36,7 +36,7 @@ In order to achieve that goal, some ground rules were needed. Here they are.
    though they are completely independent from each other, they nicely integrate and work best when
    used together, creating an ecosystem that will dramatically speed up your design and development
    process.
-3. **Pragma is not desigend to be Rails-free.** This does not mean that Pragma _is not_ Rails free.
+3. **Pragma is not designed to be Rails-free.** This does not mean that Pragma _is not_ Rails free.
    Our Rails integration is decoupled from the rest of the ecosystem and all of the gems, in their
    current state, _can_ be used without Rails. However, this is just a byproduct of the project's
    design: independence from Rails is not a goal of the Pragma ecosystem, so don't count on it too
