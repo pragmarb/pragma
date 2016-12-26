@@ -43,4 +43,4 @@ module API
 end
 ```
 
-To override the decorator you can call the usual `#instance_decorator`.
+To override the decorator you can call the usual `#decorator`.

@@ -47,4 +47,4 @@ end
 ```
 
 To override the policy, contract and decorator you can call the usual `#policy`, `#contract` and
-`#instance_decorator`.
+`#decorator`.
