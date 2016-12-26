@@ -10,15 +10,13 @@ This gem works best if you follow the recommended structure (partially borrowed 
             ├── contract
             │   ├── create.rb
             │   └── update.rb
-            ├── decorator
-            │   ├── collection.rb
-            │   └── instance.rb
             ├── operation
             │   ├── create.rb
             │   ├── destroy.rb
             │   ├── index.rb
             │   └── update.rb
             └── policy.rb
+            └── decorator.rb
 ```
 
 Your modules and classes would, of course, follow the same structure: `API::V1::Post::Policy`,
