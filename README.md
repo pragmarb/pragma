@@ -15,7 +15,7 @@ You can think of this as a meta-gem that pulls in the following pieces:
 - [Pragma::Contract](https://github.com/pragmarb/pragma-contract).
 
 Additionally, it also provides default CRUD operations that leverage all of the Pragma components
-and will make creating new resources in your API a breeze:
+and will make creating new resources in your API a breeze.
 
 Looking for a Rails integration? Check out [pragma-rails](https://github.com/pragmarb/pragma-rails)!
 
