@@ -80,6 +80,10 @@ Or install it yourself as:
 $ gem install pragma
 ```
 
+## Usage
+
+All documentation is in the [doc](https://github.com/pragmarb/pragma/tree/master/doc) folder.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/pragmarb/pragma.
