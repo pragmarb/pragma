@@ -18,6 +18,12 @@ module Pragma
             'Page' => records.current_page.to_i,
             'Per-Page' => records.per_page,
             'Total' => records.total_entries
+          },
+          links: {
+            first: build_page_url(1),
+            last: build_page_url(records.total_pages),
+            next: (build_page_url(records.next_page) if records.next_page),
+            prev: (build_page_url(records.previous_page) if records.previous_page)
           }
         )
       end
@@ -67,6 +73,16 @@ module Pragma
       # @return [Fixnum]
       def max_per_page
         100
+      end
+
+      # Builds the URL to a specific page in the collection.
+      #
+      # @param page [Fixnum] a page number
+      #
+      # @return [String]
+      def build_page_url(page)
+        context.page_url_builder ||= -> (page) { nil }
+        context.page_url_builder.call(page)
       end
     end
   end
