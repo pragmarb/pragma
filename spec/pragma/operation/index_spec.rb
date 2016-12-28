@@ -25,6 +25,14 @@ RSpec.describe Pragma::Operation::Index do
     ])
   end
 
+  it 'includes pagination information in the headers' do
+    expect(context.headers).to eq(
+      'Page' => 1,
+      'Per-Page' => 30,
+      'Total' => 2
+    )
+  end
+
   context 'when a decorator is defined' do
     let(:decorator_klass) do
       Class.new(Pragma::Decorator::Base) do
