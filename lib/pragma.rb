@@ -4,6 +4,9 @@ require 'pragma/policy'
 require 'pragma/contract'
 require 'pragma/decorator'
 
+require 'will_paginate'
+require 'will_paginate/array'
+
 require 'pragma/version'
 
 require 'pragma/operation/awareness'

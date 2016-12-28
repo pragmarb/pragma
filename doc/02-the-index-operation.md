@@ -23,7 +23,7 @@ end
 
 ## Overriding defaults
 
-You can override the record retrieval logic by overriding `#find_records`:
+Here are the defaults of the Index operation and how to override them:
 
 ```ruby
 module API
@@ -31,10 +31,20 @@ module API
     module Post
       module Operation
         module Index < Pragma::Operation::Index
-          private
+          decorator API::V1::Post::Decorator
+
+          protected
 
           def find_records
             ::Post.all
+          end
+
+          def page
+            params[:page]
+          end
+
+          def per_page
+            30
           end
         end
       end
@@ -42,5 +52,3 @@ module API
   end
 end
 ```
-
-To override the decorator you can call the usual `#decorator`.

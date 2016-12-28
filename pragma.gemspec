@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pragma-policy', '~> 0.1.0'
   spec.add_dependency 'pragma-contract', '~> 0.1.0'
   spec.add_dependency 'pragma-decorator', '~> 0.1.0'
+  spec.add_dependency 'will_paginate', '~> 3.1.5'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'

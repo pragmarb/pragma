@@ -4,14 +4,22 @@ module Pragma
       include Pragma::Operation::Awareness
 
       def call
-        records = authorize_collection(find_records)
+        records = authorize_collection(find_records.paginate(page: page, per_page: per_page))
         respond_with status: :ok, resource: decorate(records)
       end
 
-      private
+      protected
 
       def find_records
         self.class.model_klass.all
+      end
+
+      def page
+        params[:page]
+      end
+
+      def per_page
+        30
       end
     end
   end
