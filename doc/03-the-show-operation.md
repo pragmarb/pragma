@@ -21,26 +21,4 @@ module API
 end
 ```
 
-## Overriding defaults
-
-You can override the record retrieval logic by overriding `#find_record`:
-
-```ruby
-module API
-  module V1
-    module Post
-      module Operation
-        module Show < Pragma::Operation::Show
-          private
-
-          def find_record
-            ::Post.find(params[:id])
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-To override the decorator you can call the usual `#decorator`.
+To override the defaults of this operation, have a look at the [source code](https://github.com/pragmarb/pragma/blob/master/lib/pragma/operation/show.rb).

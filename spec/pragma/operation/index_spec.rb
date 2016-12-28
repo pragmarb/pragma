@@ -3,23 +3,19 @@ RSpec.describe Pragma::Operation::Index do
   let(:context) { operation_klass.call(input_context) }
 
   let(:operation_klass) do
-    Class.new(described_class).tap do |klass|
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Index')
-    end
-  end
-
-  let(:input_context) { }
-
-  before do
-    class Post
-      def self.all
+    Class.new(described_class) do
+      def find_records
         [
           OpenStruct.new(title: 'Example Post 1', author_id: 1),
           OpenStruct.new(title: 'Example Post 2', author_id: 2)
         ]
       end
+    end.tap do |klass|
+      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Index')
     end
   end
+
+  let(:input_context) { }
 
   it 'finds all the records' do
     expect(context.resource.map(&:to_h)).to eq([

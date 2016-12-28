@@ -11,6 +11,7 @@ require 'pragma/version'
 
 require 'pragma/operation/defaults'
 require 'pragma/operation/index'
+require 'pragma/operation/show'
 
 # A pragmatic architecture for building JSON APIs.
 #
