@@ -81,7 +81,7 @@ module Pragma
       #
       # @return [String]
       def build_page_url(page)
-        context.page_url_builder ||= -> (page) { nil }
+        context.page_url_builder ||= ->(_page) { nil }
         context.page_url_builder.call(page)
       end
     end

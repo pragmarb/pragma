@@ -15,7 +15,7 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  let(:input_context) { }
+  let(:input_context) {}
 
   it 'finds all the records' do
     expect(context.resource.map(&:to_h)).to eq([
@@ -74,7 +74,7 @@ RSpec.describe Pragma::Operation::Index do
   end
 
   context 'when a page URL builder is provided' do
-    let(:page_url_builder) { -> (page) { "/pages/#{page}" } }
+    let(:page_url_builder) { ->(page) { "/pages/#{page}" } }
     let(:input_context) { { page_url_builder: page_url_builder } }
 
     it 'sets Link headers' do
