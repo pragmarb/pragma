@@ -44,12 +44,30 @@ module Pragma
       end
 
       # Returns the number of records to include per page. By default, this is the +per_page+
-      # parameter, up to a maximum of 100 records, or 30 if the parameter is not present.
+      # parameter, up to a maximum of {#max_per_page} records, or {#default_per_page} if the
+      # parameter is not present.
       #
       # @return [Fixnum]
+      #
+      # @see #default_per_page
+      # @see #max_per_page
       def per_page
-        return 30 if !params[:per_page] || params[:per_page].empty?
-        params[:per_page].to_i > 100 ? 100 : params[:per_page].to_i
+        return default_per_page if !params[:per_page] || params[:per_page].empty?
+        params[:per_page].to_i > max_per_page ? max_per_page : params[:per_page].to_i
+      end
+
+      # Returns the default number of records per page.
+      #
+      # @return [Fixnum]
+      def default_per_page
+        30
+      end
+
+      # Returns the maximum number of records per page.
+      #
+      # @return [Fixnum]
+      def max_per_page
+        100
       end
     end
   end
