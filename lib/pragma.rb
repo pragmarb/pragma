@@ -9,7 +9,7 @@ require 'will_paginate/array'
 
 require 'pragma/version'
 
-require 'pragma/operation/awareness'
+require 'pragma/operation/defaults'
 require 'pragma/operation/index'
 
 # A pragmatic architecture for building JSON APIs.

@@ -6,7 +6,7 @@ module Pragma
     #
     # @author Alessandro Desantis
     class Index < Pragma::Operation::Base
-      include Pragma::Operation::Awareness
+      include Pragma::Operation::Defaults
 
       def call
         records = authorize_collection(find_records)
