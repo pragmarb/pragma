@@ -13,7 +13,6 @@ module Pragma
         records = records.paginate(page: page, per_page: per_page)
 
         respond_with(
-          status: :ok,
           resource: decorate(records),
           headers: {
             'Page' => records.current_page.to_i,
