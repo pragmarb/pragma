@@ -67,3 +67,21 @@ RSpec/NamedSubject:
 
 RSpec/ExampleLength:
   Enabled: false
+
+Style/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false

@@ -6,7 +6,7 @@ module Pragma
         klass.extend ClassMethods
       end
 
-      module ClassMethods
+      module ClassMethods # :nodoc:
         def build_decorator(*)
           @decorator ||= computed_decorator_klass if class_exists?(computed_decorator_klass)
           super
