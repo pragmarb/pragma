@@ -1,5 +1,10 @@
+# frozen_string_literal: true
 module Pragma
   module Operation
+    # Finds all records of the requested resource, authorizes them, paginates them and returns
+    # the decorated collection.
+    #
+    # @author Alessandro Desantis
     class Index < Pragma::Operation::Base
       include Pragma::Operation::Awareness
 
@@ -20,16 +25,31 @@ module Pragma
 
       protected
 
+      # Finds all the records. By default, calls +.all+ on the model class, which is inferred from
+      # the operation's namespace (e.g. +API::V1::Post::Operation::Index+ will retrieve all records
+      # of the +Post+ model).
+      #
+      # @return [Enumerable]
       def find_records
         self.class.model_klass.all
       end
 
+      # Returns the current page number. By default, this is the +page+ parameter or 1 if the
+      # parameter is not present.
+      #
+      # @return [Fixnum]
       def page
-        params[:page]
+        return 1 if !params[:page] || params[:page].empty?
+        params[:page].to_i
       end
 
+      # Returns the number of records to include per page. By default, this is the +per_page+
+      # parameter, up to a maximum of 100 records, or 30 if the parameter is not present.
+      #
+      # @return [Fixnum]
       def per_page
-        30
+        return 30 if !params[:per_page] || params[:per_page].empty?
+        params[:per_page].to_i > 100 ? 100 : params[:per_page].to_i
       end
     end
   end

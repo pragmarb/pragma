@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Pragma::Operation::Index do
   let(:context) { operation_klass.call }
 
@@ -7,7 +8,7 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  before(:each) do
+  before do
     class Post
       def self.all
         [

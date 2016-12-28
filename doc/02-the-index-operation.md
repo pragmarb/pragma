@@ -21,34 +21,4 @@ module API
 end
 ```
 
-## Overriding defaults
-
-Here are the defaults of the Index operation and how to override them:
-
-```ruby
-module API
-  module V1
-    module Post
-      module Operation
-        module Index < Pragma::Operation::Index
-          decorator API::V1::Post::Decorator
-
-          protected
-
-          def find_records
-            ::Post.all
-          end
-
-          def page
-            params[:page]
-          end
-
-          def per_page
-            30
-          end
-        end
-      end
-    end
-  end
-end
-```
+To override the defaults of this operation, have a look at the [source code](https://github.com/pragmarb/pragma/blob/master/lib/pragma/operation/index.rb).
