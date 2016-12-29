@@ -14,6 +14,7 @@ require 'pragma/operation/index'
 require 'pragma/operation/show'
 require 'pragma/operation/create'
 require 'pragma/operation/update'
+require 'pragma/operation/destroy'
 
 # A pragmatic architecture for building JSON APIs.
 #
