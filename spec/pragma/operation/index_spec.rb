@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 RSpec.describe Pragma::Operation::Index do
-  let(:context) { operation_klass.call(input_context) }
+  subject(:context) { operation_klass.call(input_context) }
 
   let(:operation_klass) do
     Class.new(described_class) do

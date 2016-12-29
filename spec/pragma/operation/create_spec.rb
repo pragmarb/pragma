@@ -1,32 +1,61 @@
 # frozen_string_literal: true
-RSpec.describe Pragma::Operation::Show do
+RSpec.describe Pragma::Operation::Create do
   subject(:context) do
     operation_klass.call(
       current_user: current_user,
-      params: { id: 1 }
+      params: params
     )
+  end
+
+  let(:params) do
+    {
+      author_id: 1,
+      title: 'My Post'
+    }
+  end
+
+  let(:contract_klass) do
+    Class.new(Pragma::Contract::Base) do
+      property :author_id
+      property :title
+
+      validation do
+        required(:title).filled
+      end
+    end
   end
 
   let(:operation_klass) do
     Class.new(described_class) do
-      def find_record
-        OpenStruct.new(
-          title: 'Example Post 1',
-          author_id: 1
-        )
+      def build_record
+        OpenStruct.new
       end
     end.tap do |klass|
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Show')
+      klass.send(:contract, contract_klass)
+      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Create')
     end
   end
 
   let(:current_user) { nil }
 
-  it 'finds the record' do
+  it 'creates the record' do
     expect(context.resource.to_h).to eq(
-      title: 'Example Post 1',
+      title: 'My Post',
       author_id: 1
     )
+  end
+
+  context 'when invalid parameters are supplied' do
+    let(:params) do
+      {
+        author_id: 1,
+        title: ''
+      }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(context.status).to eq(:unprocessable_entity)
+    end
   end
 
   context 'when a decorator is defined' do
@@ -40,9 +69,9 @@ RSpec.describe Pragma::Operation::Show do
       operation_klass.send(:decorator, decorator_klass)
     end
 
-    it 'decorates the resource' do
+    it 'decorates the updated resource' do
       expect(context.resource.to_hash).to eq(
-        'title' => 'Example Post 1'
+        'title' => 'My Post'
       )
     end
   end
@@ -50,7 +79,7 @@ RSpec.describe Pragma::Operation::Show do
   context 'when a policy is defined' do
     let(:policy_klass) do
       Class.new(Pragma::Policy::Base) do
-        def show?
+        def create?
           resource.author_id == user.id
         end
       end
@@ -63,15 +92,15 @@ RSpec.describe Pragma::Operation::Show do
     context 'when the user is authorized' do
       let(:current_user) { OpenStruct.new(id: 1) }
 
-      it 'permits the retrieval' do
-        expect(context.resource.to_h).to eq(title: 'Example Post 1', author_id: 1)
+      it 'permits the creation' do
+        expect(context.resource.to_h).to eq(title: 'My Post', author_id: 1)
       end
     end
 
     context 'when the user is not authorized' do
       let(:current_user) { OpenStruct.new(id: 2) }
 
-      it 'does not permit the retrievla' do
+      it 'does not permit the creation' do
         expect(context.status).to eq(:forbidden)
       end
     end

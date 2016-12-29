@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 RSpec.describe Pragma::Operation::Update do
-  let(:context) do
+  subject(:context) do
     operation_klass.call(
       current_user: current_user,
-      params: { id: 1, title: 'New Title' }
+      params: params
     )
+  end
+
+  let(:params) do
+    {
+      id: 1,
+      title: 'New Title'
+    }
   end
 
   let(:contract_klass) do
@@ -39,6 +46,19 @@ RSpec.describe Pragma::Operation::Update do
       title: 'New Title',
       author_id: 1
     )
+  end
+
+  context 'when invalid parameters are supplied' do
+    let(:params) do
+      {
+        author_id: 1,
+        title: ''
+      }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(context.status).to eq(:unprocessable_entity)
+    end
   end
 
   context 'when a decorator is defined' do
@@ -80,7 +100,7 @@ RSpec.describe Pragma::Operation::Update do
       end
     end
 
-    context 'when the user is authorized' do
+    context 'when the user is not authorized' do
       let(:current_user) { OpenStruct.new(id: 2) }
 
       it 'does not permit the update' do

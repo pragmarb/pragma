@@ -23,28 +23,4 @@ module API
 end
 ```
 
-## Overriding defaults
-
-You can override the default model class (computed from the operation's namespace) by overriding the
-`#build_record` method:
-
-```ruby
-module API
-  module V1
-    module Post
-      module Operation
-        module Create < Pragma::Operation::Create
-          private
-
-          def build_record
-            ::Post.new
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-To override the policy, contract and decorator you can call the usual `#policy`, `#contract` and
-`#decorator`.
+To override the defaults of this operation, have a look at the [source code](https://github.com/pragmarb/pragma/blob/master/lib/pragma/operation/index.rb).
