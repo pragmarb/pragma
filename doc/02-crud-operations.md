@@ -18,7 +18,7 @@ module API
   module V1
     module Post
       module Operation
-        module Index < Pragma::Operation::Index
+        class Index < Pragma::Operation::Index
         end
       end
     end
@@ -45,7 +45,7 @@ module API
   module V1
     module Post
       module Operation
-        module Create < Pragma::Operation::Create
+        class Create < Pragma::Operation::Create
         end
       end
     end
@@ -72,7 +72,7 @@ module API
   module V1
     module Post
       module Operation
-        module Update < Pragma::Operation::Update
+        class Update < Pragma::Operation::Update
         end
       end
     end
@@ -98,7 +98,7 @@ module API
   module V1
     module Post
       module Operation
-        module Destroy < Pragma::Operation::Destroy
+        class Destroy < Pragma::Operation::Destroy
         end
       end
     end
