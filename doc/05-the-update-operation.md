@@ -23,27 +23,4 @@ module API
 end
 ```
 
-## Overriding defaults
-
-You can override the record retrieval logic by overriding the `#find_record` method:
-
-```ruby
-module API
-  module V1
-    module Post
-      module Operation
-        module Update < Pragma::Operation::Update
-          private
-
-          def find_record
-            ::Post.find(params[:id])
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-To override the policy, contract and decorator you can call the usual `#policy`, `#contract` and
-`#decorator`.
+To override the defaults of this operation, have a look at the [source code](https://github.com/pragmarb/pragma/blob/master/lib/pragma/operation/update.rb).
