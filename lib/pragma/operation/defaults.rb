@@ -17,8 +17,9 @@ module Pragma
         #
         # @return [Class]
         def decorator_klass
-          return Object.const_get(computed_decorator_klass) if class_exists?(computed_decorator_klass)
-          super
+          super || (
+            Object.const_get(computed_decorator_klass) if class_exists?(computed_decorator_klass)
+          )
         end
 
         # Returns the policy class for the current resource (if the inferred class exists).
@@ -28,8 +29,9 @@ module Pragma
         #
         # @return [Class]
         def policy_klass
-          return Object.const_get(computed_policy_klass) if class_exists?(computed_policy_klass)
-          super
+          super || (
+            Object.const_get(computed_policy_klass) if class_exists?(computed_policy_klass)
+          )
         end
 
         # Returns the contract class for the current resource (if the inferred class exists).
@@ -39,8 +41,9 @@ module Pragma
         #
         # @return [Class]
         def contract_klass
-          return Object.const_get(computed_contract_klass) if class_exists?(computed_contract_klass)
-          super
+          super || (
+            Object.const_get(computed_contract_klass) if class_exists?(computed_contract_klass)
+          )
         end
 
         # Returns the model class for the current resource (if the inferred class exists).
