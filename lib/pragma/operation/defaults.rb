@@ -14,24 +14,33 @@ module Pragma
         #
         # If the operation name is +API::V1::Post::Operation::Show+, returns
         # +API::V1::Post::Decorator+.
+        #
+        # @return [Class]
         def decorator_klass
-          super || (computed_decorator_klass if class_exists?(computed_decorator_klass))
+          return Object.const_get(computed_decorator_klass) if class_exists?(computed_decorator_klass)
+          super
         end
 
         # Returns the policy class for the current resource (if the inferred class exists).
         #
         # If the operation name is +API::V1::Post::Operation::Show+, returns
         # +API::V1::Post::Policy+.
+        #
+        # @return [Class]
         def policy_klass
-          super || (computed_policy_klass if class_exists?(computed_policy_klass))
+          return Object.const_get(computed_policy_klass) if class_exists?(computed_policy_klass)
+          super
         end
 
         # Returns the contract class for the current resource (if the inferred class exists).
         #
         # If the operation name is +API::V1::Post::Operation::Create+, returns
         # +API::V1::Post::Contract::Create+.
+        #
+        # @return [Class]
         def contract_klass
-          super || (computed_contract_klass if class_exists?(computed_contract_klass))
+          return Object.const_get(computed_contract_klass) if class_exists?(computed_contract_klass)
+          super
         end
 
         # Returns the model class for the current resource (if the inferred class exists).
