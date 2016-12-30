@@ -65,7 +65,7 @@ module Pragma
 
         def computed_contract_klass
           name_parts = name.split('::')
-          (name_parts[0..-3] << 'Decorator' << name_parts.last).join('::')
+          (name_parts[0..-3] << 'Contract' << name_parts.last).join('::')
         end
 
         def class_exists?(klass)
