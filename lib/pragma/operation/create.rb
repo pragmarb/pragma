@@ -17,7 +17,7 @@ module Pragma
 
         contract.save
 
-        respond_with resource: decorate(record)
+        respond_with status: :created, resource: decorate(record)
       end
 
       protected
