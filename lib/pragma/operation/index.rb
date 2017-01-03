@@ -39,26 +39,28 @@ module Pragma
         self.class.model_klass.all
       end
 
-      # Returns the current page number. By default, this is the +page+ parameter or 1 if the
-      # parameter is not present.
+      # Returns the name of the page parameter.
       #
-      # @return [Fixnum]
-      def page
-        return 1 if !params[:page] || params[:page].empty?
-        params[:page].to_i
+      # @return [Symbol]
+      def page_param
+        :page
       end
 
-      # Returns the number of records to include per page. By default, this is the +per_page+
-      # parameter, up to a maximum of {#max_per_page} records, or {#default_per_page} if the
-      # parameter is not present.
+      # Returns the page number. By default, this is the page parameter or 1 if it is empty.
       #
       # @return [Fixnum]
       #
-      # @see #default_per_page
-      # @see #max_per_page
-      def per_page
-        return default_per_page if !params[:per_page] || params[:per_page].empty?
-        params[:per_page].to_i > max_per_page ? max_per_page : params[:per_page].to_i
+      # @see #page_param
+      def page
+        return 1 if !params[page_param] || params[page_param].empty?
+        params[page_param].to_i
+      end
+
+      # Returns the name of the per_page param.
+      #
+      # @return [Symbol]
+      def per_page_param
+        :per_page
       end
 
       # Returns the default number of records per page.
@@ -75,14 +77,27 @@ module Pragma
         100
       end
 
+      # Returns the number of records to include per page. By default, this is the +per_page+
+      # parameter, up to a maximum of {#max_per_page} records, or {#default_per_page} if the
+      # parameter is not present.
+      #
+      # @return [Fixnum]
+      #
+      # @see #default_per_page
+      # @see #max_per_page
+      # @see #per_page_param
+      def per_page
+        return default_per_page if !params[per_page_param] || params[per_page_param].empty?
+        params[per_page_param].to_i > max_per_page ? max_per_page : params[per_page_param].to_i
+      end
+
       # Builds the URL to a specific page in the collection.
       #
       # @param page [Fixnum] a page number
       #
       # @return [String]
       def build_page_url(page)
-        context.page_url_builder ||= ->(_page) { nil }
-        context.page_url_builder.call(page)
+        nil
       end
     end
   end
