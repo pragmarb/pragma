@@ -96,7 +96,7 @@ module Pragma
       # @param page [Fixnum] a page number
       #
       # @return [String]
-      def build_page_url(page)
+      def build_page_url(_page)
         nil
       end
     end
