@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pragma-operation', '~> 1.2'
   spec.add_dependency 'pragma-policy', '~> 0.1'
   spec.add_dependency 'pragma-contract', '~> 0.1'
-  spec.add_dependency 'pragma-decorator', '~> 0.1'
+  spec.add_dependency 'pragma-decorator', '~> 1.0'
   spec.add_dependency 'will_paginate', '~> 3.1'
 
   spec.add_development_dependency 'bundler'
