@@ -8,10 +8,10 @@ module Pragma
       include Pragma::Operation::Defaults
 
       def call
-        record = find_record
-        authorize! record
+        context.record = find_record
+        authorize! context.record
 
-        record.destroy!
+        context.record.destroy!
 
         head :no_content
       end

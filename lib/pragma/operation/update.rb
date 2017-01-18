@@ -9,15 +9,15 @@ module Pragma
       include Pragma::Operation::Defaults
 
       def call
-        record = find_record
-        contract = build_contract(record)
+        context.record = find_record
+        context.contract = build_contract(context.record)
 
-        validate! contract
-        authorize! contract
+        validate! context.contract
+        authorize! context.contract
 
-        contract.save
+        context.contract.save
 
-        respond_with resource: decorate(record)
+        respond_with resource: decorate(context.record)
       end
 
       protected

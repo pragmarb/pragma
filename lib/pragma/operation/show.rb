@@ -8,10 +8,10 @@ module Pragma
       include Pragma::Operation::Defaults
 
       def call
-        record = find_record
-        authorize! record
+        context.record = find_record
+        authorize! context.record
 
-        respond_with resource: decorate(record)
+        respond_with resource: decorate(context.record)
       end
 
       protected

@@ -9,21 +9,21 @@ module Pragma
       include Pragma::Operation::Defaults
 
       def call
-        records = authorize_collection(find_records)
-        records = records.paginate(page: page, per_page: per_page)
+        context.records = authorize_collection(find_records)
+        context.records = context.records.paginate(page: page, per_page: per_page)
 
         respond_with(
-          resource: decorate(records),
+          resource: decorate(context.records),
           headers: {
-            'Page' => records.current_page.to_i,
-            'Per-Page' => records.per_page,
-            'Total' => records.total_entries
+            'Page' => context.records.current_page.to_i,
+            'Per-Page' => context.records.per_page,
+            'Total' => context.records.total_entries
           },
           links: {
             first: build_page_url(1),
-            last: build_page_url(records.total_pages),
-            next: (build_page_url(records.next_page) if records.next_page),
-            prev: (build_page_url(records.previous_page) if records.previous_page)
+            last: build_page_url(context.records.total_pages),
+            next: (build_page_url(context.records.next_page) if context.records.next_page),
+            prev: (build_page_url(context.records.previous_page) if context.records.previous_page)
           }
         )
       end
