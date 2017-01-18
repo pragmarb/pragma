@@ -69,10 +69,7 @@ module Pragma
         end
 
         def class_exists?(klass)
-          Object.const_get(klass)
-          true
-        rescue NameError
-          false
+          Object.const_defined?(klass)
         end
       end
     end
