@@ -69,6 +69,11 @@ module Pragma
         end
 
         def class_exists?(klass)
+          begin
+            Object.const_get(klass)
+          rescue NameError
+          end
+
           Object.const_defined?(klass)
         end
       end
