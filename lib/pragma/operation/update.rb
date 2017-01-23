@@ -15,9 +15,8 @@ module Pragma
         validate! context.contract
         authorize! context.contract
 
-        context.contract.save do |hash|
-          context.record.update! hash
-        end
+        context.contract.save
+        context.record.save!
 
         respond_with resource: decorate(context.record)
       end

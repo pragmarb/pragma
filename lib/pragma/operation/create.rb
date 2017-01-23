@@ -15,10 +15,8 @@ module Pragma
         validate! context.contract
         authorize! context.contract
 
-        context.contract.save do |hash|
-          context.record.assign_attributes(hash)
-          context.record.save!
-        end
+        context.contract.save
+        context.record.save!
 
         respond_with status: :created, resource: decorate(context.record)
       end
