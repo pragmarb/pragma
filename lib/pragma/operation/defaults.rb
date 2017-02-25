@@ -50,22 +50,21 @@ module Pragma
         #
         # If the operation name is +API::V1::Post::Operation::Create+, returns +::Post+.
         def model_klass
-          Object.const_get("::#{name.split('::')[0..-3].last}")
+
         end
 
         private
 
         def computed_decorator_klass
-          (name.split('::')[0..-3] << 'Decorator').join('::')
+
         end
 
         def computed_policy_klass
-          (name.split('::')[0..-3] << 'Policy').join('::')
+
         end
 
         def computed_contract_klass
-          name_parts = name.split('::')
-          (name_parts[0..-3] << 'Contract' << name_parts.last).join('::')
+
         end
 
         def class_exists?(klass)

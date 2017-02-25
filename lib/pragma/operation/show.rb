@@ -5,22 +5,22 @@ module Pragma
     #
     # @author Alessandro Desantis
     class Show < Pragma::Operation::Base
-      include Pragma::Operation::Defaults
+      step Macro::Classes()
+      step :retrieve!
+      step :authorize!
+      failure! :handle_unauthorized!
+      step Macro::Decorator()
 
-      def call
-        context.record = find_record
-        authorize! context.record
-
-        respond_with resource: decorate(context.record)
+      def retrieve!(options)
+        options['model'] = options['model.class'].find(params[:id])
       end
 
-      protected
+      def authorize!(options)
+        true # TODO: implement
+      end
 
-      # Finds the requested record.
-      #
-      # @return [Object]
-      def find_record
-        self.class.model_klass.find(params[:id])
+      def handle_unauthorized!(options)
+        true # TODO: implement
       end
     end
   end

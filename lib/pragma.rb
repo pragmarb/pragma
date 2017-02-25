@@ -9,7 +9,10 @@ require 'will_paginate/array'
 
 require 'pragma/version'
 
-require 'pragma/operation/defaults'
+require 'pragma/operation/macro/classes'
+require 'pragma/operation/macro/decorator'
+require 'pragma/operation/macro/pagination'
+
 require 'pragma/operation/index'
 require 'pragma/operation/show'
 require 'pragma/operation/create'
