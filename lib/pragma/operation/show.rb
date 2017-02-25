@@ -7,20 +7,16 @@ module Pragma
     class Show < Pragma::Operation::Base
       step Macro::Classes()
       step :retrieve!
-      step :authorize!
-      failure! :handle_unauthorized!
+      failure :not_found!
+      step Macro::Policy()
       step Macro::Decorator()
 
-      def retrieve!(options)
-        options['model'] = options['model.class'].find(params[:id])
+      def retrieve!(options, params:, **)
+        options['model'] = options['model.class'].find(params['id'])
       end
 
-      def authorize!(options)
-        true # TODO: implement
-      end
-
-      def handle_unauthorized!(options)
-        true # TODO: implement
+      def not_found!(options)
+        # TODO: handle
       end
     end
   end

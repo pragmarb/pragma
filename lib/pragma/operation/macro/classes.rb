@@ -15,7 +15,8 @@ module Pragma
               'decorator.default.class' => expected_decorator_class(input, options),
               'contract.default.class' => expected_contract_class(input, options)
             }.each_pair do |key, value|
-              options[key] = if Object.const_exists?(value)
+              next if options[key]
+              options[key] = if Object.const_defined?(value)
                 Object.const_get(value)
               end
             end

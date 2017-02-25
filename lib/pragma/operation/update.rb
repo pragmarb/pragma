@@ -6,7 +6,7 @@ module Pragma
     #
     # @author Alessandro Desantis
     class Update < Pragma::Operation::Base
-      include Pragma::Operation::Defaults
+      #include Pragma::Operation::Defaults
 
       def call
         context.record = find_record
