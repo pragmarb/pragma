@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'pragma-operation', '~> 1.2'
+  spec.add_dependency 'pragma-operation', '~> 2.0'
   spec.add_dependency 'pragma-policy', '~> 0.1'
   spec.add_dependency 'pragma-contract', '~> 0.1'
   spec.add_dependency 'pragma-decorator', '~> 1.0'
