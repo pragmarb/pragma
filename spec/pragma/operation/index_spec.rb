@@ -3,12 +3,10 @@ RSpec.describe Pragma::Operation::Index do
   subject(:result) do
     described_class.call(
       params,
-      {
-        'current_user' => current_user,
-        'model.class' => model_klass,
-        'decorator.default.class' => decorator_klass,
-        'policy.default.class' => policy_klass
-      }
+      'current_user' => current_user,
+      'model.class' => model_klass,
+      'decorator.default.class' => decorator_klass,
+      'policy.default.class' => policy_klass
     )
   end
 
