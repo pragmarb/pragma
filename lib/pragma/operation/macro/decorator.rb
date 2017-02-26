@@ -14,6 +14,10 @@ module Pragma
             else
               options['model']
             end
+
+            if options['result.response']
+              options['result.response'].entity = options['result.decorator']
+            end
           end
         end
       end

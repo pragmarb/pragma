@@ -6,17 +6,13 @@ module Pragma
     # @author Alessandro Desantis
     class Show < Pragma::Operation::Base
       step Macro::Classes()
-      step :retrieve!
-      failure :not_found!
+      step Macro::Model()
       step Macro::Policy()
+      step :respond!
       step Macro::Decorator()
 
-      def retrieve!(options, params:, **)
-        options['model'] = options['model.class'].find(params['id'])
-      end
-
-      def not_found!(options)
-        # TODO: handle
+      def respond!(options)
+        options['result.response'] = Response.new
       end
     end
   end
