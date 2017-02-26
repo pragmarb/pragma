@@ -20,8 +20,8 @@ RSpec.describe Pragma::Operation::Show do
 
   let(:model_klass) do
     Class.new do
-      def self.find(id)
-        OpenStruct.new(user_id: 1) if id == 1
+      def self.find_by(conditions)
+        OpenStruct.new(user_id: 1) if conditions[:id] == 1
       end
     end
   end

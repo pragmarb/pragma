@@ -10,7 +10,9 @@ module Pragma
       module Model
         class << self
           def for(_input, options)
-            options['model'] = options['model.class'].find(options['params']['id']).tap do |result|
+            options['model'] = options['model.class'].find_by(
+              id: options['params']['id']
+            ).tap do |result|
               options['result.response'] = Response::NotFound.new unless result
             end
           end
