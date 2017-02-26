@@ -21,16 +21,37 @@ module Pragma
               options[key] = value unless options[key]
             end
 
-            options['model'] = model.paginate(
-              page: page(options, params: params),
-              per_page: per_page(options, params: params)
+            options['model'] = options['model'].paginate(
+              page: page(options, **options),
+              per_page: per_page(options, **options)
             )
 
             options['result.response'].headers = options['result.response'].headers.merge(
-              'Page' => model.current_page.to_i,
-              'Per-Page' => model.per_page,
-              'Total' => model.total_entries
+              'Page' => options['model'].current_page.to_i,
+              'Per-Page' => options['model'].per_page,
+              'Total' => options['model'].total_entries
             )
+          end
+
+          private
+
+          def page(options, params:, **)
+            return 1 if
+              !params[options['pagination.page_param']] ||
+              params[options['pagination.page_param']].empty?
+
+            params[options['pagination.page_param']].to_i
+          end
+
+          def per_page(options, params:, **)
+            return options['pagination.default_per_page'] if
+              !params[options['pagination.per_page_param']] ||
+              params[options['pagination.per_page_param']].empty?
+
+            [
+              params[options['pagination.per_page_param']].to_i,
+              options['pagination.max_per_page']
+            ].min
           end
         end
       end

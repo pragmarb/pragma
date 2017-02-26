@@ -1,75 +1,63 @@
 # frozen_string_literal: true
 RSpec.describe Pragma::Operation::Index do
-  subject(:context) { operation_klass.call(input_context) }
+  subject(:result) do
+    described_class.call(
+      params,
+      {
+        'current_user' => current_user,
+        'model.class' => model_klass,
+        'decorator.default.class' => decorator_klass,
+        'policy.default.class' => policy_klass
+      }
+    )
+  end
 
-  let(:operation_klass) do
-    Class.new(described_class) do
-      def find_records
+  let(:params) do
+    { 'id' => 1 }
+  end
+
+  let(:current_user) { OpenStruct.new(id: 1) }
+
+  let(:model_klass) do
+    Class.new do
+      def self.all
         [
-          OpenStruct.new(title: 'Example Post 1', author_id: 1),
-          OpenStruct.new(title: 'Example Post 2', author_id: 2)
+          OpenStruct.new(user_id: 1),
+          OpenStruct.new(user_id: 2)
         ]
       end
-    end.tap do |klass|
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Index')
     end
   end
 
-  let(:input_context) {}
-
-  it 'finds all the records' do
-    expect(context.resource.map(&:to_h)).to eq([
-      { title: 'Example Post 1', author_id: 1 },
-      { title: 'Example Post 2', author_id: 2 }
-    ])
+  let(:decorator_klass) do
+    Class.new do
+      def self.represent(object)
+        object
+      end
+    end
   end
 
-  it 'includes pagination information in the headers' do
-    expect(context.headers).to match(a_hash_including(
+  let(:policy_klass) do
+    Class.new do
+      def self.accessible_by(user:, scope:)
+        scope.select { |o| o.user_id == user.id }
+      end
+    end
+  end
+
+  it 'responds with 200 OK' do
+    expect(result['result.response'].status).to eq(200)
+  end
+
+  it 'filters the records with the policy' do
+    expect(result['result.response'].entity.count).to eq(1)
+  end
+
+  it 'adds pagination headers' do
+    expect(result['result.response'].headers).to match(a_hash_including(
       'Page' => 1,
       'Per-Page' => 30,
-      'Total' => 2
+      'Total' => 1
     ))
-  end
-
-  context 'when a decorator is defined' do
-    let(:decorator_klass) do
-      Class.new(Pragma::Decorator::Base) do
-        property :title
-      end
-    end
-
-    before do
-      operation_klass.send(:decorator, decorator_klass)
-    end
-
-    it 'decorates the records in the collection' do
-      expect(context.resource.to_hash).to eq([
-        { 'title' => 'Example Post 1' },
-        { 'title' => 'Example Post 2' }
-      ])
-    end
-  end
-
-  context 'when a policy is defined' do
-    let(:policy_klass) do
-      Class.new(Pragma::Policy::Base) do
-        def self.accessible_by(user:, scope:)
-          scope.select do |post|
-            post.author_id == 1
-          end
-        end
-      end
-    end
-
-    before do
-      operation_klass.send(:policy, policy_klass)
-    end
-
-    it 'scopes the accessible records' do
-      expect(context.resource.map(&:to_h)).to eq([
-        { title: 'Example Post 1', author_id: 1 }
-      ])
-    end
   end
 end
