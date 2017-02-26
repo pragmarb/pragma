@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module Pragma
   module Operation
     module Macro
       def self.Classes
-        step = -> (input, options) { Classes.for(input, options) }
+        step = ->(input, options) { Classes.for(input, options) }
         [step, name: 'classes']
       end
 
@@ -24,7 +25,7 @@ module Pragma
 
           private
 
-          def resource_namespace(input, options)
+          def resource_namespace(input, _options)
             input.class.name.split('::')[0..-3]
           end
 

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module Pragma
   module Operation
     module Macro
       def self.Pagination
-        step = -> (input, options) { Pagination.for(input, options) }
+        step = ->(input, options) { Pagination.for(input, options) }
         [step, name: 'paginate']
       end
 
@@ -12,10 +13,10 @@ module Pragma
           'pagination.per_page_param' => 'per_page',
           'pagination.default_per_page' => 30,
           'pagination.max_per_page' => 100
-        }
+        }.freeze
 
         class << self
-          def for(input, options)
+          def for(_input, options)
             DEFAULTS.each_pair do |key, value|
               options[key] = value unless options[key]
             end

@@ -32,8 +32,7 @@ RSpec.describe Pragma::Operation::Show do
 
   let(:policy_klass) do
     Class.new do
-      def initialize(user:, resource:)
-      end
+      def initialize(user:, resource:); end
 
       def show?
         true

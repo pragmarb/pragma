@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module Pragma
   module Operation
     module Macro
       def self.Policy
-        step = -> (input, options) { Policy.for(input, options) }
+        step = ->(input, options) { Policy.for(input, options) }
         [step, name: 'authorize']
       end
 

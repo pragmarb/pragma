@@ -49,23 +49,15 @@ module Pragma
         # Returns the model class for the current resource (if the inferred class exists).
         #
         # If the operation name is +API::V1::Post::Operation::Create+, returns +::Post+.
-        def model_klass
-
-        end
+        def model_klass; end
 
         private
 
-        def computed_decorator_klass
+        def computed_decorator_klass; end
 
-        end
+        def computed_policy_klass; end
 
-        def computed_policy_klass
-
-        end
-
-        def computed_contract_klass
-
-        end
+        def computed_contract_klass; end
 
         def class_exists?(klass)
           begin
