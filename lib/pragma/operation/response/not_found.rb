@@ -2,7 +2,7 @@
 module Pragma
   module Operation
     class Response
-      class NotFound
+      class NotFound < Response
         def initialize(
           status: 404,
           entity: Decorator::Error.new(

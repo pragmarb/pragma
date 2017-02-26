@@ -9,11 +9,16 @@ require 'will_paginate/array'
 
 require 'pragma/version'
 
+require 'pragma/decorator/error'
+
 require 'pragma/operation/macro/classes'
 require 'pragma/operation/macro/decorator'
 require 'pragma/operation/macro/pagination'
 require 'pragma/operation/macro/policy'
 require 'pragma/operation/macro/model'
+
+require 'pragma/operation/response/not_found'
+require 'pragma/operation/response/forbidden'
 
 require 'pragma/operation/index'
 require 'pragma/operation/show'

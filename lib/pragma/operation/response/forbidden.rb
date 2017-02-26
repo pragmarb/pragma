@@ -2,7 +2,7 @@
 module Pragma
   module Operation
     class Response
-      class Forbidden
+      class Forbidden < Response
         def initialize(
           status: 403,
           entity: Decorator::Error.new(
