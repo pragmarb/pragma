@@ -13,6 +13,7 @@ require 'pragma/operation/macro/classes'
 require 'pragma/operation/macro/decorator'
 require 'pragma/operation/macro/pagination'
 require 'pragma/operation/macro/policy'
+require 'pragma/operation/macro/model'
 
 require 'pragma/operation/index'
 require 'pragma/operation/show'
