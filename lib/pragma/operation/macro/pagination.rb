@@ -26,7 +26,7 @@ module Pragma
               per_page: per_page(options, params: params)
             )
 
-            options['result.headers'] = (options['result.headers'] || {}).merge(
+            options['result.response'].headers = options['result.response'].headers.merge(
               'Page' => model.current_page.to_i,
               'Per-Page' => model.per_page,
               'Total' => model.total_entries

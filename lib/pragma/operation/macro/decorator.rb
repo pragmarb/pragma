@@ -16,7 +16,7 @@ module Pragma
               options['model']
             end
 
-            options['result.response']&.entity = options['result.decorator']
+            options['result.response'].entity = options['result.decorator']
           end
         end
       end
