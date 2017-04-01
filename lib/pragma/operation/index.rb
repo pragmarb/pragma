@@ -10,7 +10,16 @@ module Pragma
 
       def call
         context.records = authorize_collection(find_records)
-        context.records = context.records.paginate(page: page, per_page: per_page)
+
+        begin
+          context.records = context.records.paginate(page: page, per_page: per_page)
+        rescue RangeError => e
+          respond_with!(
+            status: :bad_request,
+            error_type: :invalid_page,
+            error_message: e.message
+          )
+        end
 
         respond_with(
           resource: decorate(context.records),
