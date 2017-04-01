@@ -7,6 +7,8 @@ RSpec.describe Pragma::Operation::Update do
     )
   end
 
+  let(:operation_klass) { API::V1::Post::Operation::Update }
+
   let(:params) do
     {
       id: 1,
@@ -14,98 +16,71 @@ RSpec.describe Pragma::Operation::Update do
     }
   end
 
-  let(:contract_klass) do
-    Class.new(Pragma::Contract::Base) do
-      property :author_id
-      property :title
+  before do
+    module API
+      module V1
+        module Post
+          module Operation
+            class Update < Pragma::Operation::Update
+              def find_record
+                OpenStruct.new(
+                  title: 'Example Post 1',
+                  author_id: 1
+                )
+              end
+            end
+          end
 
-      validation do
-        required(:title).filled
+          module Contract
+            class Update < Pragma::Contract::Base
+              property :author_id
+              property :title
+
+              validation do
+                required(:title).filled
+              end
+            end
+          end
+
+          class Policy < Pragma::Policy::Base
+            def update?
+              resource.author_id == user.id
+            end
+          end
+        end
       end
     end
   end
 
-  let(:operation_klass) do
-    Class.new(described_class) do
-      def find_record
-        OpenStruct.new(
-          title: 'Example Post 1',
-          author_id: 1
-        )
-      end
-    end.tap do |klass|
-      klass.send(:contract, contract_klass)
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Update')
-    end
-  end
+  context 'when the user is authorized' do
+    let(:current_user) { OpenStruct.new(id: 1) }
 
-  let(:current_user) { nil }
-
-  it 'updates the record' do
-    expect(context.resource.to_h).to eq(
-      title: 'New Title',
-      author_id: 1
-    )
-  end
-
-  context 'when invalid parameters are supplied' do
-    let(:params) do
-      {
-        author_id: 1,
-        title: ''
-      }
-    end
-
-    it 'responds with 422 Unprocessable Entity' do
-      expect(context.status).to eq(:unprocessable_entity)
-    end
-  end
-
-  context 'when a decorator is defined' do
-    let(:decorator_klass) do
-      Class.new(Pragma::Decorator::Base) do
-        property :title
-      end
-    end
-
-    before do
-      operation_klass.send(:decorator, decorator_klass)
-    end
-
-    it 'decorates the updated resource' do
+    it 'updates the record' do
       expect(context.resource.to_hash).to eq(
         'title' => 'New Title'
       )
     end
+
+    context 'when invalid parameters are supplied' do
+      let(:params) do
+        {
+          author_id: 1,
+          title: ''
+        }
+      end
+
+      it 'responds with 422 Unprocessable Entity' do
+        expect(context.status).to eq(:unprocessable_entity)
+      end
+    end
+
   end
 
-  context 'when a policy is defined' do
-    let(:policy_klass) do
-      Class.new(Pragma::Policy::Base) do
-        def update?
-          resource.author_id == user.id
-        end
-      end
-    end
+  context 'when the user is not authorized' do
+    let(:current_user) { OpenStruct.new(id: 2) }
 
-    before do
-      operation_klass.send(:policy, policy_klass)
-    end
-
-    context 'when the user is authorized' do
-      let(:current_user) { OpenStruct.new(id: 1) }
-
-      it 'permits the update' do
-        expect(context.resource.to_h).to eq(title: 'New Title', author_id: 1)
-      end
-    end
-
-    context 'when the user is not authorized' do
-      let(:current_user) { OpenStruct.new(id: 2) }
-
-      it 'does not permit the update' do
-        expect(context.status).to eq(:forbidden)
-      end
+    it 'does not permit the update' do
+      expect(context.status).to eq(:forbidden)
     end
   end
 end

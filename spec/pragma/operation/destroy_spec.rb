@@ -7,52 +7,46 @@ RSpec.describe Pragma::Operation::Destroy do
     )
   end
 
-  let(:operation_klass) do
-    Class.new(described_class) do
-      def find_record
-        OpenStruct.new(
-          title: 'Example Post 1',
-          author_id: 1
-        )
-      end
-    end.tap do |klass|
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Destroy')
-    end
-  end
+  let(:operation_klass) { API::V1::Post::Operation::Destroy }
 
-  let(:current_user) { nil }
+  before do
+    module API
+      module V1
+        module Post
+          module Operation
+            class Destroy < Pragma::Operation::Destroy
+              def find_record
+                OpenStruct.new(
+                  title: 'Example Post 1',
+                  author_id: 1
+                )
+              end
+            end
+          end
 
-  it 'responds with 204 No Content' do
-    expect(context.status).to eq(:no_content)
-  end
-
-  context 'when a policy is defined' do
-    let(:policy_klass) do
-      Class.new(Pragma::Policy::Base) do
-        def destroy?
-          resource.author_id == user.id
+          class Policy < Pragma::Policy::Base
+            def destroy?
+              resource.author_id == user.id
+            end
+          end
         end
       end
     end
+  end
 
-    before do
-      operation_klass.send(:policy, policy_klass)
+  context 'when the user is authorized' do
+    let(:current_user) { OpenStruct.new(id: 1) }
+
+    it 'responds with 204 No Content' do
+      expect(context.status).to eq(:no_content)
     end
+  end
 
-    context 'when the user is authorized' do
-      let(:current_user) { OpenStruct.new(id: 1) }
+  context 'when the user is not authorized' do
+    let(:current_user) { OpenStruct.new(id: 2) }
 
-      it 'permits the destruction' do
-        expect(context.status).to eq(:no_content)
-      end
-    end
-
-    context 'when the user is not authorized' do
-      let(:current_user) { OpenStruct.new(id: 2) }
-
-      it 'does not permit the destruction' do
-        expect(context.status).to eq(:forbidden)
-      end
+    it 'does not permit the destruction' do
+      expect(context.status).to eq(:forbidden)
     end
   end
 end
