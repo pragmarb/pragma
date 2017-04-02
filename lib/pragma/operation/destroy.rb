@@ -23,13 +23,13 @@ module Pragma
         options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
       end
 
-      def destroy!(options)
-        options['model'].destroy
+      def destroy!(options, model:, **)
+        model.destroy
       end
 
-      def handle_invalid_model!(options)
+      def handle_invalid_model!(options, model:, **)
         options['result.response'] = Response::UnprocessableEntity.new(
-          errors: options['model'].errors
+          errors: model.errors
         ).decorate_with(Decorator::Error)
       end
 

@@ -22,13 +22,13 @@ module Pragma
         options['model'] = options['policy.default.scope.class'].new(current_user, model).resolve
       end
 
-      def respond!(options)
+      def respond!(options, model:, **)
         options['result.response'] = Response::Ok.new(
           entity: options['result.decorator.default'],
           headers: {
-            'Page' => options['model'].current_page.to_i,
-            'Per-Page' => options['model'].per_page,
-            'Total' => options['model'].total_entries
+            'Page' => model.current_page.to_i,
+            'Per-Page' => model.per_page,
+            'Total' => model.total_entries
           }
         )
       end
