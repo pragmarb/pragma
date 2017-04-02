@@ -4,7 +4,7 @@ module Pragma
     module Macro
       def self.Policy
         step = ->(input, options) { Policy.for(input, options) }
-        [step, name: 'authorize']
+        [step, name: 'authorize', fail_fast: true]
       end
 
       module Policy

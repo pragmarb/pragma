@@ -61,6 +61,10 @@ RSpec.describe Pragma::Operation::Show do
     it 'responds with 404 Not Found' do
       expect(result['result.response'].status).to eq(404)
     end
+
+    it 'decorates the entity' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
   end
 
   context 'when the user is not authorized' do
@@ -68,6 +72,10 @@ RSpec.describe Pragma::Operation::Show do
 
     it 'responds with 403 Forbidden' do
       expect(result['result.response'].status).to eq(403)
+    end
+
+    it 'decorates the entity' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
 end
