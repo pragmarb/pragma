@@ -19,7 +19,7 @@ module Pragma
       end
 
       def scope!(options, current_user:, model:, **)
-        options['model'] = options['policy.default.class']::Scope.new(current_user, model).resolve
+        options['model'] = options['policy.default.scope.class'].new(current_user, model).resolve
       end
 
       def respond!(options)

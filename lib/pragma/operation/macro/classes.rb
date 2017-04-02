@@ -14,6 +14,7 @@ module Pragma
             {
               'model.class' => expected_model_class(input, options),
               'policy.default.class' => expected_policy_class(input, options),
+              'policy.default.scope.class' => expected_policy_scope_class(input, options),
               'decorator.default.class' => expected_decorator_class(input, options),
               'contract.default.class' => expected_contract_class(input, options)
             }.each_pair do |key, value|
@@ -42,6 +43,10 @@ module Pragma
               resource_namespace(input, options),
               'Policy'
             ].join('::')
+          end
+
+          def expected_policy_scope_class(input, options)
+            "#{expected_policy_class(input, options)}::Scope"
           end
 
           def expected_decorator_class(input, options)

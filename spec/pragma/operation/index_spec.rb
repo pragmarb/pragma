@@ -7,7 +7,7 @@ RSpec.describe Pragma::Operation::Index do
       'current_user' => current_user,
       'model.class' => model_klass,
       'decorator.default.class' => decorator_klass,
-      'policy.default.class' => policy_klass
+      'policy.default.scope.class' => policy_scope_klass
     )
   end
 
@@ -29,16 +29,11 @@ RSpec.describe Pragma::Operation::Index do
   end
 
   let(:decorator_klass) { Class.new(Pragma::Decorator::Base) }
-  let(:policy_klass) do
-    Class.new(Pragma::Policy::Base) do
-      def self.foo
-        'bar'
-      end
 
-      class Scope < Pragma::Policy::Base::Scope
-        def resolve
-          scope.select { |i| i.user_id == user.id }
-        end
+  let(:policy_scope_klass) do
+    Class.new(Pragma::Policy::Base::Scope) do
+      def resolve
+        scope.select { |i| i.user_id == user.id }
       end
     end
   end
@@ -48,7 +43,7 @@ RSpec.describe Pragma::Operation::Index do
   end
 
   it 'filters the records with the policy' do
-    expect(result['result.response'].entity.count).to eq(1)
+    expect(result['result.response'].entity.represented.count).to eq(1)
   end
 
   it 'adds pagination headers' do
