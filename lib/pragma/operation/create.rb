@@ -27,19 +27,19 @@ module Pragma
       end
 
       def handle_unauthorized!(options)
-        options['result.response'] = Response::Forbidden.new
+        options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
       end
 
       def handle_invalid_contract!(options)
         options['result.response'] = Response::UnprocessableEntity.new(
           errors: options['contract.default'].errors
-        )
+        ).decorate_with(Decorator::Error)
       end
 
       def handle_invalid_model!(options)
         options['result.response'] = Response::UnprocessableEntity.new(
           errors: options['model'].errors
-        )
+        ).decorate_with(Decorator::Error)
       end
 
       def respond!(options)

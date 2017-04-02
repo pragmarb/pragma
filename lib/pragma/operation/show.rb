@@ -15,11 +15,11 @@ module Pragma
       step :respond!
 
       def handle_model_not_found!(options)
-        options['result.response'] = Response::NotFound.new
+        options['result.response'] = Response::NotFound.new.decorate_with(Decorator::Error)
       end
 
       def handle_unauthorized!(options)
-        options['result.response'] = Response::Forbidden.new
+        options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
       end
 
       def respond!(options)
