@@ -6,7 +6,7 @@ RSpec.describe Pragma::Operation::Destroy do
       params,
       'current_user' => current_user,
       'model.class' => model_klass,
-      'policy.default.class' => policy_klass,
+      'policy.default.class' => policy_klass
     )
   end
 
