@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'trailblazer/operation/contract'
-require 'trailblazer/operation/validate'
-require 'trailblazer/operation/persist'
-
 module Pragma
   module Operation
     # Creates a new record and responds with the decorated record.
@@ -14,10 +10,10 @@ module Pragma
       step :build!
       step Macro::Policy()
       failure :handle_unauthorized!, fail_fast: true
-      step Trailblazer::Operation::Contract::Build()
-      step Trailblazer::Operation::Contract::Validate()
+      step Macro::Contract::Build()
+      step Macro::Contract::Validate()
       failure :handle_invalid_contract!, fail_fast: true
-      step Trailblazer::Operation::Contract::Persist()
+      step Macro::Contract::Persist()
       failure :handle_invalid_model!, fail_fast: true
       step Macro::Decorator()
       step :respond!
