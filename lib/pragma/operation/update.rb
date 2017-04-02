@@ -7,7 +7,7 @@ module Pragma
     # @author Alessandro Desantis
     class Update < Pragma::Operation::Base
       step Macro::Classes()
-      step Macro::Model()
+      step Macro::Model(:find_by)
       failure :handle_model_not_found!, fail_fast: true
       step Macro::Policy()
       failure :handle_unauthorized!, fail_fast: true

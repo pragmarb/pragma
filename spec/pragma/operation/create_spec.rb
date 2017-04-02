@@ -13,7 +13,7 @@ RSpec.describe Pragma::Operation::Create do
   end
 
   let(:params) do
-    { 'title' => 'My New Post' }
+    { title: 'My New Post' }
   end
 
   let(:current_user) { OpenStruct.new(id: 1) }
@@ -58,7 +58,7 @@ RSpec.describe Pragma::Operation::Create do
 
   context 'when validation fails' do
     let(:params) do
-      { 'title' => '' }
+      { title: '' }
     end
 
     it 'responds with 422 Unprocessable Entity' do

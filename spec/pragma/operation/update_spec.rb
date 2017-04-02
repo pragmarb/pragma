@@ -14,8 +14,8 @@ RSpec.describe Pragma::Operation::Update do
 
   let(:params) do
     {
-      'id' => 1,
-      'title' => 'My New Post'
+      id: 1,
+      title: 'My New Post'
     }
   end
 
@@ -61,7 +61,7 @@ RSpec.describe Pragma::Operation::Update do
 
   context 'when the model cannot be found' do
     let(:params) do
-      { 'id' => 2 }
+      { id: 2 }
     end
 
     it 'responds with 404 Not Found' do
@@ -75,7 +75,7 @@ RSpec.describe Pragma::Operation::Update do
 
   context 'when validation fails' do
     let(:params) do
-      { 'id' => 1, 'title' => '' }
+      { id: 1, title: '' }
     end
 
     it 'responds with 422 Unprocessable Entity' do

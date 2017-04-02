@@ -7,7 +7,7 @@ module Pragma
     # @author Alessandro Desantis
     class Create < Pragma::Operation::Base
       step Macro::Classes()
-      step :build!
+      step Macro::Model()
       step Macro::Policy()
       failure :handle_unauthorized!, fail_fast: true
       step Macro::Contract::Build()
@@ -17,10 +17,6 @@ module Pragma
       failure :handle_invalid_model!, fail_fast: true
       step Macro::Decorator()
       step :respond!
-
-      def build!(options)
-        options['model'] = options['model.class'].new
-      end
 
       def handle_unauthorized!(options)
         options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)

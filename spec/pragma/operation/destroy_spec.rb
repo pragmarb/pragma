@@ -11,7 +11,7 @@ RSpec.describe Pragma::Operation::Destroy do
   end
 
   let(:params) do
-    { 'id' => 1 }
+    { id: 1 }
   end
 
   let(:current_user) { OpenStruct.new(id: 1) }
@@ -38,7 +38,7 @@ RSpec.describe Pragma::Operation::Destroy do
 
   context 'when the model cannot be found' do
     let(:params) do
-      { 'id' => 2 }
+      { id: 2 }
     end
 
     it 'responds with 404 Not Found' do
