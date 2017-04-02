@@ -6,8 +6,8 @@ module Pragma
     # @author Alessandro Desantis
     class Show < Pragma::Operation::Base
       step Macro::Classes()
-      step Macro::Model()
-      step Macro::Policy()
+      step Macro::Model(), fail_fast: true
+      step Macro::Policy(), fail_fast: true
       step Macro::Decorator()
     end
   end

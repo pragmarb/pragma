@@ -17,7 +17,9 @@ module Pragma
               resource: options['model']
             )
 
-            options['policy.default'].send("#{input.class.operation_name}?").tap do |result|
+            options['result.policy.default'] = options['policy.default'].send(
+              "#{input.class.operation_name}?"
+            ).tap do |result|
               options['result.response'] = Response::Forbidden.new unless result
             end
           end

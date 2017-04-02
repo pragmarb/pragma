@@ -14,9 +14,9 @@ module Pragma
       step Macro::Policy(), fail_fast: true
       step Trailblazer::Operation::Contract::Build()
       step Trailblazer::Operation::Contract::Validate()
-      failure :handle_invalid_contract!
+      failure :handle_invalid_contract!, fail_fast: true
       step Trailblazer::Operation::Contract::Persist()
-      failure :handle_invalid_model!
+      failure :handle_invalid_model!, fail_fast: true
       step :respond!
       step Macro::Decorator()
 
@@ -25,13 +25,15 @@ module Pragma
       end
 
       def handle_invalid_contract!(options)
-        options['result.response'].status = 422
-        options['result.response'] = Response::UnprocessableEntity.new(errors: options['contract.default'].errors)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['contract.default'].errors
+        )
       end
 
       def handle_invalid_model!(options)
-        options['result.response'].status = 422
-        options['result.response'] = Response::UnprocessableEntity.new(errors: options['model'].errors)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['model'].errors
+        )
       end
 
       def respond!(options)
