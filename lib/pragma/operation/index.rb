@@ -17,10 +17,7 @@ module Pragma
       end
 
       def scope!(options, current_user:, model:, **)
-        options['model'] = options['policy.default.class'].accessible_by(
-          user: current_user,
-          scope: model
-        )
+        options['model'] = options['policy.default.class']::Scope.new(current_user, model).resolve
       end
     end
   end

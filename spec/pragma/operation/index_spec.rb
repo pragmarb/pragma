@@ -27,18 +27,17 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  let(:decorator_klass) do
-    Class.new do
-      def self.represent(object)
-        object
-      end
-    end
-  end
-
+  let(:decorator_klass) { Class.new(Pragma::Decorator::Base) }
   let(:policy_klass) do
-    Class.new do
-      def self.accessible_by(user:, scope:)
-        scope.select { |o| o.user_id == user.id }
+    Class.new(Pragma::Policy::Base) do
+      def self.foo
+        'bar'
+      end
+
+      class Scope < Pragma::Policy::Base::Scope
+        def resolve
+          scope.select { |i| i.user_id == user.id }
+        end
       end
     end
   end

@@ -11,7 +11,8 @@ module Pragma
     class Create < Pragma::Operation::Base
       step Macro::Classes()
       step :build!
-      step Macro::Policy(), fail_fast: true
+      step Macro::Policy()
+      failure :handle_unauthorized!, fail_fast: true
       step Trailblazer::Operation::Contract::Build()
       step Trailblazer::Operation::Contract::Validate()
       failure :handle_invalid_contract!, fail_fast: true
@@ -22,6 +23,10 @@ module Pragma
 
       def build!(options)
         options['model'] = options['model.class'].new
+      end
+
+      def handle_unauthorized!(options)
+        options['result.response'] = Response::Forbidden.new
       end
 
       def handle_invalid_contract!(options)

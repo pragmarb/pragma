@@ -25,22 +25,13 @@ RSpec.describe Pragma::Operation::Show do
   end
 
   let(:decorator_klass) do
-    Class.new do
-      def self.represent(object)
-        object
-      end
-    end
+    Class.new(Pragma::Decorator::Base)
   end
 
   let(:policy_klass) do
-    Class.new do
-      def initialize(user:, resource:)
-        @user = user
-        @resource = resource
-      end
-
+    Class.new(Pragma::Policy::Base) do
       def show?
-        @resource.user_id == @user.id
+        resource.user_id == user.id
       end
     end
   end
@@ -49,8 +40,8 @@ RSpec.describe Pragma::Operation::Show do
     expect(result['result.response'].status).to eq(200)
   end
 
-  it 'responds with the decorated resource' do
-    expect(result['result.response'].entity).to be_instance_of(OpenStruct)
+  it 'decorates the response entity' do
+    expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Base)
   end
 
   context 'when the model cannot be found' do

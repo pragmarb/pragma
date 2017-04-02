@@ -4,19 +4,17 @@ module Pragma
     module Macro
       def self.Decorator
         step = ->(input, options) { Decorator.for(input, options) }
-        [step, name: 'decorate']
+        [step, name: 'decorator']
       end
 
       module Decorator
         class << self
           def for(_input, options)
-            options['result.decorator'] = if options['decorator.default.class']
-              options['decorator.default.class'].represent(options['model'])
-            else
+            options['result.decorator.default'] = options['decorator.default.class'].represent(
               options['model']
-            end
+            )
 
-            options['result.response'].entity = options['result.decorator']
+            options['result.response'].entity = options['result.decorator.default']
           end
         end
       end

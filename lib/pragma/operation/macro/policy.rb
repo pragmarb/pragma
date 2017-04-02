@@ -1,28 +1,24 @@
 # frozen_string_literal: true
+require 'trailblazer/operation/pundit'
+
 module Pragma
   module Operation
     module Macro
-      def self.Policy
-        step = ->(input, options) { Policy.for(input, options) }
-        [step, name: 'authorize', fail_fast: true]
+      def self.Policy(name: :default)
+        step = ->(input, options) { Policy.for(input, name, options) }
+        [step, name: "policy.#{name}"]
       end
 
       module Policy
-        class << self
-          def for(input, options)
-            return true unless options['policy.default.class']
+        def self.for(input, name, options)
+          policy = options["policy.#{name}.class"].new(options['current_user'], options['model'])
 
-            options['policy.default'] = options['policy.default.class'].new(
-              user: options['current_user'],
-              resource: options['model']
-            )
+          options["result.policy.#{name}"] = Trailblazer::Operation::Result.new(
+            policy.send("#{input.class.operation_name}?"),
+            'policy' => policy
+          )
 
-            options['result.policy.default'] = options['policy.default'].send(
-              "#{input.class.operation_name}?"
-            ).tap do |result|
-              options['result.response'] = Response::Forbidden.new unless result
-            end
-          end
+          options["result.policy.#{name}"].success?
         end
       end
     end
