@@ -3,15 +3,15 @@
 module Pragma
   module Operation
     module Macro
-      def self.Decorator
-        step = ->(input, options) { Decorator.for(input, options) }
-        [step, name: 'decorator']
+      def self.Decorator(name: :default)
+        step = ->(input, options) { Decorator.for(input, name, options) }
+        [step, name: "decorator.#{name}"]
       end
 
       module Decorator
         class << self
-          def for(_input, options)
-            options['result.decorator.default'] = options['decorator.default.class'].represent(
+          def for(_input, name, options)
+            options["result.decorator.#{name}"] = options["decorator.#{name}.class"].represent(
               options['model']
             )
           end
