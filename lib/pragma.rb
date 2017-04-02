@@ -20,6 +20,8 @@ require 'pragma/operation/macro/model'
 require 'pragma/operation/response/not_found'
 require 'pragma/operation/response/forbidden'
 require 'pragma/operation/response/unprocessable_entity'
+require 'pragma/operation/response/created'
+require 'pragma/operation/response/ok'
 
 require 'pragma/operation/index'
 require 'pragma/operation/show'

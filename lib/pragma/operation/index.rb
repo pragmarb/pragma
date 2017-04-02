@@ -11,6 +11,7 @@ module Pragma
       step :scope!
       step Macro::Pagination()
       step Macro::Decorator()
+      step :respond!
 
       def retrieve!(options)
         options['model'] = options['model.class'].all
@@ -18,6 +19,17 @@ module Pragma
 
       def scope!(options, current_user:, model:, **)
         options['model'] = options['policy.default.class']::Scope.new(current_user, model).resolve
+      end
+
+      def respond!(options)
+        options['result.response'] = Response::Ok.new(
+          entity: options['result.decorator.default'],
+          headers: {
+            'Page' => options['model'].current_page.to_i,
+            'Per-Page' => options['model'].per_page,
+            'Total' => options['model'].total_entries
+          }
+        )
       end
     end
   end

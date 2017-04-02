@@ -11,6 +11,7 @@ module Pragma
       step Macro::Policy()
       failure :handle_unauthorized!, fail_fast: true
       step Macro::Decorator()
+      step :respond!
 
       def handle_model_not_found!(options)
         options['result.response'] = Response::NotFound.new
@@ -18,6 +19,10 @@ module Pragma
 
       def handle_unauthorized!(options)
         options['result.response'] = Response::Forbidden.new
+      end
+
+      def respond!(options)
+        options['result.response'] = Response::Ok.new(entity: options['result.decorator.default'])
       end
     end
   end

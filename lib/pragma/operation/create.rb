@@ -18,8 +18,8 @@ module Pragma
       failure :handle_invalid_contract!, fail_fast: true
       step Trailblazer::Operation::Contract::Persist()
       failure :handle_invalid_model!, fail_fast: true
-      step :respond!
       step Macro::Decorator()
+      step :respond!
 
       def build!(options)
         options['model'] = options['model.class'].new
@@ -42,7 +42,7 @@ module Pragma
       end
 
       def respond!(options)
-        options['result.response'].status = 201
+        options['result.response'] = Response::Created.new(entity: options['result.decorator.default'])
       end
     end
   end

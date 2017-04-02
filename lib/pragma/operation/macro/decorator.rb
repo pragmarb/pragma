@@ -13,8 +13,6 @@ module Pragma
             options['result.decorator.default'] = options['decorator.default.class'].represent(
               options['model']
             )
-
-            options['result.response'].entity = options['result.decorator.default']
           end
         end
       end
