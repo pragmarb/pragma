@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'trailblazer/operation/contract'
 require 'trailblazer/operation/validate'
 require 'trailblazer/operation/persist'
@@ -42,7 +43,9 @@ module Pragma
       end
 
       def respond!(options)
-        options['result.response'] = Response::Created.new(entity: options['result.decorator.default'])
+        options['result.response'] = Response::Created.new(
+          entity: options['result.decorator.default']
+        )
       end
     end
   end

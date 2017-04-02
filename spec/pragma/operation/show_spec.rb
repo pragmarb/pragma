@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Pragma::Operation::Show do
   subject(:result) do
     described_class.call(

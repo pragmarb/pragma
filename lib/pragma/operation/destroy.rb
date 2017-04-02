@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Pragma
   module Operation
     # Finds the requested record, authorizes it and decorates it.

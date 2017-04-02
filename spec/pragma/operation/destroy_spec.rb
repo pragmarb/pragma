@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Pragma::Operation::Destroy do
   subject(:context) do
     operation_klass.call(
