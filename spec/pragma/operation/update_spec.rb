@@ -1,112 +1,101 @@
 # frozen_string_literal: true
 
 RSpec.describe Pragma::Operation::Update do
-  subject(:context) do
-    operation_klass.call(
-      current_user: current_user,
-      params: params
+  subject(:result) do
+    described_class.call(
+      params,
+      'current_user' => current_user,
+      'model.class' => model_klass,
+      'decorator.default.class' => decorator_klass,
+      'policy.default.class' => policy_klass,
+      'contract.default.class' => contract_klass
     )
   end
 
   let(:params) do
     {
-      id: 1,
-      title: 'New Title'
+      'id' => 1,
+      'title' => 'My New Post'
     }
+  end
+
+  let(:current_user) { OpenStruct.new(id: 1) }
+
+  let(:model_klass) do
+    Class.new(OpenStruct) do
+      def self.find_by(conditions)
+        OpenStruct.new(user_id: 1, save: true) if conditions[:id] == 1
+      end
+    end
+  end
+
+  let(:decorator_klass) do
+    Class.new(Pragma::Decorator::Base)
+  end
+
+  let(:policy_klass) do
+    Class.new(Pragma::Policy::Base) do
+      def update?
+        user.id == 1
+      end
+    end
   end
 
   let(:contract_klass) do
     Class.new(Pragma::Contract::Base) do
-      property :author_id
       property :title
 
       validation do
-        required(:title).filled
+        required(:title).filled(:str?)
       end
     end
   end
 
-  let(:operation_klass) do
-    Class.new(described_class) do
-      def find_record
-        OpenStruct.new(
-          title: 'Example Post 1',
-          author_id: 1
-        )
-      end
-    end.tap do |klass|
-      klass.send(:contract, contract_klass)
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Update')
-    end
+  it 'responds with 200 OK' do
+    expect(result['result.response'].status).to eq(200)
   end
 
-  let(:current_user) { nil }
-
-  it 'updates the record' do
-    expect(context.resource.to_h).to eq(
-      title: 'New Title',
-      author_id: 1
-    )
+  it 'decorates the response entity' do
+    expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Base)
   end
 
-  context 'when invalid parameters are supplied' do
+  context 'when the model cannot be found' do
     let(:params) do
-      {
-        author_id: 1,
-        title: ''
-      }
+      { 'id' => 2 }
+    end
+
+    it 'responds with 404 Not Found' do
+      expect(result['result.response'].status).to eq(404)
+    end
+
+    it 'decorates the entity' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'when validation fails' do
+    let(:params) do
+      { 'id' => 1, 'title' => '' }
     end
 
     it 'responds with 422 Unprocessable Entity' do
-      expect(context.status).to eq(:unprocessable_entity)
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
 
-  context 'when a decorator is defined' do
-    let(:decorator_klass) do
-      Class.new(Pragma::Decorator::Base) do
-        property :title
-      end
+  context 'when the user is not authorized' do
+    let(:current_user) { OpenStruct.new(id: 2) }
+
+    it 'responds with 403 Forbidden' do
+      expect(result['result.response'].status).to eq(403)
     end
 
-    before do
-      operation_klass.send(:decorator, decorator_klass)
-    end
-
-    it 'decorates the updated resource' do
-      expect(context.resource.to_hash).to eq(
-        'title' => 'New Title'
-      )
-    end
-  end
-
-  context 'when a policy is defined' do
-    let(:policy_klass) do
-      Class.new(Pragma::Policy::Base) do
-        def update?
-          resource.author_id == user.id
-        end
-      end
-    end
-
-    before do
-      operation_klass.send(:policy, policy_klass)
-    end
-
-    context 'when the user is authorized' do
-      let(:current_user) { OpenStruct.new(id: 1) }
-
-      it 'permits the update' do
-        expect(context.resource.to_h).to eq(title: 'New Title', author_id: 1)
-      end
-    end
-
-    context 'when the user is not authorized' do
-      let(:current_user) { OpenStruct.new(id: 2) }
-
-      it 'does not permit the update' do
-        expect(context.status).to eq(:forbidden)
-      end
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
 end

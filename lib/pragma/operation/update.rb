@@ -1,34 +1,50 @@
 # frozen_string_literal: true
 
+require 'trailblazer/operation/contract'
+require 'trailblazer/operation/validate'
+require 'trailblazer/operation/persist'
+
 module Pragma
   module Operation
-    # Finds the requested record, authorizes it, updates it accordingly to the parameters and
-    # responds with the decorated record.
+    # Finds an existing record, updates it and responds with the decorated record.
     #
     # @author Alessandro Desantis
     class Update < Pragma::Operation::Base
-      # include Pragma::Operation::Defaults
+      step Macro::Classes()
+      step Macro::Model()
+      failure :handle_model_not_found!, fail_fast: true
+      step Macro::Policy()
+      failure :handle_unauthorized!, fail_fast: true
+      step Trailblazer::Operation::Contract::Build()
+      step Trailblazer::Operation::Contract::Validate()
+      failure :handle_invalid_contract!, fail_fast: true
+      step Trailblazer::Operation::Contract::Persist()
+      failure :handle_invalid_model!, fail_fast: true
+      step Macro::Decorator()
+      step :respond!
 
-      def call
-        context.record = find_record
-        context.contract = build_contract(context.record)
-
-        validate! context.contract
-        authorize! context.contract
-
-        context.contract.save
-        context.record.save!
-
-        respond_with resource: decorate(context.record)
+      def handle_model_not_found!(options)
+        options['result.response'] = Response::NotFound.new.decorate_with(Decorator::Error)
       end
 
-      protected
+      def handle_unauthorized!(options)
+        options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
+      end
 
-      # Finds the requested record.
-      #
-      # @return [Object]
-      def find_record
-        self.class.model_klass.find(params[:id])
+      def handle_invalid_contract!(options)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['contract.default'].errors
+        ).decorate_with(Decorator::Error)
+      end
+
+      def handle_invalid_model!(options)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['model'].errors
+        ).decorate_with(Decorator::Error)
+      end
+
+      def respond!(options)
+        options['result.response'] = Response::Ok.new(entity: options['result.decorator.default'])
       end
     end
   end
