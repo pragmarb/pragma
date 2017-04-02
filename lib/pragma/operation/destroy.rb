@@ -2,28 +2,39 @@
 
 module Pragma
   module Operation
-    # Finds the requested record, authorizes it and decorates it.
+    # Finds an existing record, destroys it and responds 204 No Content.
     #
     # @author Alessandro Desantis
     class Destroy < Pragma::Operation::Base
-      # include Pragma::Operation::Defaults
+      step Macro::Classes()
+      step Macro::Model()
+      failure :handle_model_not_found!, fail_fast: true
+      step Macro::Policy()
+      failure :handle_unauthorized!, fail_fast: true
+      step :destroy!
+      failure :handle_invalid_model!, fail_fast: true
+      step :respond!
 
-      def call
-        context.record = find_record
-        authorize! context.record
-
-        context.record.destroy!
-
-        head :no_content
+      def handle_model_not_found!(options)
+        options['result.response'] = Response::NotFound.new.decorate_with(Decorator::Error)
       end
 
-      protected
+      def handle_unauthorized!(options)
+        options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
+      end
 
-      # Finds the requested record.
-      #
-      # @return [Object]
-      def find_record
-        self.class.model_klass.find(params[:id])
+      def destroy!(options)
+        options['model'].destroy
+      end
+
+      def handle_invalid_model!(options)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['model'].errors
+        ).decorate_with(Decorator::Error)
+      end
+
+      def respond!(options)
+        options['result.response'] = Response::NoContent.new
       end
     end
   end

@@ -1,59 +1,64 @@
 # frozen_string_literal: true
 
 RSpec.describe Pragma::Operation::Destroy do
-  subject(:context) do
-    operation_klass.call(
-      current_user: current_user,
-      params: { id: 1 }
+  subject(:result) do
+    described_class.call(
+      params,
+      'current_user' => current_user,
+      'model.class' => model_klass,
+      'policy.default.class' => policy_klass,
     )
   end
 
-  let(:operation_klass) do
-    Class.new(described_class) do
-      def find_record
-        OpenStruct.new(
-          title: 'Example Post 1',
-          author_id: 1
-        )
+  let(:params) do
+    { 'id' => 1 }
+  end
+
+  let(:current_user) { OpenStruct.new(id: 1) }
+
+  let(:model_klass) do
+    Class.new(OpenStruct) do
+      def self.find_by(conditions)
+        OpenStruct.new(user_id: 1, destroy: true) if conditions[:id] == 1
       end
-    end.tap do |klass|
-      allow(klass).to receive(:name).and_return('API::V1::Post::Operation::Destroy')
     end
   end
 
-  let(:current_user) { nil }
+  let(:policy_klass) do
+    Class.new(Pragma::Policy::Base) do
+      def destroy?
+        user.id == 1
+      end
+    end
+  end
 
   it 'responds with 204 No Content' do
-    expect(context.status).to eq(:no_content)
+    expect(result['result.response'].status).to eq(204)
   end
 
-  context 'when a policy is defined' do
-    let(:policy_klass) do
-      Class.new(Pragma::Policy::Base) do
-        def destroy?
-          resource.author_id == user.id
-        end
-      end
+  context 'when the model cannot be found' do
+    let(:params) do
+      { 'id' => 2 }
     end
 
-    before do
-      operation_klass.send(:policy, policy_klass)
+    it 'responds with 404 Not Found' do
+      expect(result['result.response'].status).to eq(404)
     end
 
-    context 'when the user is authorized' do
-      let(:current_user) { OpenStruct.new(id: 1) }
+    it 'decorates the entity' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
 
-      it 'permits the destruction' do
-        expect(context.status).to eq(:no_content)
-      end
+  context 'when the user is not authorized' do
+    let(:current_user) { OpenStruct.new(id: 2) }
+
+    it 'responds with 403 Forbidden' do
+      expect(result['result.response'].status).to eq(403)
     end
 
-    context 'when the user is not authorized' do
-      let(:current_user) { OpenStruct.new(id: 2) }
-
-      it 'does not permit the destruction' do
-        expect(context.status).to eq(:forbidden)
-      end
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
 end
