@@ -19,6 +19,22 @@ module Pragma
               'contract.default.class' => expected_contract_class(input, options)
             }.each_pair do |key, value|
               next if options[key]
+
+              # FIXME: This entire block is required to trigger Rails autoloading. Ugh.
+              begin
+                Object.const_get(value)
+              rescue NameError => e
+                # We check the error message to avoid silently ignoring other NameErrors
+                # thrown while initializing the constant.
+                if e.message.start_with?('uninitialized constant')
+                  # Required instead of a simple equality check because loading
+                  # API::V1::Post::Contract::Index might throw "uninitialized constant
+                  # API::V1::Post::Contract" if the resource has no contracts at all.
+                  error_constant = e.message.split.last
+                  raise e unless value.start_with?(error_constant)
+                end
+              end
+
               options[key] = if Object.const_defined?(value)
                 Object.const_get(value)
               end
