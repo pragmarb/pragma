@@ -12,7 +12,7 @@ module Pragma
         class << self
           def for(_input, name, options)
             options["result.decorator.#{name}"] = options["decorator.#{name}.class"].represent(
-              options['model']
+              options['model'].respond_to?(:to_a) ? options['model'].to_a : options['model']
             )
           end
         end
