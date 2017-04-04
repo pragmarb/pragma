@@ -71,5 +71,19 @@ RSpec.describe Pragma::Operation::Index do
         a_hash_including('id' => 3)
       ])
     end
+    end
+
+  context 'when validation fails' do
+    let(:params) do
+      { page: 0 }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
   end
 end
