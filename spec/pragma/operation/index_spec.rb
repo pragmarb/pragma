@@ -11,9 +11,7 @@ RSpec.describe Pragma::Operation::Index do
     )
   end
 
-  let(:params) do
-    { 'id' => 1 }
-  end
+  let(:params) { {} }
 
   let(:current_user) { OpenStruct.new(id: 1) }
 
@@ -21,14 +19,20 @@ RSpec.describe Pragma::Operation::Index do
     Class.new do
       def self.all
         [
-          OpenStruct.new(user_id: 1),
-          OpenStruct.new(user_id: 2)
+          OpenStruct.new(id: 1, user_id: 1),
+          OpenStruct.new(id: 2, user_id: 2),
+          OpenStruct.new(id: 3, user_id: 1),
         ]
       end
     end
   end
 
-  let(:decorator_klass) { Class.new(Pragma::Decorator::Base) }
+  let(:decorator_klass) do
+    Class.new(Pragma::Decorator::Base) do
+      property :id
+      property :user_id
+    end
+  end
 
   let(:policy_scope_klass) do
     Class.new(Pragma::Policy::Base::Scope) do
@@ -43,14 +47,29 @@ RSpec.describe Pragma::Operation::Index do
   end
 
   it 'filters the records with the policy' do
-    expect(result['result.response'].entity.represented.count).to eq(1)
+    expect(result['result.response'].entity.represented.count).to eq(2)
   end
 
   it 'adds pagination headers' do
     expect(result['result.response'].headers).to match(a_hash_including(
       'Page' => 1,
       'Per-Page' => 30,
-      'Total' => 1
+      'Total' => 2
     ))
+  end
+
+  context 'with pagination parameters' do
+    let(:params) do
+      {
+        page: 2,
+        per_page: 1
+      }
+    end
+
+    it 'paginates with the provided parameters' do
+      expect(result['result.response'].entity.to_hash).to match_array([
+        a_hash_including('id' => 3)
+      ])
+    end
   end
 end

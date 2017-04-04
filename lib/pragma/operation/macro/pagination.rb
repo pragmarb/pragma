@@ -10,8 +10,8 @@ module Pragma
 
       module Pagination
         DEFAULTS = {
-          'pagination.page_param' => 'page',
-          'pagination.per_page_param' => 'per_page',
+          'pagination.page_param' => :page,
+          'pagination.per_page_param' => :per_page,
           'pagination.default_per_page' => 30,
           'pagination.max_per_page' => 100
         }.freeze
@@ -33,7 +33,7 @@ module Pragma
           def page(options, params:, **)
             return 1 if
               !params[options['pagination.page_param']] ||
-              params[options['pagination.page_param']].empty?
+              params[options['pagination.page_param']].blank?
 
             params[options['pagination.page_param']].to_i
           end
@@ -41,7 +41,7 @@ module Pragma
           def per_page(options, params:, **)
             return options['pagination.default_per_page'] if
               !params[options['pagination.per_page_param']] ||
-              params[options['pagination.per_page_param']].empty?
+              params[options['pagination.per_page_param']].blank?
 
             [
               params[options['pagination.per_page_param']].to_i,
