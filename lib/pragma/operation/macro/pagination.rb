@@ -9,19 +9,8 @@ module Pragma
       end
 
       module Pagination
-        DEFAULTS = {
-          'pagination.page_param' => :page,
-          'pagination.per_page_param' => :per_page,
-          'pagination.default_per_page' => 30,
-          'pagination.max_per_page' => 100
-        }.freeze
-
         class << self
           def for(_input, options)
-            DEFAULTS.each_pair do |key, value|
-              options[key] = value unless options[key]
-            end
-
             options['model'] = options['model'].paginate(
               page: page(options, **options),
               per_page: per_page(options, **options)
