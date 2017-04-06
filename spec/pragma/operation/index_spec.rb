@@ -73,9 +73,23 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  context 'when pagination validation fails' do
+  context 'when 0 is provided as the page number' do
     let(:params) do
       { page: 0 }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'when a string is provided as the page number' do
+    let(:params) do
+      { page: '35' }
     end
 
     it 'responds with 422 Unprocessable Entity' do
