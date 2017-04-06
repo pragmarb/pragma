@@ -14,12 +14,12 @@ module Pragma
       self['pagination.default_per_page'] = 30
       self['pagination.max_per_page'] = 100
 
+      step Macro::Classes()
       # FIXME: A lot of duplication here...
       step :validate_pagination_params!
       failure :handle_invalid_pagination_contract!, fail_fast: true
       step :validate_expand_param!
       failure :handle_invalid_expand_contract!, fail_fast: true
-      step Macro::Classes()
       step :retrieve!
       step :scope!
       step Macro::Pagination()
@@ -32,7 +32,7 @@ module Pragma
           optional(options['pagination.per_page_param']).filled { int? > (gteq?(1) & lteq?(options['pagination.max_per_page'])) }
         end
 
-        options['result.contract.pagination'] = options['contract.pagination'].(params)
+        options['result.contract.pagination'] = options['contract.pagination'].call(params)
 
         options['result.contract.pagination'].errors.empty?
       end
@@ -48,7 +48,7 @@ module Pragma
           optional(:expand).each(:str?)
         end
 
-        options['result.contract.expand'] = options['contract.expand'].(params)
+        options['result.contract.expand'] = options['contract.expand'].call(params)
 
         options['result.contract.expand'].errors.empty?
       end

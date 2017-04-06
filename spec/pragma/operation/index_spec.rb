@@ -21,7 +21,7 @@ RSpec.describe Pragma::Operation::Index do
         [
           OpenStruct.new(id: 1, user_id: 1),
           OpenStruct.new(id: 2, user_id: 2),
-          OpenStruct.new(id: 3, user_id: 1),
+          OpenStruct.new(id: 3, user_id: 1)
         ]
       end
     end
@@ -83,7 +83,6 @@ RSpec.describe Pragma::Operation::Index do
     end
 
     it 'decorates the error' do
-      binding.pry
       expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
@@ -98,7 +97,6 @@ RSpec.describe Pragma::Operation::Index do
     end
 
     it 'decorates the error' do
-      binding.pry
       expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
