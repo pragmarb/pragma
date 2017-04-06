@@ -87,9 +87,9 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  context 'when a string is provided as the page number' do
+  context 'when an invalid string is provided as the page number' do
     let(:params) do
-      { page: '35' }
+      { page: '0' }
     end
 
     it 'responds with 422 Unprocessable Entity' do
@@ -98,6 +98,16 @@ RSpec.describe Pragma::Operation::Index do
 
     it 'decorates the error' do
       expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'when a valid string is provided as the page number' do
+    let(:params) do
+      { page: '35' }
+    end
+
+    it 'responds with 200 OK' do
+      expect(result['result.response'].status).to eq(200)
     end
   end
 

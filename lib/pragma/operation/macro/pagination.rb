@@ -12,6 +12,7 @@ module Pragma
         class << self
           def for(_input, options)
             set_defaults(options)
+            normalize_params(options)
 
             unless validate_params(options)
               handle_invalid_contract(options)
@@ -34,6 +35,18 @@ module Pragma
               'pagination.max_per_page' => 100
             }.each_pair do |key, value|
               options[key] ||= value
+            end
+          end
+
+          def normalize_params(options)
+            # This is required because Rails treats all incoming parameters as strings, since it
+            # can't distinguish. Maybe there's a better way to do it?
+            options['params'].tap do |p|
+              %w(pagination.page_param pagination.per_page_param).each do |key|
+                if p[options[key]] && p[options[key]].respond_to?(:to_i)
+                  p[options[key]] = p[options[key]].to_i
+                end
+              end
             end
           end
 
