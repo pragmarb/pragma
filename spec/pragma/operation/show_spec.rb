@@ -71,7 +71,7 @@ RSpec.describe Pragma::Operation::Show do
     end
   end
 
-  context 'when expand validation fails' do
+  context 'with a plain string as the expand parameter' do
     let(:params) do
       { id: 1, expand: 'foo' }
     end
