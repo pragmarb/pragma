@@ -50,7 +50,7 @@ RSpec.describe Pragma::Operation::Index do
     expect(result['result.response'].entity.represented.count).to eq(2)
   end
 
-  it 'adds pagination headers' do
+  it 'adds default pagination headers' do
     expect(result['result.response'].headers).to match(a_hash_including(
       'Page' => 1,
       'Per-Page' => 30,
@@ -58,12 +58,24 @@ RSpec.describe Pragma::Operation::Index do
     ))
   end
 
-  context 'with pagination parameters' do
+  context 'with integer pagination parameters' do
     let(:params) do
       {
         page: 2,
         per_page: 1
       }
+    end
+
+    it 'responds with 200 OK' do
+      expect(result['result.response'].status).to eq(200)
+      end
+
+    it 'adds the expected pagination headers' do
+      expect(result['result.response'].headers).to match(a_hash_including(
+        'Page' => 2,
+        'Per-Page' => 1,
+        'Total' => 2
+      ))
     end
 
     it 'paginates with the provided parameters' do
@@ -73,7 +85,34 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  context 'when 0 is provided as the page number' do
+  context 'with string pagination parameters' do
+    let(:params) do
+      {
+        page: '2',
+        per_page: '1'
+      }
+    end
+
+    it 'responds with 200 OK' do
+      expect(result['result.response'].status).to eq(200)
+    end
+
+    it 'adds the expected pagination headers' do
+      expect(result['result.response'].headers).to match(a_hash_including(
+        'Page' => 2,
+        'Per-Page' => 1,
+        'Total' => 2
+      ))
+    end
+
+    it 'paginates with the provided parameters' do
+      expect(result['result.response'].entity.to_hash).to match_array([
+        a_hash_including('id' => 3)
+      ])
+    end
+  end
+
+  context 'with 0 integer as the page number' do
     let(:params) do
       { page: 0 }
     end
@@ -87,7 +126,21 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  context 'when an invalid string is provided as the page number' do
+  context 'with 0 integer as the per_page number' do
+    let(:params) do
+      { page: 0 }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'with 0 string as the page number' do
     let(:params) do
       { page: '0' }
     end
@@ -101,17 +154,21 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  context 'when a valid string is provided as the page number' do
+  context 'with 0 string as the per_page number' do
     let(:params) do
-      { page: '35' }
+      { per_page: '0' }
     end
 
-    it 'responds with 200 OK' do
-      expect(result['result.response'].status).to eq(200)
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
 
-  context 'when expand validation fails' do
+  context 'with a plain string as the expand parameter' do
     let(:params) do
       { expand: 'foo' }
     end
