@@ -68,7 +68,7 @@ RSpec.describe Pragma::Operation::Index do
 
     it 'responds with 200 OK' do
       expect(result['result.response'].status).to eq(200)
-      end
+    end
 
     it 'adds the expected pagination headers' do
       expect(result['result.response'].headers).to match(a_hash_including(
