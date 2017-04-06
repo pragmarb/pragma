@@ -14,8 +14,11 @@ module Pragma
       self['pagination.default_per_page'] = 30
       self['pagination.max_per_page'] = 100
 
+      # FIXME: A lot of duplication here...
       step :validate_pagination_params!
       failure :handle_invalid_pagination_contract!, fail_fast: true
+      step :validate_expand_param!
+      failure :handle_invalid_expand_contract!, fail_fast: true
       step Macro::Classes()
       step :retrieve!
       step :scope!
@@ -25,8 +28,8 @@ module Pragma
 
       def validate_pagination_params!(options, params:, **)
         options['contract.pagination'] = Dry::Validation.Schema do
-          optional(options['pagination.page_param']).maybe { int? > gteq?(1) }
-          optional(options['pagination.per_page_param']).maybe { int? > (gteq?(1) & lteq?(options['pagination.max_per_page'])) }
+          optional(options['pagination.page_param']).filled { int? > gteq?(1) }
+          optional(options['pagination.per_page_param']).filled { int? > (gteq?(1) & lteq?(options['pagination.max_per_page'])) }
         end
 
         options['result.contract.pagination'] = options['contract.pagination'].(params)
@@ -37,6 +40,22 @@ module Pragma
       def handle_invalid_pagination_contract!(options)
         options['result.response'] = Response::UnprocessableEntity.new(
           errors: options['result.contract.pagination'].errors
+        ).decorate_with(Decorator::Error)
+      end
+
+      def validate_expand_param!(options, params:, **)
+        options['contract.expand'] = Dry::Validation.Schema do
+          optional(:expand).each(:str?)
+        end
+
+        options['result.contract.expand'] = options['contract.expand'].(params)
+
+        options['result.contract.expand'].errors.empty?
+      end
+
+      def handle_invalid_expand_contract!(options)
+        options['result.response'] = Response::UnprocessableEntity.new(
+          errors: options['result.contract.expand'].errors
         ).decorate_with(Decorator::Error)
       end
 
