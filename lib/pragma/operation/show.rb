@@ -1,26 +1,19 @@
 # frozen_string_literal: true
+
 module Pragma
   module Operation
     # Finds the requested record, authorizes it and decorates it.
     #
     # @author Alessandro Desantis
     class Show < Pragma::Operation::Base
-      include Pragma::Operation::Defaults
+      step Macro::Classes()
+      step Macro::Model(:find_by), fail_fast: true
+      step Macro::Policy(), fail_fast: true
+      step Macro::Decorator()
+      step :respond!
 
-      def call
-        context.record = find_record
-        authorize! context.record
-
-        respond_with resource: decorate(context.record)
-      end
-
-      protected
-
-      # Finds the requested record.
-      #
-      # @return [Object]
-      def find_record
-        self.class.model_klass.find(params[:id])
+      def respond!(options)
+        options['result.response'] = Response::Ok.new(entity: options['result.decorator.default'])
       end
     end
   end

@@ -1,33 +1,24 @@
 # frozen_string_literal: true
+
 module Pragma
   module Operation
-    # Finds the requested record, authorizes it, updates it accordingly to the parameters and
-    # responds with the decorated record.
+    # Creates a new record and responds with the decorated record.
     #
     # @author Alessandro Desantis
     class Create < Pragma::Operation::Base
-      include Pragma::Operation::Defaults
+      step Macro::Classes()
+      step Macro::Model()
+      step Macro::Policy(), fail_fast: true
+      step Macro::Contract::Build()
+      step Macro::Contract::Validate(), fail_fast: true
+      step Macro::Contract::Persist(), fail_fast: true
+      step Macro::Decorator()
+      step :respond!
 
-      def call
-        context.record = build_record
-        context.contract = build_contract(context.record)
-
-        validate! context.contract
-        authorize! context.contract
-
-        context.contract.save
-        context.record.save!
-
-        respond_with status: :created, resource: decorate(context.record)
-      end
-
-      protected
-
-      # Builds the requested record.
-      #
-      # @return [Object]
-      def build_record
-        self.class.model_klass.new
+      def respond!(options)
+        options['result.response'] = Response::Created.new(
+          entity: options['result.decorator.default']
+        )
       end
     end
   end
