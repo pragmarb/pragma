@@ -42,7 +42,7 @@ module Pragma
             # This is required because Rails treats all incoming parameters as strings, since it
             # can't distinguish. Maybe there's a better way to do it?
             options['params'].tap do |p|
-              %w(pagination.page_param pagination.per_page_param).each do |key|
+              %w[pagination.page_param pagination.per_page_param].each do |key|
                 if p[options[key]] && p[options[key]].respond_to?(:to_i)
                   p[options[key]] = p[options[key]].to_i
                 end
