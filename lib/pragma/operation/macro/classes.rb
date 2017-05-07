@@ -31,7 +31,7 @@ module Pragma
                   # API::V1::Post::Contract::Index might throw "uninitialized constant
                   # API::V1::Post::Contract" if the resource has no contracts at all.
                   error_constant = e.message.split.last
-                  raise e unless value.start_with?(error_constant)
+                  raise e unless value.sub(/\A::/, '').start_with?(error_constant)
                 end
               end
 
