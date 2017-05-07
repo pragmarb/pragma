@@ -20,7 +20,7 @@ module Pragma
               options['model'].respond_to?(:to_a) ? options['model'].to_a : options['model']
             )
 
-            render_decorator_and_handle_errors(options, name)
+            validate_expansion(options, name)
           end
 
           private
@@ -41,22 +41,10 @@ module Pragma
             ).decorate_with(Pragma::Decorator::Error)
           end
 
-          def render_decorator(options, decorator)
-            decorator.to_hash(
-              user_options: {
-                expand: options['params'][:expand],
-                current_user: options['current_user']
-              }
-            )
-          end
-
-          def render_decorator_and_handle_errors(options, name)
-            options["result.decorator.#{name}.hash"] = render_decorator(
-              options,
-              options["result.decorator.#{name}"]
-            )
-
-            options['result.response.hash'] = options["result.decorator.#{name}.hash"]
+          def validate_expansion(options, name)
+            return true unless options["result.decorator.#{name}"].respond_to?(:validate_expansion)
+            options["result.decorator.#{name}"].validate_expansion(options['params'][:expand])
+            true
           rescue Pragma::Decorator::Association::ExpansionError => e
             options['result.response'] = Response::BadRequest.new(
               entity: Pragma::Operation::Error.new(
@@ -64,12 +52,6 @@ module Pragma
                 error_message: e.message
               )
             ).decorate_with(Pragma::Decorator::Error)
-
-            options['result.response.hash'] = render_decorator(
-              options,
-              options['result.response'].entity
-            )
-
             false
           end
         end

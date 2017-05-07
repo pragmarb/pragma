@@ -80,18 +80,6 @@ RSpec.describe Pragma::Operation::Show do
     expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Base)
   end
 
-  it 'expands associations' do
-    expect(result['result.response.hash']).to eq(
-      'title' => 'My Beautiful Article',
-      'user' => {
-        'full_name' => 'John Doe',
-        'role' => {
-          'name' => 'Editor'
-        }
-      }
-    )
-  end
-
   context 'when the model cannot be found' do
     let(:params) do
       { id: 2 }
