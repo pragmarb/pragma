@@ -11,10 +11,8 @@ module Pragma
       failure :handle_model_not_found!, fail_fast: true
       step Macro::Policy(), fail_fast: true
       step Macro::Contract::Build()
-      step Macro::Contract::Validate()
-      failure :handle_invalid_contract!, fail_fast: true
-      step Macro::Contract::Persist()
-      failure :handle_invalid_model!, fail_fast: true
+      step Macro::Contract::Validate(), fail_fast: true
+      step Macro::Contract::Persist(), fail_fast: true
       step Macro::Decorator()
       step :respond!
 

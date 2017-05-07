@@ -10,18 +10,10 @@ module Pragma
       step Macro::Model()
       step Macro::Policy(), fail_fast: true
       step Macro::Contract::Build()
-      step Macro::Contract::Validate()
-      failure :handle_invalid_contract!, fail_fast: true
-      step Macro::Contract::Persist()
-      failure :handle_invalid_model!, fail_fast: true
+      step Macro::Contract::Validate(), fail_fast: true
+      step Macro::Contract::Persist(), fail_fast: true
       step Macro::Decorator()
       step :respond!
-
-      def handle_invalid_contract!(options)
-        options['result.response'] = Response::UnprocessableEntity.new(
-          errors: options['contract.default'].errors
-        ).decorate_with(Decorator::Error)
-      end
 
       def handle_invalid_model!(options, model:, **)
         options['result.response'] = Response::UnprocessableEntity.new(

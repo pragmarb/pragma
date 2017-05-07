@@ -6,8 +6,20 @@ module Pragma
   module Operation
     module Macro
       module Contract
-        def self.Validate(*args)
-          Trailblazer::Operation::Contract::Validate(*args)
+        def self.Validate(name: 'default', **args)
+          step = lambda do |input, options|
+            Trailblazer::Operation::Pipetree::Step.new(
+              Trailblazer::Operation::Contract::Validate(**args).first
+            ).call(input, options).tap do |result|
+              unless result
+                options['result.response'] = Pragma::Operation::Response::UnprocessableEntity.new(
+                  errors: options['contract.default'].errors
+                ).decorate_with(Pragma::Decorator::Error)
+              end
+            end
+          end
+
+          [step, name: "contract.#{name}.validate"]
         end
       end
     end
