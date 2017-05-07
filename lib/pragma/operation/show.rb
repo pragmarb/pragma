@@ -9,17 +9,12 @@ module Pragma
       step Macro::Classes()
       step Macro::Model(:find_by)
       failure :handle_model_not_found!, fail_fast: true
-      step Macro::Policy()
-      failure :handle_unauthorized!, fail_fast: true
+      step Macro::Policy(), fail_fast: true
       step Macro::Decorator()
       step :respond!
 
       def handle_model_not_found!(options)
         options['result.response'] = Response::NotFound.new.decorate_with(Decorator::Error)
-      end
-
-      def handle_unauthorized!(options)
-        options['result.response'] = Response::Forbidden.new.decorate_with(Decorator::Error)
       end
 
       def respond!(options)
