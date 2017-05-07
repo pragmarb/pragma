@@ -50,7 +50,8 @@ the Trailblazer gem itself yet, many of the Pragma gems are simply extensions of
 counterparts:
 
 - decorators are [ROAR representers](https://github.com/apotonick/roar);
-- contracts are [Reform forms](https://github.com/apotonick/reform).
+- contracts are [Reform forms](https://github.com/apotonick/reform);
+- operations are [Trailblazer operations](https://github.com/trailblazer/trailblazer-operation).
 
 Trailblazer and Pragma have different (but similar) places in the Ruby world: Trailblazer is an
 architecture for building all kinds of web applications in an intelligent, rational way, while
