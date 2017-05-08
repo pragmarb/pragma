@@ -24,25 +24,25 @@ Looking for a Rails integration? Check out [pragma-rails](https://github.com/pra
 Pragma was created with a very specific goal in mind: to make the development of JSON APIs a matter
 of hours, not days. In other words, Pragma is for JSON APIs what Rails is for web applications.
 
-In order to achieve that goal, some ground rules were needed. Here they are.
+Here are the ground rules:
 
 1. **Pragma is opinionated.** With Pragma, you don't get to make a lot of choices and that's
    _exactly_ why people are using it: they want to focus on the business logic of their API rather
    than the useless details. We understand this approach will not work in some cases and that's
    alright. If you need more personalization, only use a subset of Pragma (see item 2) or something
    else.
-2. **Pragma is modular.** Pragma is built as a set of gems (currently 4), plus some standalone
+2. **Pragma is modular.** Pragma is built as a set of gems (currently 6), plus some standalone
    tools. You can pick one or more modules and use them in your application as you see fit. Even
    though they are completely independent from each other, they nicely integrate and work best when
    used together, creating an ecosystem that will dramatically speed up your design and development
    process.
-3. **Pragma is not designed to be Rails-free.** This does not mean that Pragma _is not_ Rails free.
-   Our Rails integration is decoupled from the rest of the ecosystem and all of the gems, in their
-   current state, _can_ be used without Rails. However, this is just a byproduct of the project's
-   design: independence from Rails is not a goal of the Pragma ecosystem, so don't count on it too
-   much.
+3. **Pragma is designed to be Rails-free.** Just as what happens with Trailblazer, our Rails 
+   integration is decoupled from the rest of the ecosystem and all of the gems can be used without 
+   Rails. This is just a byproduct of the project's design: Pragma is built with pure Ruby.
+   [pragma-rails](https://github.com/pragmarb/pragma-rails) is the only available framework 
+   integration at the moment, but more will come! 
 
-## Why not Trailblazer?
+### Why not Trailblazer?
 
 [Trailblazer](https://github.com/trailblazer/trailblazer) and all of its companion projects are
 awesome. They are so awesome that Pragma is built on top of them: even though we're not using
@@ -83,7 +83,31 @@ $ gem install pragma
 
 ## Usage
 
-All documentation is in the [doc](https://github.com/pragmarb/pragma/tree/master/doc) folder.
+### Project Structure
+
+This gem works best if you follow the recommended structure for organizing resources:
+
+```
+└── api
+    └── v1
+        └── article
+            ├── contract
+            │   ├── create.rb
+            │   └── update.rb
+            ├── operation
+            │   ├── create.rb
+            │   ├── destroy.rb
+            │   ├── index.rb
+            │   └── update.rb
+            └── policy.rb
+            └── decorator.rb
+```
+
+Your modules and classes would, of course, follow the same structure: `API::V1::Article::Policy`,
+`API::V1::Article::Operation::Create` and so on and so forth.
+
+If you adhere to this structure, the gem will be able to locate all of your classes without any
+explicit configuration. This will save you a lot of time and is highly recommended.
 
 ## Contributing
 
