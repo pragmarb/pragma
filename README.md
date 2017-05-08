@@ -109,6 +109,36 @@ so on and so forth.
 If you adhere to this structure, the gem will be able to locate all of your classes without any
 explicit configuration. This will save you a lot of time and is highly recommended.
 
+### Fantastic Five
+
+Pragma comes with five built-in operations, often referred to as Fantastic Five (or "FF" for 
+brevity). They are, of course, Index, Show, Create, Update and Destroy. 
+
+These operations leverage the full power of the integrated Pragma ecosystem and require all four 
+components to be properly installed and configured in your application. You may reconfigure them
+to skip some of the steps, but it is highly recommended to use them as they come.
+
+You can find these operations under [lib/pragma/operation](https://github.com/pragmarb/pragma/tree/master/lib/pragma/operation).
+To use them, simply create your own operations and inherit from ours. For instance:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Create < Pragma::Operation::Create
+          # This assumes that you have the following:
+          #   - a policy that responds to #create?
+          #   - a Create contract
+          #   - a decorator
+          #   - an Article model
+        end
+      end
+    end
+  end
+end
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/pragmarb/pragma.
