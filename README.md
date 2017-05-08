@@ -103,8 +103,8 @@ This gem works best if you follow the recommended structure for organizing resou
             └── decorator.rb
 ```
 
-Your modules and classes would, of course, follow the same structure: `API::V1::Article::Policy`,
-`API::V1::Article::Decorator` and so on and so forth.
+Your modules and classes would, of course, follow the same structure: `API::V1::Article::Policy` and 
+so on and so forth.
 
 If you adhere to this structure, the gem will be able to locate all of your classes without any
 explicit configuration. This will save you a lot of time and is highly recommended.
