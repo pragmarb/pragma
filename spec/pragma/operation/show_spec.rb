@@ -67,7 +67,7 @@ RSpec.describe Pragma::Operation::Show do
   let(:policy_klass) do
     Class.new(Pragma::Policy::Base) do
       def show?
-        resource.user_id == user.id
+        record.user_id == user.id
       end
     end
   end
