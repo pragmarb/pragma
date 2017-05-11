@@ -13,7 +13,7 @@ module Pragma
             ).call(input, options).tap do |result|
               unless result
                 options['result.response'] = Pragma::Operation::Response::UnprocessableEntity.new(
-                  errors: options['model'].errors
+                  errors: options['model'].errors.messages
                 ).decorate_with(Pragma::Decorator::Error)
               end
             end
