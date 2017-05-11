@@ -30,8 +30,10 @@ module Pragma
           headers: {
             'Page' => model.current_page.to_i,
             'Per-Page' => model.per_page,
-            'Total' => model.total_entries
-          }
+            'Total' => model.total_entries,
+            'Next-Page' => model.next_page&.to_i,
+            'Prev-Page' => model.previous_page&.to_i
+          }.select { |_k, v| !v.nil? }
         )
       end
     end

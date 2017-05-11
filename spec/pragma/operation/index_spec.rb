@@ -74,7 +74,8 @@ RSpec.describe Pragma::Operation::Index do
       expect(result['result.response'].headers).to match(a_hash_including(
         'Page' => 2,
         'Per-Page' => 1,
-        'Total' => 2
+        'Total' => 2,
+        'Prev-Page' => 1
       ))
     end
 
