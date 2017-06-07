@@ -23,6 +23,7 @@ module Pragma
 
         respond_with(
           resource: decorate(context.records),
+          status: :ok,
           headers: {
             'Page' => context.records.current_page.to_i,
             'Per-Page' => context.records.per_page,

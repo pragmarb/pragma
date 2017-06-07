@@ -11,7 +11,7 @@ module Pragma
         context.record = find_record
         authorize! context.record
 
-        respond_with resource: decorate(context.record)
+        respond_with resource: decorate(context.record), status: :ok
       end
 
       protected
