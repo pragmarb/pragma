@@ -16,8 +16,10 @@ module Pragma
         rescue RangeError => e
           respond_with!(
             status: :bad_request,
-            error_type: :invalid_page,
-            error_message: e.message
+            resource: {
+              error_type: :invalid_page,
+              error_message: e.message
+            }
           )
         end
 
