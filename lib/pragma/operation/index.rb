@@ -13,7 +13,7 @@ module Pragma
       step :retrieve!
       step :scope!
       step Macro::Pagination(), fail_fast: true
-      step Macro::Decorator(), fail_fast: true
+      step Macro::Decorator(name: :collection), fail_fast: true
       step :respond!
 
       def retrieve!(options)
@@ -26,7 +26,7 @@ module Pragma
 
       def respond!(options, model:, **)
         options['result.response'] = Response::Ok.new(
-          entity: options['result.decorator.default'],
+          entity: options['result.decorator.collection'],
           headers: {
             'Page' => model.current_page.to_i,
             'Per-Page' => model.per_page,

@@ -16,7 +16,7 @@ module Pragma
       step :respond!
 
       def respond!(options)
-        options['result.response'] = Response::Ok.new(entity: options['result.decorator.default'])
+        options['result.response'] = Response::Ok.new(entity: options['result.decorator.instance'])
       end
     end
   end

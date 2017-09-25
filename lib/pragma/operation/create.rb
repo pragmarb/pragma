@@ -17,7 +17,7 @@ module Pragma
 
       def respond!(options)
         options['result.response'] = Response::Created.new(
-          entity: options['result.decorator.default']
+          entity: options['result.decorator.instance']
         )
       end
     end

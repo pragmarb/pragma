@@ -6,7 +6,7 @@ RSpec.describe Pragma::Operation::Create do
       params,
       'current_user' => current_user,
       'model.class' => model_klass,
-      'decorator.default.class' => decorator_klass,
+      'decorator.instance.class' => decorator_klass,
       'policy.default.class' => policy_klass,
       'contract.default.class' => contract_klass
     )

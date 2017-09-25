@@ -6,7 +6,8 @@ RSpec.describe Pragma::Operation::Index do
       params,
       'current_user' => current_user,
       'model.class' => model_klass,
-      'decorator.default.class' => decorator_klass,
+      'decorator.collection.class' => collection_decorator_klass,
+      'decorator.instance.class' => instance_decorator_klass,
       'policy.default.scope.class' => policy_scope_klass
     )
   end
@@ -27,7 +28,15 @@ RSpec.describe Pragma::Operation::Index do
     end
   end
 
-  let(:decorator_klass) do
+  let(:collection_decorator_klass) do
+    Class.new(Pragma::Decorator::Base) do
+      feature Pragma::Decorator::Collection
+    end.tap do |klass|
+      klass.send(:decorate_with, instance_decorator_klass)
+    end
+  end
+
+  let(:instance_decorator_klass) do
     Class.new(Pragma::Decorator::Base) do
       property :id
       property :user_id
@@ -80,7 +89,7 @@ RSpec.describe Pragma::Operation::Index do
     end
 
     it 'paginates with the provided parameters' do
-      expect(result['result.response'].entity.to_hash).to match_array([
+      expect(result['result.response'].entity.to_hash['data']).to match_array([
         a_hash_including('id' => 3)
       ])
     end
@@ -107,7 +116,7 @@ RSpec.describe Pragma::Operation::Index do
     end
 
     it 'paginates with the provided parameters' do
-      expect(result['result.response'].entity.to_hash).to match_array([
+      expect(result['result.response'].entity.to_hash['data']).to match_array([
         a_hash_including('id' => 3)
       ])
     end

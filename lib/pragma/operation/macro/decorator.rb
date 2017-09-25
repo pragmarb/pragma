@@ -3,7 +3,7 @@
 module Pragma
   module Operation
     module Macro
-      def self.Decorator(name: :default)
+      def self.Decorator(name: :instance)
         step = ->(input, options) { Decorator.for(input, name, options) }
         [step, name: "decorator.#{name}"]
       end
@@ -16,8 +16,8 @@ module Pragma
               return false
             end
 
-            options["result.decorator.#{name}"] = options["decorator.#{name}.class"].represent(
-              options['model'].respond_to?(:to_a) ? options['model'].to_a : options['model']
+            options["result.decorator.#{name}"] = options["decorator.#{name}.class"].new(
+              options['model']
             )
 
             validate_expansion(options, name)
