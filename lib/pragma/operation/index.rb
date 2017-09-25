@@ -33,7 +33,7 @@ module Pragma
             'Total' => model.total_entries,
             'Next-Page' => model.next_page&.to_i,
             'Prev-Page' => model.previous_page&.to_i
-          }.select { |_k, v| !v.nil? }
+          }.reject { |_k, v| v.nil? }
         )
       end
     end

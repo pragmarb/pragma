@@ -30,7 +30,7 @@ RSpec.describe Pragma::Operation::Index do
 
   let(:collection_decorator_klass) do
     Class.new(Pragma::Decorator::Base) do
-      feature Pragma::Decorator::Collection
+      include Pragma::Decorator::Collection
     end.tap do |klass|
       klass.send(:decorate_with, instance_decorator_klass)
     end
