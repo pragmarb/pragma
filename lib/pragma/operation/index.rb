@@ -26,7 +26,7 @@ module Pragma
 
       def respond!(options, model:, **)
         options['result.response'] = Response::Ok.new(
-          entity: options['result.decorator.collection'],
+          entity: options['result.decorator.collection']
         )
       end
     end
