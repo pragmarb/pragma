@@ -30,6 +30,7 @@ RSpec.describe Pragma::Operation::Index do
 
   let(:collection_decorator_klass) do
     Class.new(Pragma::Decorator::Base) do
+      include Pragma::Decorator::Pagination
       include Pragma::Decorator::Collection
     end.tap do |klass|
       klass.send(:decorate_with, instance_decorator_klass)
@@ -59,11 +60,11 @@ RSpec.describe Pragma::Operation::Index do
     expect(result['result.response'].entity.represented.count).to eq(2)
   end
 
-  it 'adds default pagination headers' do
-    expect(result['result.response'].headers).to match(a_hash_including(
-      'Page' => 1,
-      'Per-Page' => 30,
-      'Total' => 2
+  it 'adds pagination info to the response' do
+    expect(result['result.response'].entity.to_hash).to match(a_hash_including(
+      'current_page' => 1,
+      'per_page' => 30,
+      'total_entries' => 2
     ))
   end
 
@@ -79,12 +80,12 @@ RSpec.describe Pragma::Operation::Index do
       expect(result['result.response'].status).to eq(200)
     end
 
-    it 'adds the expected pagination headers' do
-      expect(result['result.response'].headers).to match(a_hash_including(
-        'Page' => 2,
-        'Per-Page' => 1,
-        'Total' => 2,
-        'Prev-Page' => 1
+    it 'adds the expected pagination info to the response' do
+      expect(result['result.response'].entity.to_hash).to match(a_hash_including(
+        'current_page' => 2,
+        'per_page' => 1,
+        'total_entries' => 2,
+        'previous_page' => 1
       ))
     end
 
@@ -107,11 +108,11 @@ RSpec.describe Pragma::Operation::Index do
       expect(result['result.response'].status).to eq(200)
     end
 
-    it 'adds the expected pagination headers' do
-      expect(result['result.response'].headers).to match(a_hash_including(
-        'Page' => 2,
-        'Per-Page' => 1,
-        'Total' => 2
+    it 'adds the expected pagination info to the response' do
+      expect(result['result.response'].entity.to_hash).to match(a_hash_including(
+        'current_page' => 2,
+        'per_page' => 1,
+        'total_entries' => 2
       ))
     end
 

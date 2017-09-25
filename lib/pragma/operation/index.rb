@@ -27,13 +27,6 @@ module Pragma
       def respond!(options, model:, **)
         options['result.response'] = Response::Ok.new(
           entity: options['result.decorator.collection'],
-          headers: {
-            'Page' => model.current_page.to_i,
-            'Per-Page' => model.per_page,
-            'Total' => model.total_entries,
-            'Next-Page' => model.next_page&.to_i,
-            'Prev-Page' => model.previous_page&.to_i
-          }.reject { |_k, v| v.nil? }
         )
       end
     end
