@@ -11,6 +11,8 @@ module Pragma
       module Decorator
         class << self
           def for(_input, name, options)
+            set_defaults(options)
+
             return false unless validate_params(options)
 
             options["result.decorator.#{name}"] = options["decorator.#{name}.class"].new(
@@ -22,17 +24,27 @@ module Pragma
 
           private
 
+          def set_defaults(options)
+            hash_options = options.to_hash
+
+            {
+              'expand.enabled' => true
+            }.each_pair do |key, value|
+              options[key] = value unless hash_options.key?(key.to_sym)
+            end
+          end
+
           def validate_params(options)
             options['contract.expand'] = Dry::Validation.Schema do
               optional(:expand) do
-                if options['expand.disable']
-                  none? | empty?
-                else
+                if options['expand.enabled']
                   array? do
                     each(:str?) &
                       # This is the ugliest, only way I found to define a dynamic validation tree.
                       (options['expand.limit'] ? max_size?(options['expand.limit']) : array?)
                   end
+                else
+                  none? | empty?
                 end
               end
             end

@@ -200,7 +200,7 @@ RSpec.describe Pragma::Operation::Show do
 
     let(:options) do
       {
-        'expand.disable' => true
+        'expand.enabled' => false
       }
     end
 
