@@ -5,7 +5,8 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://codeclimate.com/github/pragmarb/pragma)
 [![Coveralls](https://img.shields.io/coveralls/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://coveralls.io/github/pragmarb/pragma)
 
-Welcome to Pragma, a pragmatic (duh!), opinionated architecture for building JSON APIs with Ruby!
+Welcome to Pragma, an expressive, opinionated ecosystem for building beautiful RESTful APIs with 
+Ruby.
 
 You can think of this as a meta-gem that pulls in the following pieces:
 
