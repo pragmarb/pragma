@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Pragma::Operation::Show do
-  subject(:result) do
-    described_class.call(
-      params,
-      'current_user' => current_user,
-      'model.class' => model_klass,
-      'decorator.instance.class' => decorator_klass,
-      'policy.default.class' => policy_klass
-    )
-  end
+  subject(:result) { described_class.call(params, base_options.merge(options)) }
 
   let(:params) do
     {
@@ -17,6 +9,17 @@ RSpec.describe Pragma::Operation::Show do
       expand: ['user', 'user.role']
     }
   end
+
+  let(:base_options) do
+    {
+      'current_user' => current_user,
+      'model.class' => model_klass,
+      'decorator.instance.class' => decorator_klass,
+      'policy.default.class' => policy_klass,
+    }
+  end
+
+  let(:options) { {} }
 
   let(:current_user) { OpenStruct.new(id: 1) }
 
@@ -33,6 +36,9 @@ RSpec.describe Pragma::Operation::Show do
             full_name: 'John Doe',
             role: OpenStruct.new(
               name: 'Editor'
+            ),
+            company: OpenStruct.new(
+              name: 'Acme'
             )
           )
         )
@@ -44,6 +50,12 @@ RSpec.describe Pragma::Operation::Show do
     Class.new(Pragma::Decorator::Base) do
       property :name
     end
+    end
+
+  let(:company_decorator_klass) do
+    Class.new(Pragma::Decorator::Base) do
+      property :name
+    end
   end
 
   let(:user_decorator_klass) do
@@ -52,6 +64,7 @@ RSpec.describe Pragma::Operation::Show do
       property :full_name
     end.tap do |klass|
       klass.belongs_to :role, decorator: role_decorator_klass
+      klass.belongs_to :company, decorator: company_decorator_klass
     end
   end
 
@@ -147,6 +160,52 @@ RSpec.describe Pragma::Operation::Show do
 
     it 'responds with 400 Bad Request' do
       expect(result['result.response'].status).to eq(400)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'when expanding too many associations' do
+    let(:params) do
+      {
+        id: 1,
+        expand: ['user', 'user.role', 'user.company']
+      }
+    end
+
+    let(:options) do
+      {
+        'expand.limit' => 2,
+      }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
+    end
+
+    it 'decorates the error' do
+      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
+    end
+  end
+
+  context 'when expanding on a no-expansion operation' do
+    let(:params) do
+      {
+        id: 1,
+        expand: ['user']
+      }
+    end
+
+    let(:options) do
+      {
+        'expand.disable' => true,
+      }
+    end
+
+    it 'responds with 422 Unprocessable Entity' do
+      expect(result['result.response'].status).to eq(422)
     end
 
     it 'decorates the error' do

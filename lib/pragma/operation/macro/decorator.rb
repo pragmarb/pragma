@@ -11,10 +11,7 @@ module Pragma
       module Decorator
         class << self
           def for(_input, name, options)
-            unless validate_params(options)
-              handle_invalid_contract(options)
-              return false
-            end
+            return false unless validate_params(options)
 
             options["result.decorator.#{name}"] = options["decorator.#{name}.class"].new(
               options['model']
@@ -27,18 +24,30 @@ module Pragma
 
           def validate_params(options)
             options['contract.expand'] = Dry::Validation.Schema do
-              optional(:expand).each(:str?)
+              optional(:expand) do
+                if options['expand.disable']
+                  none? | empty?
+                else
+                  array? do
+                    each(:str?) &
+                      # This is the ugliest, only way I found to define a dynamic validation tree.
+                      (options['expand.limit'] ? max_size?(options['expand.limit']) : array?)
+                  end
+                end
+              end
             end
 
             options['result.contract.expand'] = options['contract.expand'].call(options['params'])
 
-            options['result.contract.expand'].errors.empty?
-          end
+            if options['result.contract.expand'].errors.any?
+              options['result.response'] = Response::UnprocessableEntity.new(
+                errors: options['result.contract.expand'].errors
+              ).decorate_with(Pragma::Decorator::Error)
 
-          def handle_invalid_contract(options)
-            options['result.response'] = Response::UnprocessableEntity.new(
-              errors: options['result.contract.expand'].errors
-            ).decorate_with(Pragma::Decorator::Error)
+              return false
+            end
+
+            true
           end
 
           def validate_expansion(options, name)
