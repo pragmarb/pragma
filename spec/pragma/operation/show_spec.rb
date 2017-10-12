@@ -15,7 +15,7 @@ RSpec.describe Pragma::Operation::Show do
       'current_user' => current_user,
       'model.class' => model_klass,
       'decorator.instance.class' => decorator_klass,
-      'policy.default.class' => policy_klass,
+      'policy.default.class' => policy_klass
     }
   end
 
@@ -50,7 +50,7 @@ RSpec.describe Pragma::Operation::Show do
     Class.new(Pragma::Decorator::Base) do
       property :name
     end
-    end
+  end
 
   let(:company_decorator_klass) do
     Class.new(Pragma::Decorator::Base) do
@@ -177,7 +177,7 @@ RSpec.describe Pragma::Operation::Show do
 
     let(:options) do
       {
-        'expand.limit' => 2,
+        'expand.limit' => 2
       }
     end
 
@@ -200,7 +200,7 @@ RSpec.describe Pragma::Operation::Show do
 
     let(:options) do
       {
-        'expand.disable' => true,
+        'expand.disable' => true
       }
     end
 
