@@ -7,12 +7,12 @@ module Pragma
     # @author Alessandro Desantis
     class Update < Pragma::Operation::Base
       step Macro::Classes()
-      step Macro::Model(:find_by), fail_fast: true
-      step Macro::Policy(), fail_fast: true
+      step Macro::Model(:find_by)
+      step Macro::Policy()
       step Macro::Contract::Build()
-      step Macro::Contract::Validate(), fail_fast: true
-      step Macro::Contract::Persist(), fail_fast: true
-      step Macro::Decorator(), fail_fast: true
+      step Macro::Contract::Validate()
+      step Macro::Contract::Persist()
+      step Macro::Decorator()
       step :respond!
 
       def respond!(options)

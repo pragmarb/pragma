@@ -10,7 +10,7 @@ module Pragma
       step Macro::Model(:find_by), fail_fast: true
       step Macro::Policy(), fail_fast: true
       step :destroy!
-      failure :handle_invalid_model!, fail_fast: true
+      failure :handle_invalid_model!
       step :respond!
 
       def destroy!(_options, model:, **)

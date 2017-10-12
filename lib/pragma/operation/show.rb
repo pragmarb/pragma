@@ -7,9 +7,9 @@ module Pragma
     # @author Alessandro Desantis
     class Show < Pragma::Operation::Base
       step Macro::Classes()
-      step Macro::Model(:find_by), fail_fast: true
-      step Macro::Policy(), fail_fast: true
-      step Macro::Decorator(), fail_fast: true
+      step Macro::Model(:find_by)
+      step Macro::Policy()
+      step Macro::Decorator()
       step :respond!
 
       def respond!(options)

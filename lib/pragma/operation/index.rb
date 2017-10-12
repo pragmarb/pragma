@@ -12,8 +12,8 @@ module Pragma
       step Macro::Classes()
       step :retrieve!
       step :scope!
-      step Macro::Pagination(), fail_fast: true
-      step Macro::Decorator(name: :collection), fail_fast: true
+      step Macro::Pagination()
+      step Macro::Decorator(name: :collection)
       step :respond!
 
       def retrieve!(options)
