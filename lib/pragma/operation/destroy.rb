@@ -7,20 +7,21 @@ module Pragma
     # @author Alessandro Desantis
     class Destroy < Pragma::Operation::Base
       step Macro::Classes()
-      step Macro::Model(:find_by), fail_fast: true
-      step Macro::Policy(), fail_fast: true
+      step Macro::Model(:find_by)
+      step Macro::Policy()
       step :destroy!
-      failure :handle_invalid_model!
       step :respond!
 
       def destroy!(_options, model:, **)
-        model.destroy
-      end
+        unless model.destroy
+          options['result.response'] = Response::UnprocessableEntity.new(
+            errors: model.errors
+          ).decorate_with(Decorator::Error)
 
-      def handle_invalid_model!(options, model:, **)
-        options['result.response'] = Response::UnprocessableEntity.new(
-          errors: model.errors
-        ).decorate_with(Decorator::Error)
+          return false
+        end
+
+        true
       end
 
       def respond!(options)
