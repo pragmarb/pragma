@@ -12,7 +12,7 @@ module Pragma
       step Macro::Contract::Build()
       step Macro::Contract::Validate(), fail_fast: true
       step Macro::Contract::Persist(), fail_fast: true
-      step Macro::Decorator()
+      step Macro::Decorator(), fail_fast: true
       step :respond!
 
       def respond!(options)

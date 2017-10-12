@@ -9,7 +9,7 @@ module Pragma
       step Macro::Classes()
       step Macro::Model(:find_by), fail_fast: true
       step Macro::Policy(), fail_fast: true
-      step Macro::Decorator()
+      step Macro::Decorator(), fail_fast: true
       step :respond!
 
       def respond!(options)
