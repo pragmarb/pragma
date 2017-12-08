@@ -31,7 +31,9 @@ module Pragma
           private
 
           def handle_unauthorized!(options)
-            options['result.response'] = Pragma::Operation::Response::Forbidden.new.decorate_with(Pragma::Decorator::Error)
+            options['result.response'] = Pragma::Operation::Response::Forbidden.new.decorate_with(
+              Pragma::Decorator::Error
+            )
           end
         end
       end

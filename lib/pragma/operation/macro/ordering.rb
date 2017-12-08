@@ -49,11 +49,17 @@ module Pragma
 
           def validate_params(options)
             options['contract.ordering'] = Dry::Validation.Schema do
-              optional(options['ordering.column_param']).filled { str? & included_in?(options['ordering.columns'].map(&:to_s)) }
-              optional(options['ordering.direction_param']).filled { str? & included_in?(%w[asc desc ASC DESC]) }
+              optional(options['ordering.column_param']).filled do
+                str? & included_in?(options['ordering.columns'].map(&:to_s))
+              end
+              optional(options['ordering.direction_param']).filled do
+                str? & included_in?(%w[asc desc ASC DESC])
+              end
             end
 
-            options['result.contract.ordering'] = options['contract.ordering'].call(options['params'])
+            options['result.contract.ordering'] = options['contract.ordering'].call(
+              options['params']
+            )
 
             options['result.contract.ordering'].errors.empty?
           end

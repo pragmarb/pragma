@@ -55,10 +55,14 @@ module Pragma
           def validate_params(options)
             options['contract.pagination'] = Dry::Validation.Schema do
               optional(options['pagination.page_param']).filled { int? & gteq?(1) }
-              optional(options['pagination.per_page_param']).filled { int? & (gteq?(1) & lteq?(options['pagination.max_per_page'])) }
+              optional(options['pagination.per_page_param']).filled do
+                int? & (gteq?(1) & lteq?(options['pagination.max_per_page']))
+              end
             end
 
-            options['result.contract.pagination'] = options['contract.pagination'].call(options['params'])
+            options['result.contract.pagination'] = options['contract.pagination'].call(
+              options['params']
+            )
 
             options['result.contract.pagination'].errors.empty?
           end

@@ -25,7 +25,7 @@ module Pragma
         options['model'] = options['policy.default.scope.class'].new(current_user, model).resolve
       end
 
-      def respond!(options, model:, **)
+      def respond!(options, **)
         options['result.response'] = Response::Ok.new(
           entity: options['result.decorator.collection']
         )

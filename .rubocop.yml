@@ -88,3 +88,12 @@ Metrics/ClassLength:
 
 Metrics/BlockLength:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Naming/MethodName:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
