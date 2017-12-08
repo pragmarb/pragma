@@ -21,17 +21,17 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'trailblazer', '~> 2.0'
-  spec.add_dependency 'pragma-operation', '~> 2.0'
-  spec.add_dependency 'pragma-policy', '~> 2.0'
   spec.add_dependency 'pragma-contract', '~> 2.0'
   spec.add_dependency 'pragma-decorator', '~> 2.0'
+  spec.add_dependency 'pragma-operation', '~> 2.0'
+  spec.add_dependency 'pragma-policy', '~> 2.0'
+  spec.add_dependency 'trailblazer', '~> 2.0'
   spec.add_dependency 'will_paginate', '~> 3.1'
 
   spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'coveralls'
 end

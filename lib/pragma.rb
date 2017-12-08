@@ -14,6 +14,7 @@ require 'pragma/decorator/error'
 
 require 'pragma/operation/macro/classes'
 require 'pragma/operation/macro/decorator'
+require 'pragma/operation/macro/ordering'
 require 'pragma/operation/macro/pagination'
 require 'pragma/operation/macro/policy'
 require 'pragma/operation/macro/model'

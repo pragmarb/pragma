@@ -12,6 +12,7 @@ module Pragma
       step Macro::Classes()
       step :retrieve!
       step :scope!
+      step Macro::Ordering()
       step Macro::Pagination()
       step Macro::Decorator(name: :collection)
       step :respond!

@@ -8,7 +8,10 @@ RSpec.describe Pragma::Operation::Index do
       'model.class' => model_klass,
       'decorator.collection.class' => collection_decorator_klass,
       'decorator.instance.class' => instance_decorator_klass,
-      'policy.default.scope.class' => policy_scope_klass
+      'policy.default.scope.class' => policy_scope_klass,
+      'ordering.order_columns' => %i[created_at id],
+      'ordering.default_column' => :id,
+      'ordering.default_direction' => :asc
     )
   end
 
@@ -20,9 +23,9 @@ RSpec.describe Pragma::Operation::Index do
     Class.new do
       def self.all
         [
-          OpenStruct.new(id: 1, user_id: 1),
-          OpenStruct.new(id: 2, user_id: 2),
-          OpenStruct.new(id: 3, user_id: 1)
+          OpenStruct.new(id: 2, user_id: 2, created_at: Time.now.to_i - 3600),
+          OpenStruct.new(id: 3, user_id: 1, created_at: Time.now.to_i - 1800),
+          OpenStruct.new(id: 1, user_id: 1, created_at: Time.now.to_i)
         ]
       end
     end
@@ -47,7 +50,26 @@ RSpec.describe Pragma::Operation::Index do
   let(:policy_scope_klass) do
     Class.new(Pragma::Policy::Base::Scope) do
       def resolve
-        scope.select { |i| i.user_id == user.id }
+        relation = Class.new(Array) do
+          def order(conditions)
+            ret = self
+
+            ret = case conditions.keys.first.to_sym
+                  when :id
+                    ret.sort_by(&:id)
+                  when :created_at
+                    ret.sort_by(&:created_at)
+                  else
+                    ret
+            end
+
+            ret = ret.reverse if conditions.values.first.to_sym == :desc
+
+            ret
+          end
+        end
+
+        relation.new(scope.select { |i| i.user_id == user.id })
       end
     end
   end
@@ -66,6 +88,29 @@ RSpec.describe Pragma::Operation::Index do
       'per_page' => 30,
       'total_entries' => 2
     ))
+  end
+
+  it 'orders properly' do
+    expect(result['result.response'].entity.to_hash['data']).to match([
+      a_hash_including('id' => 1),
+      a_hash_including('id' => 3)
+    ])
+  end
+
+  context 'with a different order column and direction' do
+    let(:params) do
+      {
+        order_column: 'created_at',
+        order_direction: 'desc'
+      }
+    end
+
+    it 'orders properly' do
+      expect(result['result.response'].entity.to_hash['data']).to match([
+        a_hash_including('id' => 3),
+        a_hash_including('id' => 1)
+      ])
+    end
   end
 
   context 'with integer pagination parameters' do
