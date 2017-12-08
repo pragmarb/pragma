@@ -100,8 +100,10 @@ This gem works best if you follow the recommended structure for organizing resou
             │   ├── destroy.rb
             │   ├── index.rb
             │   └── update.rb
+            └── decorator
+            |   ├── collection.rb
+            |   ├── instance.rb
             └── policy.rb
-            └── decorator.rb
 ```
 
 Your modules and classes would, of course, follow the same structure: `API::V1::Article::Policy` and 
