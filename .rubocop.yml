@@ -97,3 +97,6 @@ Naming/MethodName:
 
 Naming/AccessorMethodName:
   Enabled: false
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive

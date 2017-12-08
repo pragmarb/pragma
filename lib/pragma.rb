@@ -12,8 +12,14 @@ require 'pragma/version'
 
 require 'pragma/decorator/error'
 
+require 'pragma/operation/filter/base'
+require 'pragma/operation/filter/equals'
+require 'pragma/operation/filter/like'
+require 'pragma/operation/filter/ilike'
+
 require 'pragma/operation/macro/classes'
 require 'pragma/operation/macro/decorator'
+require 'pragma/operation/macro/filtering'
 require 'pragma/operation/macro/ordering'
 require 'pragma/operation/macro/pagination'
 require 'pragma/operation/macro/policy'
