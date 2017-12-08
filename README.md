@@ -102,7 +102,7 @@ This gem works best if you follow the recommended structure for organizing resou
             │   └── update.rb
             └── decorator
             |   ├── collection.rb
-            |   ├── instance.rb
+            |   └── instance.rb
             └── policy.rb
 ```
 
