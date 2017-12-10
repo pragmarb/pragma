@@ -1,9 +1,9 @@
 # Pragma
 
-[![Build Status](https://img.shields.io/travis/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/pragmarb/pragma)
-[![Dependency Status](https://img.shields.io/gemnasium/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://gemnasium.com/github.com/pragmarb/pragma)
-[![Code Climate](https://img.shields.io/codeclimate/github/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://codeclimate.com/github/pragmarb/pragma)
-[![Coveralls](https://img.shields.io/coveralls/pragmarb/pragma.svg?maxAge=3600&style=flat-square)](https://coveralls.io/github/pragmarb/pragma)
+[![Build Status](https://travis-ci.org/pragmarb/pragma.svg?branch=master)](https://travis-ci.org/pragmarb/pragma)
+[![Dependency Status](https://gemnasium.com/badges/github.com/pragmarb/pragma.svg)](https://gemnasium.com/github.com/pragmarb/pragma)
+[![Coverage Status](https://coveralls.io/repos/github/pragmarb/pragma/badge.svg?branch=master)](https://coveralls.io/github/pragmarb/pragma?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e51e8d7489eb72ab97ba/maintainability)](https://codeclimate.com/github/pragmarb/pragma/maintainability)
 
 Welcome to Pragma, an expressive, opinionated ecosystem for building beautiful RESTful APIs with 
 Ruby.
