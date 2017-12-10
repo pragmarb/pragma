@@ -11,7 +11,10 @@ RSpec.describe Pragma::Operation::Index do
       'policy.default.scope.class' => policy_scope_klass,
       'ordering.order_columns' => %i[created_at id],
       'ordering.default_column' => :id,
-      'ordering.default_direction' => :asc
+      'ordering.default_direction' => :asc,
+      'filtering.filters' => [
+        Pragma::Operation::Filter::Equals.new(param: :by_title, column: :title)
+      ]
     )
   end
 
@@ -23,9 +26,9 @@ RSpec.describe Pragma::Operation::Index do
     Class.new do
       def self.all
         [
-          OpenStruct.new(id: 2, user_id: 2, created_at: Time.now.to_i - 3600),
-          OpenStruct.new(id: 3, user_id: 1, created_at: Time.now.to_i - 1800),
-          OpenStruct.new(id: 1, user_id: 1, created_at: Time.now.to_i)
+          OpenStruct.new(id: 2, title: 'In Chains', user_id: 2, created_at: Time.now.to_i - 3600),
+          OpenStruct.new(id: 3, title: 'Little Soul', user_id: 1, created_at: Time.now.to_i - 1800),
+          OpenStruct.new(id: 1, title: 'Wrong', user_id: 1, created_at: Time.now.to_i)
         ]
       end
     end
@@ -44,6 +47,7 @@ RSpec.describe Pragma::Operation::Index do
     Class.new(Pragma::Decorator::Base) do
       property :id
       property :user_id
+      property :title
     end
   end
 
@@ -65,7 +69,13 @@ RSpec.describe Pragma::Operation::Index do
 
             ret = ret.reverse if conditions.values.first.to_sym == :desc
 
-            ret
+            self.class.new(ret)
+          end
+
+          def where(conditions)
+            self.class.new(
+              select { |r| r.send(conditions.keys.first) == conditions.values.first }
+            )
           end
         end
 
@@ -97,6 +107,19 @@ RSpec.describe Pragma::Operation::Index do
     ])
   end
 
+  context 'when applying a filter' do
+    let(:params) do
+      {
+        by_title: 'Wrong'
+      }
+    end
+
+    it 'filters properly' do
+      expect(result['result.response'].entity.to_hash['data']).to match([
+        a_hash_including('title' => 'Wrong')
+      ])
+    end
+  end
   context 'with a different order column and direction' do
     let(:params) do
       {
