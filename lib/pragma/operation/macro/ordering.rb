@@ -32,7 +32,7 @@ module Pragma
           def set_defaults(options)
             hash_options = options.to_hash
 
-            default_column = if options['model.class']&.respond_to?(:created_at)
+            default_column = if options['model.class']&.method_defined?(:created_at)
               :created_at
             end
 
