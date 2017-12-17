@@ -192,51 +192,6 @@ module API
 end
 ```
 
-### Decorator
-
-**Used in:** Index, Show, Create, Update
-
-The `Decorator` macro uses one of your decorators to decorate the model. If you are using 
-[expansion](https://github.com/pragmarb/pragma-decorator#associations), it will also make sure that
-the expansion parameter is valid.
-
-Example usage:
-
-```ruby
-module API
-  module V1
-    module Article
-      module Operation
-        class Show < Pragma::Operation::Base
-          # This step can be done by Classes if you want.
-          self['decorator.instance.class'] = Decorator::Instance
-          
-          step :model!
-          step Pragma::Operation::Macro::Decorator()
-          step :respond!
-          
-          def model!(params:, **)
-            options['model'] = ::Article.find(params[:id])
-          end
-          
-          def respond!(options)
-            # Pragma does this for you in the default operations.
-            options['result.response'] = Response::Ok.new(
-              entity: options['result.decorator.instance']
-            )
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-The macro accepts the following options, which can be defined on the operation or at runtime:
-
-- `expand.enabled`: whether associations can be expanded.
-- `expand.limit`: how many associations can be expanded at once.
-
 ### Model
 
 **Used in:** Index, Show, Create, Update, Destroy
@@ -303,62 +258,17 @@ In the example above, if the record is not found, the macro will respond with `4
 descriptive error message for you. If you want to override the error handling logic, you can remove 
 the `fail_fast` option and instead implement your own `failure` step.
 
-### Ordering
+### Policy
+
+**Used in:** Index, Show, Create, Update, Destroy
+
+TODO: Document usage and options
+
+### Filtering
 
 **Used in:** Index
 
-As the name suggests, the `Ordering` macro allows you to easily implement default and user-defined
-ordering.
-
-Here's an example:
-
-```ruby
-module API
-  module V1
-    module Article
-      module Operation
-        class Index < Pragma::Operation::Base
-          # This step can be done by Classes if you want.
-          self['model.class'] = ::Article
-
-          self['ordering.default_column'] = :published_at
-          self['ordering.default_direction'] = :desc
-          self['ordering.columns'] = %i[title published_at updated_at]
-
-          step :model!
-
-          # This will override `model` with the ordered relation.
-          step Pragma::Operation::Macro::Ordering(), fail_fast: true
-
-          step :respond!
-
-          def model!(options)
-            options['model'] = options['model.class'].all
-          end
-          
-          def respond!(options)
-            options['result.response'] = Response::Ok.new(
-              entity: options['model']
-            )
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-If the user provides an invalid order column or direction, the macro will respond with `422 Unprocessable Entity`
-and a descriptive error message. If you wish to implement your own error handling logic, you can
-remove the `fail_fast` option and implement your own `failure` step.
-
-The macro accepts the following options, which can be defined on the operation or at runtime:
-
-- `ordering.columns`: an array of columns the user can order by.
-- `ordering.default_column`: the default column to order by (default: `created_at`).
-- `ordering.default_direction`: the default direction to order by (default: `desc`).
-- `ordering.column_param`: the name of the parameter which will contain the order column.
-- `ordering.direction_param`: the name of the parameter which will contain the order direction.
+TODO: Document usage and options. Maybe extract in a separate gem?
 
 ### Pagination
 
@@ -416,17 +326,107 @@ and [Pagination](https://github.com/pragmarb/pragma-decorator#pagination) module
 [Pragma::Decorator](https://github.com/pragmarb/pragma-decorator), which will expose all the 
 pagination metadata.
 
-### Policy
-
-**Used in:** Index, Show, Create, Update, Destroy
-
-TODO: Document usage and options
-
-### Filtering
+### Ordering
 
 **Used in:** Index
 
-TODO: Document usage and options. Maybe extract in a separate gem?
+As the name suggests, the `Ordering` macro allows you to easily implement default and user-defined
+ordering.
+
+Here's an example:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Index < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+
+          self['ordering.default_column'] = :published_at
+          self['ordering.default_direction'] = :desc
+          self['ordering.columns'] = %i[title published_at updated_at]
+
+          step :model!
+
+          # This will override `model` with the ordered relation.
+          step Pragma::Operation::Macro::Ordering(), fail_fast: true
+
+          step :respond!
+
+          def model!(options)
+            options['model'] = options['model.class'].all
+          end
+          
+          def respond!(options)
+            options['result.response'] = Response::Ok.new(
+              entity: options['model']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+If the user provides an invalid order column or direction, the macro will respond with `422 Unprocessable Entity`
+and a descriptive error message. If you wish to implement your own error handling logic, you can
+remove the `fail_fast` option and implement your own `failure` step.
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `ordering.columns`: an array of columns the user can order by.
+- `ordering.default_column`: the default column to order by (default: `created_at`).
+- `ordering.default_direction`: the default direction to order by (default: `desc`).
+- `ordering.column_param`: the name of the parameter which will contain the order column.
+- `ordering.direction_param`: the name of the parameter which will contain the order direction.
+
+### Decorator
+
+**Used in:** Index, Show, Create, Update
+
+The `Decorator` macro uses one of your decorators to decorate the model. If you are using 
+[expansion](https://github.com/pragmarb/pragma-decorator#associations), it will also make sure that
+the expansion parameter is valid.
+
+Example usage:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Show < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['decorator.instance.class'] = Decorator::Instance
+          
+          step :model!
+          step Pragma::Operation::Macro::Decorator(), fail_fast: true
+          step :respond!
+          
+          def model!(params:, **)
+            options['model'] = ::Article.find(params[:id])
+          end
+          
+          def respond!(options)
+            # Pragma does this for you in the default operations.
+            options['result.response'] = Response::Ok.new(
+              entity: options['result.decorator.instance']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `expand.enabled`: whether associations can be expanded.
+- `expand.limit`: how many associations can be expanded at once.
 
 ## Contributing
 
