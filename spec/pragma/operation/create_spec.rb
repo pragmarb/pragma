@@ -81,18 +81,4 @@ RSpec.describe Pragma::Operation::Create do
       expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
     end
   end
-
-  context 'with a plain string as the expand parameter' do
-    let(:params) do
-      { title: 'My New Post', expand: 'foo' }
-    end
-
-    it 'responds with 422 Unprocessable Entity' do
-      expect(result['result.response'].status).to eq(422)
-    end
-
-    it 'decorates the error' do
-      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
-    end
-  end
 end
