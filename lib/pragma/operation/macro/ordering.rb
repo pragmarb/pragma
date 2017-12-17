@@ -30,20 +30,18 @@ module Pragma
           private
 
           def set_defaults(options)
-            hash_options = options.to_hash
-
             default_column = if options['model.class']&.method_defined?(:created_at)
               :created_at
             end
 
             {
-              'ordering.columns' => [default_column],
+              'ordering.columns' => [default_column].compact,
               'ordering.default_column' => default_column,
               'ordering.default_direction' => :desc,
               'ordering.column_param' => :order_property,
               'ordering.direction_param' => :order_direction
             }.each_pair do |key, value|
-              options[key] = value unless hash_options.key?(key.to_sym)
+              options[key] = value unless options[key]
             end
           end
 
