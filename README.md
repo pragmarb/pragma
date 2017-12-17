@@ -196,7 +196,46 @@ end
 
 **Used in:** Index, Show, Create, Update
 
-TODO: Document usage and options
+The `Decorator` macro uses one of your decorators to decorate the model. If you are using 
+[expansion](https://github.com/pragmarb/pragma-decorator#associations), it will also make sure that
+the expansion parameter is valid.
+
+Example usage:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Show < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['decorator.instance.class'] = Decorator::Instance
+          
+          step :model!
+          step Pragma::Operation::Macro::Decorator()
+          step :respond!
+          
+          def model!(params:, **)
+            options['model'] = ::Article.find(params[:id])
+          end
+          
+          def respond!(options)
+            # Pragma does this for you in the default operations.
+            options['result.response'] = Response::Ok.new(
+              entity: options['result.decorator.instance']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `expand.enabled`: whether associations can be expanded.
+- `expand.limit`: how many associations can be expanded at once.
 
 ### Filtering
 
