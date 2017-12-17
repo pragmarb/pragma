@@ -20,7 +20,10 @@ module Pragma
           end
         end
 
-        [step, name: 'model.build']
+        [step, name: "model.#{action || 'build'}"]
+      end
+
+      module Model
       end
     end
   end

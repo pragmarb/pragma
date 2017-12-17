@@ -21,12 +21,10 @@ module Pragma
           private
 
           def set_defaults(options)
-            hash_options = options.to_hash
-
             {
               'filtering.filters' => []
             }.each_pair do |key, value|
-              options[key] = value unless hash_options.key?(key.to_sym)
+              options[key] = value unless options[key]
             end
           end
 
