@@ -241,13 +241,73 @@ The macro accepts the following options, which can be defined on the operation o
 
 **Used in:** Index
 
-TODO: Document usage and options
+TODO: Document usage and options. Maybe extract in a separate gem?
 
 ### Model
 
 **Used in:** Index, Show, Create, Update, Destroy
 
-TODO: Document usage and options
+The `Model` macro provides support for performing different operations with models. It can either
+build a new instance of the model, if you are creating a new record, for instance, or it can find
+an existing record by ID.
+
+Example of building a new record:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Create < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+           
+          step Pragma::Operation::Macro::Model(:build)
+          step :save!
+          
+          def save!(options)
+            # Here you'd usually validate and assign parameters before saving.
+  
+            # ...
+  
+            options['model'].save!
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+As we mentioned, `Model` can also be used to find a record by ID:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Show < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+           
+          step Pragma::Operation::Macro::Model(:find_by), fail_fast: true
+          step :respond!
+          
+          def respond!(options)
+            options['result.response'] = Response::Ok.new(
+              entity: options['model']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+In the example above, if the record is not found, the macro will respond with `404 Not Found` and a
+descriptive error message for you. If you want to override the error, you can remove the `fail_fast`
+option and instead implement your own `failure` step.
 
 ### Ordering
 
