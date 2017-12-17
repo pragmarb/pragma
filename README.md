@@ -298,7 +298,42 @@ your own `failure` step.
 
 **Used in:** Index
 
-TODO: Document usage and options. Maybe extract in a separate gem?
+The `Filtering` macro provides a simple interface to define basic filters for your API. You simply
+include the macro and configure which filters you want to expose to the users.
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Index < Pragma::Operation::Base
+          step :model!
+          step Pragma::Operation::Macro::Filtering()
+          step :respond!
+
+          self['filtering.filters'] = [
+            Pragma::Operation::Filter::Equals.new(param: :by_category, column: :category_id),
+            Pragma::Operation::Filter::Ilike.new(param: :by_title, column: :title)
+          ]
+          
+          def model!(params:, **)
+            options['model'] = ::Article.all
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+With the example above, you are exposing the `by_category` filter and the `by_title` filters. The 
+following filters are available for ActiveRecord currently:
+
+- `Equals`: performs an exact comparison.
+- `Like`: performs a `LIKE` comparison.
+- `Ilike`: performs an `ILIKE` comparison.
+
+Support for more clauses as well as more ORMs will come soon.
 
 ### Pagination
 
