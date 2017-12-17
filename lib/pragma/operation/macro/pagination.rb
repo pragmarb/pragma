@@ -28,15 +28,13 @@ module Pragma
           private
 
           def set_defaults(options)
-            hash_options = options.to_hash
-
             {
               'pagination.page_param' => :page,
               'pagination.per_page_param' => :per_page,
               'pagination.default_per_page' => 30,
               'pagination.max_per_page' => 100
             }.each_pair do |key, value|
-              options[key] = value unless hash_options.key?(key.to_sym)
+              options[key] = value unless options[key]
             end
           end
 
