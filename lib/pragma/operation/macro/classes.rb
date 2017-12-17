@@ -50,7 +50,6 @@ module Pragma
 
           def expected_model_class(input, options)
             [
-              nil,
               resource_namespace(input, options).last
             ].join('::')
           end

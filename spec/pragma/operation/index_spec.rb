@@ -120,6 +120,7 @@ RSpec.describe Pragma::Operation::Index do
       ])
     end
   end
+
   context 'with a different order column and direction' do
     let(:params) do
       {
@@ -236,20 +237,6 @@ RSpec.describe Pragma::Operation::Index do
   context 'with 0 string as the per_page number' do
     let(:params) do
       { per_page: '0' }
-    end
-
-    it 'responds with 422 Unprocessable Entity' do
-      expect(result['result.response'].status).to eq(422)
-    end
-
-    it 'decorates the error' do
-      expect(result['result.response'].entity).to be_kind_of(Pragma::Decorator::Error)
-    end
-  end
-
-  context 'with a plain string as the expand parameter' do
-    let(:params) do
-      { expand: 'foo' }
     end
 
     it 'responds with 422 Unprocessable Entity' do
