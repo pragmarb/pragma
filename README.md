@@ -306,20 +306,121 @@ end
 ```
 
 In the example above, if the record is not found, the macro will respond with `404 Not Found` and a
-descriptive error message for you. If you want to override the error, you can remove the `fail_fast`
-option and instead implement your own `failure` step.
+descriptive error message for you. If you want to override the error handling logic, you can remove 
+the `fail_fast` option and instead implement your own `failure` step.
 
 ### Ordering
 
 **Used in:** Index
 
-TODO: Document usage and options
+As the name suggests, the `Ordering` macro allows you to easily implement default and user-defined
+ordering.
+
+Here's an example:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Index < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+
+          self['ordering.default_column'] = :published_at
+          self['ordering.default_direction'] = :desc
+          self['ordering.columns'] = %i[title published_at updated_at]
+
+          step :model!
+
+          # This will override `model` with the ordered relation.
+          step Pragma::Operation::Macro::Ordering(), fail_fast: true
+
+          step :respond!
+
+          def model!(options)
+            options['model'] = options['model.class'].all
+          end
+          
+          def respond!(options)
+            options['result.response'] = Response::Ok.new(
+              entity: options['model']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+If the user provides an invalid order column or direction, the macro will respond with `422 Unprocessable Entity`
+and a descriptive error message. If you wish to implement your own error handling logic, you can
+remove the `fail_fast` option and implement your own `failure` step.
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `ordering.columns`: an array of columns the user can order by.
+- `ordering.default_column`: the default column to order by (default: `created_at`).
+- `ordering.default_direction`: the default direction to order by (default: `desc`).
+- `ordering.column_param`: the name of the parameter which will contain the order column.
+- `ordering.direction_param`: the name of the parameter which will contain the order direction.
 
 ### Pagination
 
 **Used in:** Index
 
-TODO: Document usage and options
+The `Pagination` macro is responsible for paginating collections of records through 
+[will_paginate](https://github.com/mislav/will_paginate). It also allows your users to set the 
+number of records per page.
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Index < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+
+          step :model!
+
+          # This will override `model` with the paginated relation.
+          step Pragma::Operation::Macro::Pagination(), fail_fast: true
+
+          step :respond!
+
+          def model!(options)
+            options['model'] = options['model.class'].all
+          end
+          
+          def respond!(options)
+            options['result.response'] = Response::Ok.new(
+              entity: options['model']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+In the example above, if the page or per-page number fail validation, the macro will respond with
+`422 Unprocessable Entity` and a descriptive error message. If you wish to implement your own error 
+handling logic, you can remove the `fail_fast` option and implement your own `failure` step.
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `pagination.page_param`: the parameter that will contain the page number.
+- `pagination.per_page_param`: the parameter that will contain the number of items to include in each page.
+- `pagination.default_per_page`: the default number of items per page.
+- `pagination.max_per_page`: the max number of items per page.
+
+This macro is best used in conjunction with the [Collection](https://github.com/pragmarb/pragma-decorator#collection) 
+and [Pagination](https://github.com/pragmarb/pragma-decorator#pagination) modules of 
+[Pragma::Decorator](https://github.com/pragmarb/pragma-decorator), which will expose all the 
+pagination metadata.
 
 ### Policy
 
