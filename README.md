@@ -237,12 +237,6 @@ The macro accepts the following options, which can be defined on the operation o
 - `expand.enabled`: whether associations can be expanded.
 - `expand.limit`: how many associations can be expanded at once.
 
-### Filtering
-
-**Used in:** Index
-
-TODO: Document usage and options. Maybe extract in a separate gem?
-
 ### Model
 
 **Used in:** Index, Show, Create, Update, Destroy
@@ -424,9 +418,15 @@ pagination metadata.
 
 ### Policy
 
-**Used in:** Index
+**Used in:** Index, Show, Create, Update, Destroy
 
 TODO: Document usage and options
+
+### Filtering
+
+**Used in:** Index
+
+TODO: Document usage and options. Maybe extract in a separate gem?
 
 ## Contributing
 
