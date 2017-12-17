@@ -153,7 +153,44 @@ If you want, you can use these macros in your own operations.
 
 **Used in:** Index, Show, Create, Update, Destroy
 
-TODO: Document usage and options
+The `Classes` macro is responsible of tying together all the Pragma components: put it into an
+operation and it will determine the class names of the related policy, model, decorators and 
+contract. You can override any of these classes when defining the operation or at runtime if you
+wish.
+
+Example usage:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Create < Pragma::Operation::Base
+          # Let the macro figure out class names.
+          step Pragma::Operation::Macro::Classes()
+          step :execute!
+          
+          # But override the contract.
+          self['contract.default.class'] = Contract::CustomCreate
+          
+          def execute!(options)
+            # `options` contains the following:
+            #    
+            #    `model.class`
+            #    `policy.default.class`
+            #    `policy.default.scope.class`
+            #    `decorator.instance.class`
+            #    `decorator.collection.class`
+            #    `contract.default.class` 
+            #    
+            # These will be `nil` if the expected classes do not exist.
+          end
+        end
+      end
+    end
+  end
+end
+```
 
 ### Decorator
 
