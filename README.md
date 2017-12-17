@@ -131,16 +131,65 @@ module API
       module Operation
         class Create < Pragma::Operation::Create
           # This assumes that you have the following:
-          #   - a policy that responds to #create?
-          #   - a Create contract
-          #   - a decorator
-          #   - an Article model
+          #   1) an Article model
+          #   2) a Policy (responding to #create?)
+          #   3) a Create contract
+          #   4) an Instance decorator
         end
       end
     end
   end
 end
 ```
+
+## Macros
+
+The FF are implemented through their own set of macros, which take care of stuff like authorizing,
+paginating, filtering etc.
+
+If you want, you can use these macros in your own operations.
+
+### Classes
+
+**Used in:** Index, Show, Create, Update, Destroy
+
+TODO: Document usage and options
+
+### Decorator
+
+**Used in:** Index, Show, Create, Update
+
+TODO: Document usage and options
+
+### Filtering
+
+**Used in:** Index
+
+TODO: Document usage and options
+
+### Model
+
+**Used in:** Index, Show, Create, Update, Destroy
+
+TODO: Document usage and options
+
+### Ordering
+
+**Used in:** Index
+
+TODO: Document usage and options
+
+### Pagination
+
+**Used in:** Index
+
+TODO: Document usage and options
+
+### Policy
+
+**Used in:** Index
+
+TODO: Document usage and options
 
 ## Contributing
 
