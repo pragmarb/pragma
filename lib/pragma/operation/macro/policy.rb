@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'trailblazer/operation/pundit'
-
 module Pragma
   module Operation
     module Macro
