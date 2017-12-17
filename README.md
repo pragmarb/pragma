@@ -335,62 +335,6 @@ following filters are available for ActiveRecord currently:
 
 Support for more clauses as well as more ORMs will come soon.
 
-### Pagination
-
-**Used in:** Index
-
-The `Pagination` macro is responsible for paginating collections of records through 
-[will_paginate](https://github.com/mislav/will_paginate). It also allows your users to set the 
-number of records per page.
-
-```ruby
-module API
-  module V1
-    module Article
-      module Operation
-        class Index < Pragma::Operation::Base
-          # This step can be done by Classes if you want.
-          self['model.class'] = ::Article
-
-          step :model!
-
-          # This will override `model` with the paginated relation.
-          step Pragma::Operation::Macro::Pagination(), fail_fast: true
-
-          step :respond!
-
-          def model!(options)
-            options['model'] = options['model.class'].all
-          end
-          
-          def respond!(options)
-            options['result.response'] = Response::Ok.new(
-              entity: options['model']
-            )
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-In the example above, if the page or per-page number fail validation, the macro will respond with
-`422 Unprocessable Entity` and a descriptive error message. If you wish to implement your own error 
-handling logic, you can remove the `fail_fast` option and implement your own `failure` step.
-
-The macro accepts the following options, which can be defined on the operation or at runtime:
-
-- `pagination.page_param`: the parameter that will contain the page number.
-- `pagination.per_page_param`: the parameter that will contain the number of items to include in each page.
-- `pagination.default_per_page`: the default number of items per page.
-- `pagination.max_per_page`: the max number of items per page.
-
-This macro is best used in conjunction with the [Collection](https://github.com/pragmarb/pragma-decorator#collection) 
-and [Pagination](https://github.com/pragmarb/pragma-decorator#pagination) modules of 
-[Pragma::Decorator](https://github.com/pragmarb/pragma-decorator), which will expose all the 
-pagination metadata.
-
 ### Ordering
 
 **Used in:** Index
@@ -447,6 +391,62 @@ The macro accepts the following options, which can be defined on the operation o
 - `ordering.default_direction`: the default direction to order by (default: `desc`).
 - `ordering.column_param`: the name of the parameter which will contain the order column.
 - `ordering.direction_param`: the name of the parameter which will contain the order direction.
+
+### Pagination
+
+**Used in:** Index
+
+The `Pagination` macro is responsible for paginating collections of records through 
+[will_paginate](https://github.com/mislav/will_paginate). It also allows your users to set the 
+number of records per page.
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Index < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['model.class'] = ::Article
+
+          step :model!
+
+          # This will override `model` with the paginated relation.
+          step Pragma::Operation::Macro::Pagination(), fail_fast: true
+
+          step :respond!
+
+          def model!(options)
+            options['model'] = options['model.class'].all
+          end
+          
+          def respond!(options)
+            options['result.response'] = Response::Ok.new(
+              entity: options['model']
+            )
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+In the example above, if the page or per-page number fail validation, the macro will respond with
+`422 Unprocessable Entity` and a descriptive error message. If you wish to implement your own error 
+handling logic, you can remove the `fail_fast` option and implement your own `failure` step.
+
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `pagination.page_param`: the parameter that will contain the page number.
+- `pagination.per_page_param`: the parameter that will contain the number of items to include in each page.
+- `pagination.default_per_page`: the default number of items per page.
+- `pagination.max_per_page`: the max number of items per page.
+
+This macro is best used in conjunction with the [Collection](https://github.com/pragmarb/pragma-decorator#collection) 
+and [Pagination](https://github.com/pragmarb/pragma-decorator#pagination) modules of 
+[Pragma::Decorator](https://github.com/pragmarb/pragma-decorator), which will expose all the 
+pagination metadata.
 
 ### Decorator
 
