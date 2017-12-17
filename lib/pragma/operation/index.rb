@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'trailblazer/dsl'
-
 module Pragma
   module Operation
     # Finds all records of the requested resource, authorizes them, paginates them and decorates
