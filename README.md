@@ -173,7 +173,7 @@ TODO: Document usage and options
 
 TODO: Document usage and options
 
-### Ordering
+### Ordering
 
 **Used in:** Index
 
