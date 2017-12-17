@@ -329,7 +329,7 @@ end
 With the example above, you are exposing the `by_category` filter and the `by_title` filters. The 
 following filters are available for ActiveRecord currently:
 
-- `Equals`: performs an exact comparison.
+- `Equals`: performs an equality (`=`) comparison.
 - `Like`: performs a `LIKE` comparison.
 - `Ilike`: performs an `ILIKE` comparison.
 
