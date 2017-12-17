@@ -262,7 +262,37 @@ the `fail_fast` option and instead implement your own `failure` step.
 
 **Used in:** Index, Show, Create, Update, Destroy
 
-TODO: Document usage and options
+The `Policy` macro ensures that the current user can perform an operation on a given record.
+
+Here's a usage example:
+
+```ruby
+module API
+  module V1
+    module Article
+      module Operation
+        class Show < Pragma::Operation::Base
+          # This step can be done by Classes if you want.
+          self['policy.default.class'] = Policy
+          
+          step :model!
+          step Pragma::Operation::Macro::Policy(), fail_fast: true
+          step :respond!
+          
+          def model!(params:, **)
+            options['model'] = ::Article.find(params[:id])
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+If the user is not authorized to perform the operation (i.e. if the policy's `#show?` method returns
+`false`), the macro will respond with `403 Forbidden` and a descriptive error message. If you want 
+to override the error handling logic, you can remove the `fail_fast` option and instead implement 
+your own `failure` step.
 
 ### Filtering
 
