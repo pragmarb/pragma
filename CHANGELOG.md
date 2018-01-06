@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Implemented `expand.limit` and `expand.enabled`
+- Implemented the `Ordering` macro
+- Implemented the `Filtering` macro
+
 ## [2.0.0]
 
 First Pragma 2 release.
