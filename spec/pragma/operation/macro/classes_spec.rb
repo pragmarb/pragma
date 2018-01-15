@@ -2,9 +2,9 @@ RSpec.describe Pragma::Operation::Macro::Classes do
   subject(:result) { ClassesMacroTest::API::V1::Article::Operation::ClassesMacroTest.call }
 
   before do
-    class Article; end
-
     module ClassesMacroTest
+      class Article; end
+
       module API
         module V1
           module Article
@@ -33,7 +33,7 @@ RSpec.describe Pragma::Operation::Macro::Classes do
   end
 
   it 'sets the model class' do
-    expect(result['model.class']).to eq(Article)
+    expect(result['model.class']).to eq(ClassesMacroTest::Article)
   end
 
   it 'sets the policy class' do

@@ -48,8 +48,14 @@ module Pragma
             input.class.name.split('::')[0..-3]
           end
 
+          def root_namespace(input, options)
+            resource_namespace = resource_namespace(input, options)
+            resource_namespace[0..((resource_namespace.index('API') || 1) - 1)]
+          end
+
           def expected_model_class(input, options)
             [
+              root_namespace(input, options).join('::'),
               resource_namespace(input, options).last
             ].join('::')
           end
