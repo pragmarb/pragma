@@ -50,6 +50,7 @@ module Pragma
 
           def root_namespace(input, options)
             resource_namespace = resource_namespace(input, options)
+            return [] if resource_namespace.first == 'API'
             resource_namespace[0..((resource_namespace.index('API') || 1) - 1)]
           end
 
