@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Implemented the `Ordering` macro
 - Implemented the `Filtering` macro
 
+### Fixed
+
+- Fixed automatic lookup of nested model classes
+
 ## [2.0.0]
 
 First Pragma 2 release.
