@@ -21,7 +21,8 @@ module Pragma
             order_column = order_column(options)
 
             if order_column
-              options['model'] = options['model'].order(order_column => order_direction(options))
+              direction = order_direction(options)
+              options['model'] = options['model'].order("#{order_column} #{direction}")
             end
 
             true

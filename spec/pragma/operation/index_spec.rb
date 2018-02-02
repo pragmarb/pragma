@@ -56,18 +56,11 @@ RSpec.describe Pragma::Operation::Index do
       def resolve
         relation = Class.new(Array) do
           def order(conditions)
-            ret = self
+            column, direction = conditions.split(' ').map(&:to_sym)
 
-            ret = case conditions.keys.first.to_sym
-                  when :id
-                    ret.sort_by(&:id)
-                  when :created_at
-                    ret.sort_by(&:created_at)
-                  else
-                    ret
-            end
+            ret = sort_by { |r| column.to_s.split('.').inject(r, :send) }
 
-            ret = ret.reverse if conditions.values.first.to_sym == :desc
+            ret = ret.reverse if direction == :desc
 
             self.class.new(ret)
           end
