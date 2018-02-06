@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Pragma::Macro::Classes do
+RSpec.describe Pragma::Macro::Decorator do
   subject(:result) do
     DecoratorMacroTest::Operation.call(params, options.merge('decorator.instance.class' => decorator))
   end

@@ -3,13 +3,13 @@
 module Pragma
   module Macro
     def self.Policy(name: :default, action: nil)
-      step = ->(input, options) { Policy.for(input, name, action, options) }
+      step = ->(input, options) { Policy.for(input, name, options, action) }
       [step, name: "policy.#{name}"]
     end
 
     module Policy
       class << self
-        def for(input, name, action = nil, options)
+        def for(input, name, options, action = nil)
           policy = options["policy.#{name}.class"].new(options['current_user'], options['model'])
 
           options["result.policy.#{name}"] = Trailblazer::Operation::Result.new(
