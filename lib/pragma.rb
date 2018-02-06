@@ -17,6 +17,7 @@ require 'pragma/filter/equals'
 require 'pragma/filter/like'
 require 'pragma/filter/ilike'
 require 'pragma/filter/where'
+require 'pragma/filter/scope'
 
 require 'pragma/operation/filter'
 

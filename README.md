@@ -336,6 +336,8 @@ following filters are available for ActiveRecord currently:
 - `Ilike`: performs an `ILIKE` comparison (requires `:column`).
 - `Where`: adds a generic `WHERE` clause (requires `:condition` and passes the parameter's value as 
    `:value`).
+- `Scope`: calls a method on the collection (requires `:scope` and passes the parameter's value as 
+   the first argument).
 
 Support for more clauses as well as more ORMs will come soon.
 
