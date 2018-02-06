@@ -13,6 +13,13 @@ RSpec.describe Pragma::Operation::Macro::Filtering do
   before do
     module FilteringMacroTest
       class TestFilter < Pragma::Operation::Filter::Base
+        attr_reader :column
+
+        def initialize(column:, **other)
+          super(**other)
+          @column = column
+        end
+
         def apply(relation:, value:)
           relation.select do |instance|
             instance.send(column) == value

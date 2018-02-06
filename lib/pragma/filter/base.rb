@@ -3,11 +3,10 @@
 module Pragma
   module Filter
     class Base
-      attr_reader :param, :column
+      attr_reader :param
 
-      def initialize(param:, column:)
+      def initialize(param:)
         @param = param.to_sym
-        @column = column.to_sym
       end
 
       def apply(*)
