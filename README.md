@@ -331,9 +331,10 @@ end
 With the example above, you are exposing the `by_category` filter and the `by_title` filters. The 
 following filters are available for ActiveRecord currently:
 
-- `Equals`: performs an equality (`=`) comparison.
-- `Like`: performs a `LIKE` comparison.
-- `Ilike`: performs an `ILIKE` comparison.
+- `Equals`: performs an equality (`=`) comparison (options: `column`)-
+- `Like`: performs a `LIKE` comparison (options: `column`).
+- `Ilike`: performs an `ILIKE` comparison (options: `column`).
+- `Where`: performs a generic `WHERE` comparison (options: `condition`).
 
 Support for more clauses as well as more ORMs will come soon.
 
