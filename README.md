@@ -328,8 +328,9 @@ module API
 end
 ```
 
-With the example above, you are exposing the `by_category` filter and the `by_title` filters. The 
-following filters are available for ActiveRecord currently:
+With the example above, you are exposing the `by_category` filter and the `by_title` filters. 
+
+The following filters are available for ActiveRecord currently:
 
 - `Equals`: performs an equality (`=`) comparison (requires `:column`)-
 - `Like`: performs a `LIKE` comparison (requires `:column`).
