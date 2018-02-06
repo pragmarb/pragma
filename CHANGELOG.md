@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Pipetrees have been normalized to use strings and no exclamation marks
 - Move macros to `Pragma::Macro` namespace and provide BC-compatibility
 - Default name of `Contract::Build` steps is now `contract.[name].build`
+- Default name of `Contract::Persist` steps is now `contract.[name].[method]`
+
+### Fixed
+
+- Fixed handling of validation errors in `Contract::Persist`
 
 ## [2.1.1]
 
