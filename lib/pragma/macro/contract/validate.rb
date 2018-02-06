@@ -12,7 +12,7 @@ module Pragma
           ).call(input, options).tap do |result|
             unless result
               options['result.response'] = Pragma::Operation::Response::UnprocessableEntity.new(
-                errors: options['contract.default'].errors.messages
+                errors: options["contract.#{name}"].errors.messages
               ).decorate_with(Pragma::Decorator::Error)
             end
           end
