@@ -8,13 +8,13 @@ module Pragma
     # @author Alessandro Desantis
     class Index < Pragma::Operation::Base
       step Macro::Classes()
-      step :retrieve!
-      step :scope!
+      step :retrieve!, name: 'retrieve'
+      step :scope!, name: 'scope'
       step Macro::Filtering()
       step Macro::Ordering()
       step Macro::Pagination()
       step Macro::Decorator(name: :collection)
-      step :respond!
+      step :respond!, name: 'respond'
 
       def retrieve!(options)
         options['model'] = options['model.class'].all

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added ability to order by an association column
 
+### Changed
+
+- Pipetrees have been normalized to use strings and no exclamation marks
+
 ## [2.1.1]
 
 ### Fixed

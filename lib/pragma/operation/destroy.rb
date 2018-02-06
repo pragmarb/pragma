@@ -9,8 +9,8 @@ module Pragma
       step Macro::Classes()
       step Macro::Model(:find_by)
       step Macro::Policy()
-      step :destroy!
-      step :respond!
+      step :destroy!, name: 'destroy'
+      step :respond!, name: 'respond'
 
       def destroy!(_options, model:, **)
         unless model.destroy

@@ -10,7 +10,7 @@ module Pragma
       step Macro::Model(:find_by)
       step Macro::Policy()
       step Macro::Decorator()
-      step :respond!
+      step :respond!, name: 'respond'
 
       def respond!(options)
         options['result.response'] = Response::Ok.new(entity: options['result.decorator.instance'])

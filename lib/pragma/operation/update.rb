@@ -13,7 +13,7 @@ module Pragma
       step Macro::Contract::Validate()
       step Macro::Contract::Persist()
       step Macro::Decorator()
-      step :respond!
+      step :respond!, name: 'respond'
 
       def respond!(options)
         options['result.response'] = Response::Ok.new(entity: options['result.decorator.instance'])
