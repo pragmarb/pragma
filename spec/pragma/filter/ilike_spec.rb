@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Pragma::Operation::Filter::Ilike do
+RSpec.describe Pragma::Filter::Ilike do
   subject { described_class.new(param: :by_title, column: :title) }
 
   let(:relation) do

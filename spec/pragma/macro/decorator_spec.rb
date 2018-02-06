@@ -1,6 +1,8 @@
-RSpec.describe Pragma::Operation::Macro::Classes do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Classes do
   subject(:result) do
-    DecoratorMacroTest::Operation.(params, options.merge('decorator.instance.class' => decorator))
+    DecoratorMacroTest::Operation.call(params, options.merge('decorator.instance.class' => decorator))
   end
 
   let(:options) { {} }
@@ -27,9 +29,9 @@ RSpec.describe Pragma::Operation::Macro::Classes do
         self['expand.limit'] = 3
 
         step :model!
-        step Pragma::Operation::Macro::Decorator(name: :instance)
+        step Pragma::Macro::Decorator(name: :instance)
 
-        def model!(options)
+        def model!(_options)
           self['model'] = OpenStruct.new(id: 1)
         end
       end
@@ -87,7 +89,7 @@ RSpec.describe Pragma::Operation::Macro::Classes do
   context 'when too many associations are expanded' do
     let(:params) do
       {
-        expand: ['user', 'customer', 'invoice', 'company'],
+        expand: %w[user customer invoice company]
       }
     end
 
@@ -107,7 +109,7 @@ RSpec.describe Pragma::Operation::Macro::Classes do
 
     let(:params) do
       {
-        expand: ['user'],
+        expand: ['user']
       }
     end
 

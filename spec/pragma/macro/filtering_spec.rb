@@ -1,12 +1,14 @@
-RSpec.describe Pragma::Operation::Macro::Filtering do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Filtering do
   subject(:result) do
-    FilteringMacroTest::Operation.(params, options)
+    FilteringMacroTest::Operation.call(params, options)
   end
 
   let(:options) { {} }
   let(:params) do
     {
-      by_name: 'In Chains',
+      by_name: 'In Chains'
     }
   end
 
@@ -33,12 +35,12 @@ RSpec.describe Pragma::Operation::Macro::Filtering do
         ]
 
         step :model!
-        step Pragma::Operation::Macro::Filtering()
+        step Pragma::Macro::Filtering()
 
         def model!(options)
           options['model'] = [
             OpenStruct.new(name: 'In Chains'),
-            OpenStruct.new(name: 'Hole to Feed'),
+            OpenStruct.new(name: 'Hole to Feed')
           ]
         end
       end

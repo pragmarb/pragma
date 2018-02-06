@@ -1,6 +1,8 @@
-RSpec.describe Pragma::Operation::Macro::Policy do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Policy do
   subject(:result) do
-    PolicyMacroTest::Operation.(params, options)
+    PolicyMacroTest::Operation.call(params, options)
   end
 
   let(:options) { { 'current_user' => current_user } }
@@ -24,7 +26,7 @@ RSpec.describe Pragma::Operation::Macro::Policy do
           self['policy.default.class'] = Policy
 
           step :model!
-          step Pragma::Operation::Macro::Policy(), fail_fast: true
+          step Pragma::Macro::Policy(), fail_fast: true
           step :finish!
 
           def model!(options)
@@ -77,7 +79,7 @@ RSpec.describe Pragma::Operation::Macro::Policy do
           self['policy.default.class'] = Policy
 
           step :model!
-          step Pragma::Operation::Macro::Policy(action: :custom_operation), fail_fast: true
+          step Pragma::Macro::Policy(action: :custom_operation), fail_fast: true
           step :finish!
 
           def model!(options)

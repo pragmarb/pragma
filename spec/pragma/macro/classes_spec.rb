@@ -1,4 +1,6 @@
-RSpec.describe Pragma::Operation::Macro::Classes do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Classes do
   subject(:result) { ClassesMacroTest::API::V1::Article::Operation::ClassesMacroTest.call }
 
   before do
@@ -10,7 +12,7 @@ RSpec.describe Pragma::Operation::Macro::Classes do
           module Article
             module Operation
               class ClassesMacroTest < Pragma::Operation::Base
-                step Pragma::Operation::Macro::Classes()
+                step Pragma::Macro::Classes()
               end
             end
 

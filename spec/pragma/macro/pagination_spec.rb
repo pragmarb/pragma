@@ -1,6 +1,8 @@
-RSpec.describe Pragma::Operation::Macro::Pagination do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Pagination do
   subject(:result) do
-    PaginationMacroTest::Operation.(params, options)
+    PaginationMacroTest::Operation.call(params, options)
   end
 
   let(:options) { {} }
@@ -16,7 +18,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
 
       class Operation < Pragma::Operation::Base
         step :model!
-        step Pragma::Operation::Macro::Pagination()
+        step Pragma::Macro::Pagination()
 
         self['pagination.default_per_page'] = 2
         self['pagination.max_per_page'] = 99
@@ -27,7 +29,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
           options['model'] = Model.new([
             OpenStruct.new(name: 'Hole to Feed'),
             OpenStruct.new(name: 'In Chains'),
-            OpenStruct.new(name: 'Never Let Me Down Again'),
+            OpenStruct.new(name: 'Never Let Me Down Again')
           ])
         end
       end
@@ -45,7 +47,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
     let(:params) do
       {
         per_p: 1,
-        p: 3,
+        p: 3
       }
     end
 
@@ -59,7 +61,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
   context 'when passing a string as the page number' do
     let(:params) do
       {
-        p: '1',
+        p: '1'
       }
     end
 
@@ -74,7 +76,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
   context 'when passing a string as the per_page number' do
     let(:params) do
       {
-        per_p: '2',
+        per_p: '2'
       }
     end
 
@@ -89,7 +91,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
   context 'when passing 0 as the page number' do
     let(:params) do
       {
-        p: 0,
+        p: 0
       }
     end
 
@@ -101,7 +103,7 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
   context 'when passing 0 as the per_page number' do
     let(:params) do
       {
-        per_p: 0,
+        per_p: 0
       }
     end
 
@@ -110,11 +112,10 @@ RSpec.describe Pragma::Operation::Macro::Pagination do
     end
   end
 
-
   context 'when passing a per_page number that is too large' do
     let(:params) do
       {
-        per_p: 100,
+        per_p: 100
       }
     end
 

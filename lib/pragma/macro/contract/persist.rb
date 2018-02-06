@@ -5,7 +5,7 @@ require 'trailblazer/operation/persist'
 module Pragma
   module Macro
     module Contract
-      def self.Persist(method: :save, name: "default")
+      def self.Persist(method: :save, name: 'default')
         step = lambda do |input, options|
           Trailblazer::Operation::Pipetree::Step.new(
             Trailblazer::Operation::Contract::Persist(method: method, name: name).first

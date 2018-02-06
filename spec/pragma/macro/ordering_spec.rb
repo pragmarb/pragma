@@ -1,6 +1,8 @@
-RSpec.describe Pragma::Operation::Macro::Ordering do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Ordering do
   subject(:result) do
-    OrderingMacroTest::Operation.(params, options)
+    OrderingMacroTest::Operation.call(params, options)
   end
 
   let(:options) { {} }
@@ -15,10 +17,10 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
           records = sort_by { |r| column.to_s.split('.').inject(r, :send) }
 
           records = case direction
-          when :desc
-            records.reverse
-          else
-            records
+                    when :desc
+                      records.reverse
+                    else
+                      records
           end
 
           self.class.new records
@@ -27,7 +29,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
 
       class Operation < Pragma::Operation::Base
         step :model!
-        step Pragma::Operation::Macro::Ordering()
+        step Pragma::Macro::Ordering()
 
         self['ordering.columns'] = %w[name rating album.name]
         self['ordering.default_column'] = 'rating'
@@ -51,7 +53,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
               name: 'Never Let Me Down Again',
               rating: 5,
               album: OpenStruct.new(name: 'Music for the Masses')
-            ),
+            )
           ])
         end
       end
@@ -70,7 +72,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
     let(:params) do
       {
         ordercol: 'album.name',
-        orderdir: 'asc',
+        orderdir: 'asc'
       }
     end
 
@@ -87,7 +89,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
     let(:params) do
       {
         ordercol: 'name',
-        orderdir: 'asc',
+        orderdir: 'asc'
       }
     end
 
@@ -104,7 +106,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
     let(:params) do
       {
         ordercol: 'invalid',
-        orderdir: 'asc',
+        orderdir: 'asc'
       }
     end
 
@@ -117,7 +119,7 @@ RSpec.describe Pragma::Operation::Macro::Ordering do
     let(:params) do
       {
         ordercol: 'name',
-        orderdir: 'invalid',
+        orderdir: 'invalid'
       }
     end
 

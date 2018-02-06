@@ -1,6 +1,8 @@
-RSpec.describe Pragma::Operation::Macro::Model do
+# frozen_string_literal: true
+
+RSpec.describe Pragma::Macro::Model do
   subject(:result) do
-    operation_class.(params, options)
+    operation_class.call(params, options)
   end
 
   let(:options) { {} }
@@ -16,12 +18,12 @@ RSpec.describe Pragma::Operation::Macro::Model do
 
       class BuildingOperation < Pragma::Operation::Base
         self['model.class'] = ModelMacroTest::Model
-        step Pragma::Operation::Macro::Model()
+        step Pragma::Macro::Model()
       end
 
       class FindingOperation < Pragma::Operation::Base
         self['model.class'] = ModelMacroTest::Model
-        step Pragma::Operation::Macro::Model(:find_by)
+        step Pragma::Macro::Model(:find_by)
       end
     end
   end

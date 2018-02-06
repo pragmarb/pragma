@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Pragma::Operation::Filter::Equals do
+RSpec.describe Pragma::Filter::Equals do
   subject { described_class.new(param: :by_category, column: :category) }
 
   let(:relation) do
