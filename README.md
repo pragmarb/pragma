@@ -277,6 +277,8 @@ module API
           
           step :model!
           step Pragma::Operation::Macro::Policy(), fail_fast: true
+          # You can also specify a custom method to call on the policy:
+          # step Pragma::Operation::Macro::Policy(action: :custom_method), fail_fast: true
           step :respond!
           
           def model!(params:, **)
