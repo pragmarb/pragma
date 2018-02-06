@@ -18,7 +18,7 @@ module Pragma
           end
         end
 
-        [step, name: 'contract.build']
+        [step, name: "contract.#{name}.build"]
       end
     end
   end
