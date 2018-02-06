@@ -35,9 +35,7 @@ module Pragma
               end
             end
 
-            options[key] = if Object.const_defined?(value)
-              Object.const_get(value)
-            end
+            options[key] = (Object.const_get(value) if Object.const_defined?(value))
           end
         end
 

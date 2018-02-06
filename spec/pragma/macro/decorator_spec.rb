@@ -2,7 +2,10 @@
 
 RSpec.describe Pragma::Macro::Decorator do
   subject(:result) do
-    DecoratorMacroTest::Operation.call(params, options.merge('decorator.instance.class' => decorator))
+    DecoratorMacroTest::Operation.call(
+      params,
+      options.merge('decorator.instance.class' => decorator)
+    )
   end
 
   let(:options) { {} }

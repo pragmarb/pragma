@@ -43,18 +43,26 @@ RSpec.describe Pragma::Macro::Classes do
   end
 
   it 'sets the policy scope class' do
-    expect(result['policy.default.scope.class']).to eq(ClassesMacroTest::API::V1::Article::Policy::Scope)
+    expect(result['policy.default.scope.class']).to eq(
+      ClassesMacroTest::API::V1::Article::Policy::Scope
+    )
   end
 
   it 'sets the contract class' do
-    expect(result['contract.default.class']).to eq(ClassesMacroTest::API::V1::Article::Contract::ClassesMacroTest)
+    expect(result['contract.default.class']).to eq(
+      ClassesMacroTest::API::V1::Article::Contract::ClassesMacroTest
+    )
   end
 
   it 'sets the instance decorator class' do
-    expect(result['decorator.instance.class']).to eq(ClassesMacroTest::API::V1::Article::Decorator::Instance)
+    expect(result['decorator.instance.class']).to eq(
+      ClassesMacroTest::API::V1::Article::Decorator::Instance
+    )
   end
 
   it 'sets the collection decorator class' do
-    expect(result['decorator.collection.class']).to eq(ClassesMacroTest::API::V1::Article::Decorator::Collection)
+    expect(result['decorator.collection.class']).to eq(
+      ClassesMacroTest::API::V1::Article::Decorator::Collection
+    )
   end
 end

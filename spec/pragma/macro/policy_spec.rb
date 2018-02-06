@@ -10,6 +10,7 @@ RSpec.describe Pragma::Macro::Policy do
 
   context 'with the default action' do
     before do
+      # rubocop:disable RSpec/InstanceVariable
       module PolicyMacroTest
         class Policy
           def initialize(user, model)
@@ -38,6 +39,7 @@ RSpec.describe Pragma::Macro::Policy do
           end
         end
       end
+      # rubocop:enable RSpec/InstanceVariable
     end
 
     context 'when the user is authorized' do
@@ -63,6 +65,7 @@ RSpec.describe Pragma::Macro::Policy do
 
   context 'with a custom action' do
     before do
+      # rubocop:disable RSpec/InstanceVariable
       module PolicyMacroTest
         class Policy
           def initialize(user, model)
@@ -91,6 +94,7 @@ RSpec.describe Pragma::Macro::Policy do
           end
         end
       end
+      # rubocop:enable RSpec/InstanceVariable
     end
 
     context 'when the user is authorized' do

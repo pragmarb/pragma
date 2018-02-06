@@ -30,9 +30,7 @@ module Pragma
         private
 
         def set_defaults(options)
-          default_column = if options['model.class']&.method_defined?(:created_at)
-            :created_at
-          end
+          default_column = (:created_at if options['model.class']&.method_defined?(:created_at))
 
           {
             'ordering.columns' => [default_column].compact,
