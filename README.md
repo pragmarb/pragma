@@ -167,7 +167,7 @@ module API
       module Operation
         class Create < Pragma::Operation::Base
           # Let the macro figure out class names.
-          step Pragma::Operation::Macro::Classes()
+          step Pragma::Macro::Classes()
           step :execute!
           
           # But override the contract.
@@ -211,7 +211,7 @@ module API
           # This step can be done by Classes if you want.
           self['model.class'] = ::Article
            
-          step Pragma::Operation::Macro::Model(:build)
+          step Pragma::Macro::Model(:build)
           step :save!
           
           def save!(options)
@@ -239,7 +239,7 @@ module API
           # This step can be done by Classes if you want.
           self['model.class'] = ::Article
            
-          step Pragma::Operation::Macro::Model(:find_by), fail_fast: true
+          step Pragma::Macro::Model(:find_by), fail_fast: true
           step :respond!
           
           def respond!(options)
@@ -276,9 +276,9 @@ module API
           self['policy.default.class'] = Policy
           
           step :model!
-          step Pragma::Operation::Macro::Policy(), fail_fast: true
+          step Pragma::Macro::Policy(), fail_fast: true
           # You can also specify a custom method to call on the policy:
-          # step Pragma::Operation::Macro::Policy(action: :custom_method), fail_fast: true
+          # step Pragma::Macro::Policy(action: :custom_method), fail_fast: true
           step :respond!
           
           def model!(params:, **)
@@ -310,12 +310,12 @@ module API
       module Operation
         class Index < Pragma::Operation::Base
           step :model!
-          step Pragma::Operation::Macro::Filtering()
+          step Pragma::Macro::Filtering()
           step :respond!
 
           self['filtering.filters'] = [
-            Pragma::Operation::Filter::Equals.new(param: :by_category, column: :category_id),
-            Pragma::Operation::Filter::Ilike.new(param: :by_title, column: :title)
+            Pragma::Filter::Equals.new(param: :by_category, column: :category_id),
+            Pragma::Filter::Ilike.new(param: :by_title, column: :title)
           ]
           
           def model!(params:, **)
@@ -362,7 +362,7 @@ module API
           step :model!
 
           # This will override `model` with the ordered relation.
-          step Pragma::Operation::Macro::Ordering(), fail_fast: true
+          step Pragma::Macro::Ordering(), fail_fast: true
 
           step :respond!
 
@@ -414,7 +414,7 @@ module API
           step :model!
 
           # This will override `model` with the paginated relation.
-          step Pragma::Operation::Macro::Pagination(), fail_fast: true
+          step Pragma::Macro::Pagination(), fail_fast: true
 
           step :respond!
 
@@ -470,7 +470,7 @@ module API
           self['decorator.instance.class'] = Decorator::Instance
           
           step :model!
-          step Pragma::Operation::Macro::Decorator(), fail_fast: true
+          step Pragma::Macro::Decorator(), fail_fast: true
           step :respond!
           
           def model!(params:, **)
