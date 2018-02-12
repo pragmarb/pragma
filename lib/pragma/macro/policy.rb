@@ -12,8 +12,11 @@ module Pragma
         def for(input, name, options, action = nil)
           policy = options["policy.#{name}.class"].new(options['current_user'], options['model'])
 
+          action_name = action.is_a?(Proc) ? action.call(options) : action
+          action_name ||= input.class.operation_name
+
           options["result.policy.#{name}"] = Trailblazer::Operation::Result.new(
-            policy.send("#{action || input.class.operation_name}?"),
+            policy.send("#{action_name}?"),
             'policy' => policy
           )
 
