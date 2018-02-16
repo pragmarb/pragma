@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'will_paginate'
+require 'will_paginate/array'
+
 RSpec.describe Pragma::Operation::Index do
   subject(:result) do
     described_class.call(

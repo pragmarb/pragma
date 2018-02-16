@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Dropped runtime dependency on will_paginate
+
 ### Fixed
 
 - Fixed constant loading in Ruby 2.5
