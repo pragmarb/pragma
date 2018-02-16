@@ -26,13 +26,13 @@ module Pragma
             rescue NameError => e
               # We check the error message to avoid silently ignoring other NameErrors
               # thrown while initializing the constant.
-              if e.message.start_with?('uninitialized constant')
-                # Required instead of a simple equality check because loading
-                # API::V1::Post::Contract::Index might throw "uninitialized constant
-                # API::V1::Post::Contract" if the resource has no contracts at all.
-                error_constant = e.message.split.last
-                raise e unless value.sub(/\A::/, '').start_with?(error_constant)
-              end
+              raise e unless e.message.start_with?('uninitialized constant')
+
+              # Required instead of a simple equality check because loading
+              # API::V1::Post::Contract::Index might throw "uninitialized constant
+              # API::V1::Post::Contract" if the resource has no contracts at all.
+              error_constant = e.message.scan(/uninitialized constant ([^\s]+)/).first.first
+              raise e unless value.sub(/\A::/, '').start_with?(error_constant)
             end
 
             options[key] = (Object.const_get(value) if Object.const_defined?(value))
