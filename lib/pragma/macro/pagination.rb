@@ -18,10 +18,18 @@ module Pragma
             return false
           end
 
-          options['model'] = options['model'].paginate(
+          pagination_options = {
             page: page(options, **options),
             per_page: per_page(options, **options)
-          )
+          }
+
+          options['model'] = if defined?(Kaminari)
+            options['model'].page(pagination_options[:page]).per(pagination_options[:per_page])
+          elsif defined?(WillPaginate)
+            options['model'].paginate(pagination_options)
+          else
+            fail 'Cannot find a supported pagination adapter (tried Kaminari, will_paginate)!'
+          end
         end
 
         private
