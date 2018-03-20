@@ -338,7 +338,8 @@ The following filters are available for ActiveRecord currently:
 - `Where`: adds a generic `WHERE` clause (requires `:condition` and passes the parameter's value as 
    `:value`).
 - `Scope`: calls a method on the collection (requires `:scope` and passes the parameter's value as 
-   the first argument).
+   the first argument);
+- `Boolean`: calls a method on the collection (requires `:scope` and doesn't pass any arguments).
 
 Support for more clauses as well as more ORMs will come soon.
 
