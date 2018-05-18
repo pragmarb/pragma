@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Implemented `Boolean` scope
 
+### Fixed
+
+- Add support for different capitalizations of API namespace
+
 ## [2.3.0]
 
 ### Added
