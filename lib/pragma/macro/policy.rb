@@ -10,7 +10,10 @@ module Pragma
     module Policy
       class << self
         def for(input, name, options, action = nil)
-          policy = options["policy.#{name}.class"].new(options['current_user'], options['model'])
+          policy = options["policy.#{name}.class"].new(
+            options['policy.context'] || options['current_user'],
+            options['model']
+          )
 
           action_name = action.is_a?(Proc) ? action.call(options) : action
           action_name ||= input.class.operation_name
