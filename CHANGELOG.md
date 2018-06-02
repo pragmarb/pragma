@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Implemented `Boolean` scope
-- Add support for additional policy context
+- Added support for additional policy context via `policy.context`
 
 ### Fixed
 
