@@ -296,6 +296,11 @@ If the user is not authorized to perform the operation (i.e. if the policy's `#s
 to override the error handling logic, you can remove the `fail_fast` option and instead implement 
 your own `failure` step.
 
+The macro accepts the following options, which can be defined on the operation or at runtime:
+
+- `policy.context`: the context to use for the policy (optional, `current_user` is used if not
+  provided).
+
 ### Filtering
 
 **Used in:** Index
