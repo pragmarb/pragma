@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Add support for different capitalizations of API namespace
-
+- Added support for different capitalizations of API namespace
+- Fixed an issue where each filter would override the previous one
+ 
 ## [2.3.0]
 
 ### Added

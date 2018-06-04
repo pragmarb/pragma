@@ -34,7 +34,7 @@ module Pragma
             value = options['params'][filter.param]
             next unless value.present?
 
-            relation = filter.apply(relation: options['model'], value: value)
+            relation = filter.apply(relation: relation, value: value)
           end
 
           relation
