@@ -20,8 +20,12 @@ module Pragma
         options['model'] = options['model.class'].all
       end
 
-      def scope!(options, current_user:, model:, **)
-        options['model'] = options['policy.default.scope.class'].new(current_user, model).resolve
+      # TODO: Turn this into a macro.
+      def scope!(options, model:, **)
+        options['model'] = options['policy.default.scope.class'].new(
+          options['policy.context'] || options['current_user'],
+          model
+        ).resolve
       end
 
       def respond!(options, **)
