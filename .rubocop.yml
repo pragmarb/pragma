@@ -5,6 +5,7 @@ AllCops:
   Include:
     - '**/Gemfile'
     - '**/Rakefile'
+    - '**/*.rb'
   Exclude:
    - 'bin/*'
    - 'db/**/*'
@@ -13,8 +14,6 @@ AllCops:
    - 'spec/rails_helper.rb'
    - 'spec/support/**/*'
    - 'config/**/*'
-   - '**/Rakefile'
-   - '**/Gemfile'
 
 RSpec/DescribeClass:
   Exclude:
@@ -52,7 +51,7 @@ Style/SignalException:
 Style/BracesAroundHashParameters:
   EnforcedStyle: context_dependent
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
   AutoCorrect: true
 
