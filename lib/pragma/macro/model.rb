@@ -4,10 +4,10 @@ require 'trailblazer/operation/model'
 
 module Pragma
   module Macro
-    def self.Model(action = nil)
+    def self.Model(action = nil, key = nil)
       step = lambda do |input, options|
         Trailblazer::Operation::Pipetree::Step.new(
-          Trailblazer::Operation::Model.for(options['model.class'], action),
+          Trailblazer::Operation::Model.for(options['model.class'], action, key),
           'model.class' => options['model.class'],
           'model.action' => action
         ).call(input, options).tap do |result|
