@@ -10,8 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Expose `type` property for API errors
-- Add support for custom `find_by` key in `Model()`
- 
+
 ## [2.4.0]
 
 ### Added
