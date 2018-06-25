@@ -4,8 +4,6 @@ module Pragma
   module Operation
     # Finds all records of the requested resource, authorizes them, paginates them and decorates
     # them.
-    #
-    # @author Alessandro Desantis
     class Index < Pragma::Operation::Base
       step Macro::Classes()
       step :retrieve!, name: 'retrieve'
@@ -14,10 +12,17 @@ module Pragma
       step Macro::Ordering()
       step Macro::Pagination()
       step Macro::Decorator(name: :collection)
+      step :include!, name: 'include'
       step :respond!, name: 'respond'
 
       def retrieve!(options)
         options['model'] = options['model.class'].all
+      end
+
+      def include!(options)
+        options['model'] = AssociationIncluder
+          .load_adaptor(options['model'])
+          .include_associations(options['params'][:expand] || [])
       end
 
       # TODO: Turn this into a macro.
