@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'adaptor'
+
 require 'pragma/operation'
 require 'pragma/policy'
 require 'pragma/contract'
@@ -31,6 +33,11 @@ require 'pragma/macro/contract/validate'
 require 'pragma/macro/contract/persist'
 
 require 'pragma/operation/macro'
+
+require 'pragma/association_includer/base'
+require 'pragma/association_includer/active_record'
+require 'pragma/association_includer/poro'
+require 'pragma/association_includer'
 
 require 'pragma/operation/index'
 require 'pragma/operation/show'
