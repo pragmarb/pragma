@@ -1,68 +1,103 @@
 # frozen_string_literal: true
 
 RSpec.describe Pragma::Macro::Classes do
-  subject(:result) { ClassesMacroTest::API::V1::Article::Operation::ClassesMacroTest.call }
+  SETUP_CODE = <<~RUBY
+    class Article; end
 
-  before do
-    module ClassesMacroTest
-      class Article; end
-
-      module API
-        module V1
-          module Article
-            module Operation
-              class ClassesMacroTest < Pragma::Operation::Base
-                step Pragma::Macro::Classes()
-              end
+    module API
+      module V1
+        module Article
+          module Operation
+            class Create < Pragma::Operation::Base
+              step Pragma::Macro::Classes()
+              class AsAdmin < Create; end
             end
+          end
 
-            class Policy
-              class Scope; end
-            end
+          class Policy
+            class Scope; end
+          end
 
-            module Decorator
-              class Instance; end
-              class Collection; end
-            end
+          module Decorator
+            class Instance; end
+            class Collection; end
+          end
 
-            module Contract
-              class ClassesMacroTest; end
+          module Contract
+            class Create
+              class AsAdmin; end
             end
           end
         end
       end
     end
+  RUBY
+
+  class << self
+    def validate_classes(operation, expectations)
+      expectations.each do |key, expected|
+        it "computes #{key} correctly" do
+          expect(Object.const_get(operation).call[key].to_s).to eq(expected)
+        end
+      end
+    end
   end
 
-  it 'sets the model class' do
-    expect(result['model.class']).to eq(ClassesMacroTest::Article)
+  before do
+    # rubocop:disable Security/Eval, Style/EvalWithLocation
+    eval <<~RUBY
+      #{SETUP_CODE}
+
+      module Blog
+        #{SETUP_CODE}
+      end
+    RUBY
+    # rubocop:enable Security/Eval, Style/EvalWithLocation
   end
 
-  it 'sets the policy class' do
-    expect(result['policy.default.class']).to eq(ClassesMacroTest::API::V1::Article::Policy)
-  end
-
-  it 'sets the policy scope class' do
-    expect(result['policy.default.scope.class']).to eq(
-      ClassesMacroTest::API::V1::Article::Policy::Scope
+  # rubocop:disable RSpec/EmptyExampleGroup
+  context 'with a root operation' do
+    validate_classes('API::V1::Article::Operation::Create',
+      'model.class' => 'Article',
+      'policy.default.class' => 'API::V1::Article::Policy',
+      'policy.default.scope.class' => 'API::V1::Article::Policy::Scope',
+      'contract.default.class' => 'API::V1::Article::Contract::Create',
+      'decorator.instance.class' => 'API::V1::Article::Decorator::Instance',
+      'decorator.collection.class' => 'API::V1::Article::Decorator::Collection'
     )
   end
 
-  it 'sets the contract class' do
-    expect(result['contract.default.class']).to eq(
-      ClassesMacroTest::API::V1::Article::Contract::ClassesMacroTest
+  context 'with a nested operation' do
+    validate_classes('API::V1::Article::Operation::Create::AsAdmin',
+      'model.class' => 'Article',
+      'policy.default.class' => 'API::V1::Article::Policy',
+      'policy.default.scope.class' => 'API::V1::Article::Policy::Scope',
+      'contract.default.class' => 'API::V1::Article::Contract::Create::AsAdmin',
+      'decorator.instance.class' => 'API::V1::Article::Decorator::Instance',
+      'decorator.collection.class' => 'API::V1::Article::Decorator::Collection'
     )
   end
 
-  it 'sets the instance decorator class' do
-    expect(result['decorator.instance.class']).to eq(
-      ClassesMacroTest::API::V1::Article::Decorator::Instance
+  context 'with an engine and a root operation' do
+    validate_classes('Blog::API::V1::Article::Operation::Create',
+      'model.class' => 'Blog::Article',
+      'policy.default.class' => 'Blog::API::V1::Article::Policy',
+      'policy.default.scope.class' => 'Blog::API::V1::Article::Policy::Scope',
+      'contract.default.class' => 'Blog::API::V1::Article::Contract::Create',
+      'decorator.instance.class' => 'Blog::API::V1::Article::Decorator::Instance',
+      'decorator.collection.class' => 'Blog::API::V1::Article::Decorator::Collection'
     )
   end
 
-  it 'sets the collection decorator class' do
-    expect(result['decorator.collection.class']).to eq(
-      ClassesMacroTest::API::V1::Article::Decorator::Collection
+  context 'with an engine and a nested operation' do
+    validate_classes('Blog::API::V1::Article::Operation::Create::AsAdmin',
+      'model.class' => 'Blog::Article',
+      'policy.default.class' => 'Blog::API::V1::Article::Policy',
+      'policy.default.scope.class' => 'Blog::API::V1::Article::Policy::Scope',
+      'contract.default.class' => 'Blog::API::V1::Article::Contract::Create::AsAdmin',
+      'decorator.instance.class' => 'Blog::API::V1::Article::Decorator::Instance',
+      'decorator.collection.class' => 'Blog::API::V1::Article::Decorator::Collection'
     )
   end
+  # rubocop:enable RSpec/EmptyExampleGroup
 end
