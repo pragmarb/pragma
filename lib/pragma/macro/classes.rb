@@ -42,13 +42,14 @@ module Pragma
         private
 
         def resource_namespace(input, _options)
-          input.class.name.split('::')[0..-3]
+          parts = input.class.name.split('::')
+          parts[0..(parts.index('Operation') - 1)]
         end
 
         def root_namespace(input, options)
           resource_namespace = resource_namespace(input, options)
-          return [] if %w[API Api].include?(resource_namespace.first)
-          api_index = (resource_namespace.index('API') || resource_namespace.index('Api') || 1)
+          return [] if resource_namespace.first.casecmp('API').zero?
+          api_index = (resource_namespace.map(&:upcase).index('API') || 1)
           resource_namespace[0..(api_index - 1)]
         end
 
@@ -87,10 +88,12 @@ module Pragma
         end
 
         def expected_contract_class(input, options)
+          parts = input.class.name.split('::')
+
           [
             resource_namespace(input, options),
             'Contract',
-            input.class.name.split('::').last
+            parts[(parts.index('Operation') + 1)..-1]
           ].join('::')
         end
       end
