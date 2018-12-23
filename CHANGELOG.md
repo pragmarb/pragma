@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Expose `type` property for API errors
 - Expanded associations are now eager-loaded automatically
+- Calling macros whose support classes are undefined will now raise a `MissingSkillError`
 
 ### Fixed
 
