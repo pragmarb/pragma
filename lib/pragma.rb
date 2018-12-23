@@ -21,6 +21,7 @@ require 'pragma/filter/boolean'
 
 require 'pragma/operation/filter'
 
+require 'pragma/macro'
 require 'pragma/macro/classes'
 require 'pragma/macro/decorator'
 require 'pragma/macro/filtering'

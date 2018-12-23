@@ -45,6 +45,14 @@ RSpec.describe Pragma::Macro::Decorator do
     expect(result['result.decorator.instance'].model.id).to eq(1)
   end
 
+  context 'when no decorator is provided' do
+    let(:decorator) { nil }
+
+    it 'raises a MissingClassError' do
+      expect { result }.to raise_error(Pragma::Macro::MissingSkillError)
+    end
+  end
+
   context 'when the decorator fails expansion' do
     let(:decorator) { DecoratorMacroTest::FailingInstanceDecorator }
 

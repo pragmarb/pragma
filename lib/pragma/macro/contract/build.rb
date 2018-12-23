@@ -7,6 +7,9 @@ module Pragma
     module Contract
       def self.Build(name: 'default', constant: nil, builder: nil)
         step = lambda do |input, options|
+          skill = "contract.#{name}.class"
+          Macro.require_skill('Contract::Build', skill, options)
+
           Trailblazer::Operation::Contract::Build.for(
             input,
             options,
