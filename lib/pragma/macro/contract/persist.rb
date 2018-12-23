@@ -7,6 +7,9 @@ module Pragma
     module Contract
       def self.Persist(method: :save, name: 'default')
         step = lambda do |input, options|
+          skill = "contract.#{name}.class"
+          Macro.require_skill('Contract::Build', skill, options)
+
           Trailblazer::Operation::Pipetree::Step.new(
             Trailblazer::Operation::Contract::Persist(method: method, name: name).first
           ).call(input, options).tap do |result|

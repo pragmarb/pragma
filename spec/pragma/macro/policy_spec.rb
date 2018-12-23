@@ -63,6 +63,34 @@ RSpec.describe Pragma::Macro::Policy do
     end
   end
 
+  context 'when no policy is provided' do
+    let(:current_user) { OpenStruct.new(id: 1) }
+
+    before do
+      module PolicyMacroTest
+        class Operation < Pragma::Operation::Base
+          self['policy.default.class'] = nil
+
+          step :model!
+          step Pragma::Macro::Policy(), fail_fast: true
+          step :finish!
+
+          def model!(options)
+            options['model'] = OpenStruct.new(user_id: 1)
+          end
+
+          def finish!(options)
+            options['result.finished'] = true
+          end
+        end
+      end
+    end
+
+    it 'raises a MissingClassError' do
+      expect { result }.to raise_error(Pragma::Macro::MissingSkillError)
+    end
+  end
+
   context 'with a custom action' do
     before do
       # rubocop:disable RSpec/InstanceVariable

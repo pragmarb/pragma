@@ -16,6 +16,10 @@ RSpec.describe Pragma::Macro::Model do
         end
       end
 
+      class MissingClassOperation < Pragma::Operation::Base
+        step Pragma::Macro::Model()
+      end
+
       class BuildingOperation < Pragma::Operation::Base
         self['model.class'] = ModelMacroTest::Model
         step Pragma::Macro::Model()
@@ -25,6 +29,14 @@ RSpec.describe Pragma::Macro::Model do
         self['model.class'] = ModelMacroTest::Model
         step Pragma::Macro::Model(:find_by)
       end
+    end
+  end
+
+  context 'when no model class is provided' do
+    let(:operation_class) { ModelMacroTest::MissingClassOperation }
+
+    it 'raises a MissingClassError' do
+      expect { result }.to raise_error(Pragma::Macro::MissingSkillError)
     end
   end
 
