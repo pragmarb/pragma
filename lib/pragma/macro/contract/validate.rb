@@ -7,8 +7,7 @@ module Pragma
     module Contract
       def self.Validate(name: 'default', **args)
         step = lambda do |input, options|
-          skill = "contract.#{name}.class"
-          Macro.require_skill('Contract::Build', skill, options)
+          Macro.require_skill('Contract::Validate', "contract.#{name}.class", options)
 
           Trailblazer::Operation::Pipetree::Step.new(
             Trailblazer::Operation::Contract::Validate(**args).first

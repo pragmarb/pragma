@@ -10,10 +10,9 @@ module Pragma
     module Policy
       class << self
         def for(input, name, options, action = nil)
-          skill = "policy.#{name}.class"
-          Macro.require_skill('Policy', skill, options)
+          klass = Macro.require_skill('Policy', "policy.#{name}.class", options)
 
-          policy = options[skill].new(
+          policy = klass.new(
             options['policy.context'] || options['current_user'],
             options['model']
           )

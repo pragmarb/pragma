@@ -10,14 +10,13 @@ module Pragma
     module Decorator
       class << self
         def for(_input, name, options)
-          skill = "decorator.#{name}.class"
-          Macro.require_skill('Decorator', skill, options)
+          klass = Macro.require_skill('Decorator', "decorator.#{name}.class", options)
 
           set_defaults(options)
 
           return false unless validate_params(options)
 
-          options["result.decorator.#{name}"] = options[skill].new(options['model'])
+          options["result.decorator.#{name}"] = klass.new(options['model'])
 
           validate_expansion(options, name)
         end

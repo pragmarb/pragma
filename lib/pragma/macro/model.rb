@@ -6,12 +6,11 @@ module Pragma
   module Macro
     def self.Model(action = nil)
       step = lambda do |input, options|
-        skill = 'model.class'
-        Macro.require_skill('Model', skill, options)
+        klass = Macro.require_skill('Model', 'model.class', options)
 
         Trailblazer::Operation::Pipetree::Step.new(
-          Trailblazer::Operation::Model.for(options['model.class'], action),
-          'model.class' => options[skill],
+          Trailblazer::Operation::Model.for(klass, action),
+          'model.class' => klass,
           'model.action' => action
         ).call(input, options).tap do |result|
           unless result
