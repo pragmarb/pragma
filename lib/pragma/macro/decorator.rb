@@ -63,6 +63,7 @@ module Pragma
 
         def validate_expansion(options, name)
           return true unless options["result.decorator.#{name}"].respond_to?(:validate_expansion)
+
           options["result.decorator.#{name}"].validate_expansion(options['params'][:expand])
           true
         rescue Pragma::Decorator::Association::ExpansionError => e

@@ -49,6 +49,7 @@ module Pragma
         def root_namespace(input, options)
           resource_namespace = resource_namespace(input, options)
           return [] if resource_namespace.first.casecmp('API').zero?
+
           api_index = (resource_namespace.map(&:upcase).index('API') || 1)
           resource_namespace[0..(api_index - 1)]
         end

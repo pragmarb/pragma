@@ -33,16 +33,16 @@ Metrics/LineLength:
   Max: 100
   AllowURI: true
 
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
 
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   EnforcedStyle: consistent
 
 Style/SignalException:

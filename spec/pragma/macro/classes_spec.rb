@@ -57,7 +57,8 @@ RSpec.describe Pragma::Macro::Classes do
 
   # rubocop:disable RSpec/EmptyExampleGroup
   context 'with a root operation' do
-    validate_classes('API::V1::Article::Operation::Create',
+    validate_classes(
+      'API::V1::Article::Operation::Create',
       'model.class' => 'Article',
       'policy.default.class' => 'API::V1::Article::Policy',
       'policy.default.scope.class' => 'API::V1::Article::Policy::Scope',
@@ -68,7 +69,8 @@ RSpec.describe Pragma::Macro::Classes do
   end
 
   context 'with a nested operation' do
-    validate_classes('API::V1::Article::Operation::Create::AsAdmin',
+    validate_classes(
+      'API::V1::Article::Operation::Create::AsAdmin',
       'model.class' => 'Article',
       'policy.default.class' => 'API::V1::Article::Policy',
       'policy.default.scope.class' => 'API::V1::Article::Policy::Scope',
@@ -79,7 +81,8 @@ RSpec.describe Pragma::Macro::Classes do
   end
 
   context 'with an engine and a root operation' do
-    validate_classes('Blog::API::V1::Article::Operation::Create',
+    validate_classes(
+      'Blog::API::V1::Article::Operation::Create',
       'model.class' => 'Blog::Article',
       'policy.default.class' => 'Blog::API::V1::Article::Policy',
       'policy.default.scope.class' => 'Blog::API::V1::Article::Policy::Scope',
@@ -90,7 +93,8 @@ RSpec.describe Pragma::Macro::Classes do
   end
 
   context 'with an engine and a nested operation' do
-    validate_classes('Blog::API::V1::Article::Operation::Create::AsAdmin',
+    validate_classes(
+      'Blog::API::V1::Article::Operation::Create::AsAdmin',
       'model.class' => 'Blog::Article',
       'policy.default.class' => 'Blog::API::V1::Article::Policy',
       'policy.default.scope.class' => 'Blog::API::V1::Article::Policy::Scope',
