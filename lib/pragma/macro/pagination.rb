@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Pagination
-      step = ->(input, options) { Pagination.for(input, options) }
-      [step, name: 'pagination']
-    end
-
     module Pagination
       class << self
         def for(_input, options)

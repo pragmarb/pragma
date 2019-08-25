@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Ordering
-      step = ->(input, options) { Ordering.for(input, options) }
-      [step, name: 'ordering']
-    end
-
     module Ordering
       class << self
         def for(_input, options)

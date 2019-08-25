@@ -17,6 +17,41 @@ module Pragma
       def require_skill(macro, skill, options)
         options[skill] || fail(MissingSkillError.new(macro, skill))
       end
+
+      def Classes
+        step = ->(input, options) { Classes.for(input, options) }
+        [step, name: 'classes']
+      end
+
+      def Decorator(name: :instance)
+        step = ->(input, options) { Decorator.for(input, name, options) }
+        [step, name: "decorator.#{name}"]
+      end
+
+      def Filtering
+        step = ->(input, options) { Filtering.for(input, options) }
+        [step, name: 'filtering']
+      end
+
+      def Ordering
+        step = ->(input, options) { Ordering.for(input, options) }
+        [step, name: 'ordering']
+      end
+
+      def Pagination
+        step = ->(input, options) { Pagination.for(input, options) }
+        [step, name: 'pagination']
+      end
+
+      def Policy(name: :default, action: nil)
+        step = ->(input, options) { Policy.for(input, name, options, action) }
+        [step, name: "policy.#{name}"]
+      end
+
+      def Model(action = nil)
+        step = ->(input, options) { Model.for(input, options) }
+        [step, name: "model.#{action || 'build'}"]
+      end
     end
 
     # Error raised when a skill is required but not present.

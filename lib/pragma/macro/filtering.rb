@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Filtering
-      step = ->(input, options) { Filtering.for(input, options) }
-      [step, name: 'filtering']
-    end
-
     module Filtering
       class << self
         def for(_input, options)
