@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Classes
-      step = ->(input, options) { Classes.for(input, options) }
-      [step, name: 'classes']
-    end
-
     module Classes
       class << self
         def for(input, options)

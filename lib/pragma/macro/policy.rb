@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Policy(name: :default, action: nil)
-      step = ->(input, options) { Policy.for(input, name, options, action) }
-      [step, name: "policy.#{name}"]
-    end
-
     module Policy
       class << self
         def for(input, name, options, action = nil)

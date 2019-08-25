@@ -2,11 +2,6 @@
 
 module Pragma
   module Macro
-    def self.Decorator(name: :instance)
-      step = ->(input, options) { Decorator.for(input, name, options) }
-      [step, name: "decorator.#{name}"]
-    end
-
     module Decorator
       class << self
         def for(_input, name, options)
