@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
+- Removed `Pragma::Decorator::Error`, which was moved to
+  [pragma-decorator](https://github.com/pragmarb/pragma-decorator)
+
 ## [2.5.0]
 
 ### Added
