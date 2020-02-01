@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [pragma-decorator](https://github.com/pragmarb/pragma-decorator)
 - Removed `Pragma::AssociationIncluder`, which was moved to
   [pragma-decorator](https://github.com/pragmarb/pragma-decorator)
+- Removed filtering functionality with no replacement (use Ransack or similar instead)
 
 ## [2.5.0]
 

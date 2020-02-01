@@ -15,9 +15,6 @@ RSpec.describe Pragma::Operation::Index do
       'ordering.order_columns' => %i[created_at id],
       'ordering.default_column' => :id,
       'ordering.default_direction' => :asc,
-      'filtering.filters' => [
-        Pragma::Operation::Filter::Equals.new(param: :by_title, column: :title)
-      ]
     )
   end
 
@@ -101,19 +98,5 @@ RSpec.describe Pragma::Operation::Index do
       a_hash_including('id' => 1),
       a_hash_including('id' => 3)
     ])
-  end
-
-  context 'when applying a filter' do
-    let(:params) do
-      {
-        by_title: 'Wrong'
-      }
-    end
-
-    it 'filters properly' do
-      expect(result['result.response'].entity.to_hash['data']).to match([
-        a_hash_including('title' => 'Wrong')
-      ])
-    end
   end
 end

@@ -300,53 +300,6 @@ The macro accepts the following options, which can be defined on the operation o
 - `policy.context`: the context to use for the policy (optional, `current_user` is used if not
   provided).
 
-### Filtering
-
-**Used in:** Index
-
-The `Filtering` macro provides a simple interface to define basic filters for your API. You simply
-include the macro and configure which filters you want to expose to the users.
-
-```ruby
-module API
-  module V1
-    module Article
-      module Operation
-        class Index < Pragma::Operation::Base
-          step :model!
-          step Pragma::Macro::Filtering()
-          step :respond!
-
-          self['filtering.filters'] = [
-            Pragma::Filter::Equals.new(param: :by_category, column: :category_id),
-            Pragma::Filter::Ilike.new(param: :by_title, column: :title)
-          ]
-          
-          def model!(params:, **)
-            options['model'] = ::Article.all
-          end
-        end
-      end
-    end
-  end
-end
-```
-
-With the example above, you are exposing the `by_category` filter and the `by_title` filters. 
-
-The following filters are available for ActiveRecord currently:
-
-- `Equals`: performs an equality (`=`) comparison (requires `:column`)-
-- `Like`: performs a `LIKE` comparison (requires `:column`).
-- `Ilike`: performs an `ILIKE` comparison (requires `:column`).
-- `Where`: adds a generic `WHERE` clause (requires `:condition` and passes the parameter's value as 
-   `:value`).
-- `Scope`: calls a method on the collection (requires `:scope` and passes the parameter's value as 
-   the first argument);
-- `Boolean`: calls a method on the collection (requires `:scope` and doesn't pass any arguments).
-
-Support for more clauses as well as more ORMs will come soon.
-
 ### Ordering
 
 **Used in:** Index
