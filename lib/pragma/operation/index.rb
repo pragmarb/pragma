@@ -20,7 +20,7 @@ module Pragma
       end
 
       def include!(options)
-        options['model'] = AssociationIncluder
+        options['model'] = Pragma::Decorator::Association::Expander
           .load_adaptor(options['model'])
           .include_associations(options['params'][:expand] || [])
       end
