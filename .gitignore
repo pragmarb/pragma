@@ -7,3 +7,6 @@
 /spec/reports/
 /tmp/
 .ruby-version
+/*/coverage
+/*/spec/examples.txt
+.rubocop-https---relaxed-ruby-style-rubocop-yml

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+test() {
+    project_name=$1
+    project_dir=$2
+
+    export BUNDLE_GEMFILE=$PWD/Gemfile
+    bundle check || bundle update --quiet
+
+    echo "****************************"
+    echo "* Testing ${project_name} *"
+    echo "****************************"
+    cd ${project_dir}
+    bundle exec rspec spec --format progress
+    cd ..
+}
+
+# Pragma::Contract
+test "Pragma::Contract" "contract"
+test "Pragma::Decorator" "decorator"
+test "Pragma::Operation" "operation"
+test "Pragma::Policy" "policy"
+test "Pragma::Resource" "resource"

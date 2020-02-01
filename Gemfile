@@ -2,13 +2,19 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in pragma.gemspec
 gemspec
 
-gem 'pry'
+gem 'pragma-contract', path: 'contract'
+gem 'pragma-decorator', path: 'decorator'
+gem 'pragma-operation', path: 'operation'
+gem 'pragma-policy', path: 'policy'
+gem 'pragma-resource', path: 'resource'
 
-gem 'pragma-contract', github: 'pragmarb/pragma-contract'
-gem 'pragma-operation', github: 'pragmarb/pragma-operation'
-gem 'pragma-decorator', github: 'pragmarb/pragma-decorator'
-gem 'pragma-policy', github: 'pragmarb/pragma-policy'
-gem 'pragma-resource', github: 'pragmarb/pragma-resource'
+gem 'coveralls'
+gem 'pry'
+gem 'rake'
+gem 'rspec'
+gem 'rubocop'
+gem 'rubocop-performance'
+gem 'rubocop-rspec'
+gem 'will_paginate'

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pragma/version'
 
@@ -21,18 +21,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'adaptor', '~> 0.2.1'
-  spec.add_dependency 'pragma-contract', '~> 2.0'
-  spec.add_dependency 'pragma-decorator', '~> 2.0'
-  spec.add_dependency 'pragma-operation', '~> 2.0'
-  spec.add_dependency 'pragma-policy', '~> 2.0'
-  spec.add_dependency 'trailblazer', '~> 2.0'
+  spec.add_dependency 'pragma-contract', Pragma::VERSION
+  spec.add_dependency 'pragma-decorator', Pragma::VERSION
+  spec.add_dependency 'pragma-operation', Pragma::VERSION
+  spec.add_dependency 'pragma-policy', Pragma::VERSION
 
   spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'coveralls'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'will_paginate'
 end

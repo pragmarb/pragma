@@ -1,9 +1,17 @@
 rvm:
-  - 2.3.0
+  - 2.5
+  - 2.6
+  - 2.7
+
 before_install:
   - gem update --system
   - gem update bundler
   - gem cleanup bundler
+
 branches:
   only:
     - master
+
+install: true
+
+script: ./bin/build

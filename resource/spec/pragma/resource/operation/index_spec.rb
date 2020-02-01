@@ -1,0 +1,102 @@
+# frozen_string_literal: true
+
+require 'will_paginate'
+require 'will_paginate/array'
+
+RSpec.describe Pragma::Resource::Operation::Index do
+  subject(:result) do
+    described_class.call(
+      params,
+      'current_user' => current_user,
+      'model.class' => model_klass,
+      'decorator.collection.class' => collection_decorator_klass,
+      'decorator.instance.class' => instance_decorator_klass,
+      'policy.default.scope.class' => policy_scope_klass,
+      'ordering.order_columns' => %i[created_at id],
+      'ordering.default_column' => :id,
+      'ordering.default_direction' => :asc,
+    )
+  end
+
+  let(:params) { {} }
+
+  let(:current_user) { OpenStruct.new(id: 1) }
+
+  let(:model_klass) do
+    Class.new do
+      def self.all
+        [
+          OpenStruct.new(id: 2, title: 'In Chains', user_id: 2, created_at: Time.now.to_i - 3600),
+          OpenStruct.new(id: 3, title: 'Little Soul', user_id: 1, created_at: Time.now.to_i - 1800),
+          OpenStruct.new(id: 1, title: 'Wrong', user_id: 1, created_at: Time.now.to_i)
+        ]
+      end
+    end
+  end
+
+  let(:collection_decorator_klass) do
+    Class.new(Pragma::Decorator::Base) do
+      include Pragma::Decorator::Pagination
+      include Pragma::Decorator::Collection
+    end.tap do |klass|
+      klass.send(:decorate_with, instance_decorator_klass)
+    end
+  end
+
+  let(:instance_decorator_klass) do
+    Class.new(Pragma::Decorator::Base) do
+      property :id
+      property :user_id
+      property :title
+    end
+  end
+
+  let(:policy_scope_klass) do
+    Class.new(Pragma::Policy::Base::Scope) do
+      def resolve
+        relation = Class.new(Array) do
+          def order(conditions)
+            column, direction = conditions.split(' ').map(&:to_sym)
+
+            ret = sort_by { |r| column.to_s.split('.').inject(r, :send) }
+
+            ret = ret.reverse if direction == :desc
+
+            self.class.new(ret)
+          end
+
+          def where(conditions)
+            self.class.new(
+              select { |r| r.send(conditions.keys.first) == conditions.values.first }
+            )
+          end
+        end
+
+        relation.new(scope.select { |i| i.user_id == user.id })
+      end
+    end
+  end
+
+  it 'responds with 200 OK' do
+    expect(result['result.response'].status).to eq(200)
+  end
+
+  it 'filters the records with the policy' do
+    expect(result['result.response'].entity.represented.count).to eq(2)
+  end
+
+  it 'adds pagination info to the response' do
+    expect(result['result.response'].entity.to_hash).to match(a_hash_including(
+                                                                'current_page' => 1,
+                                                                'per_page' => 30,
+                                                                'total_entries' => 2
+                                                              ))
+  end
+
+  it 'orders properly' do
+    expect(result['result.response'].entity.to_hash['data']).to match([
+                                                                        a_hash_including('id' => 1),
+                                                                        a_hash_including('id' => 3)
+                                                                      ])
+  end
+end
