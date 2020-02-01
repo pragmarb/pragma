@@ -6,3 +6,9 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'pry'
+
+gem 'pragma-contract', github: 'pragmarb/pragma-contract'
+gem 'pragma-operation', github: 'pragmarb/pragma-operation'
+gem 'pragma-decorator', github: 'pragmarb/pragma-decorator'
+gem 'pragma-policy', github: 'pragmarb/pragma-policy'
+gem 'pragma-resource', github: 'pragmarb/pragma-resource'
