@@ -1,5 +1,12 @@
 # Pragma
 
+> ## This project is not being maintained anymore.
+> 
+> Unfortunately, I'm not doing much work on REST APIs (or APIs in general) anymore, which means
+> it's been a while since I last used Pragma in a real project or improved the ecosystem. If anyone
+> wants to take over the project and keep it alive, feel free to reach out to me at
+> hello@alessandro.codes.   
+
 [![Build Status](https://travis-ci.org/pragmarb/pragma.svg?branch=master)](https://travis-ci.org/pragmarb/pragma)
 [![Coverage Status](https://coveralls.io/repos/github/pragmarb/pragma/badge.svg?branch=master)](https://coveralls.io/github/pragmarb/pragma?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e51e8d7489eb72ab97ba/maintainability)](https://codeclimate.com/github/pragmarb/pragma/maintainability)
